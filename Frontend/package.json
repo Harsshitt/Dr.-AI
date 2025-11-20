@@ -18,13 +18,13 @@
     "@tailwindcss/postcss": "^4.1.17",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
-<<<<<<< HEAD
+
     "@vitejs/plugin-react": "^5.1.1",
     "@vitejs/plugin-react-swc": "^4.2.2",
-=======
+
     "@vitejs/plugin-react": "^5.1.0",
     "autoprefixer": "^10.4.22",
->>>>>>> d3e488048b2d7529203539620ac2a0f2671bb285
+
     "eslint": "^9.39.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
