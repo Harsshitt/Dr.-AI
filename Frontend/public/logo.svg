@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Medical Cross Shape with Tech Feel -->
+  <path d="M35 20H65V35H80V65H65V80H35V65H20V35H35V20Z" fill="#DC2626" stroke="#B91C1C" stroke-width="2"/>
+  
+  <!-- Tech Circuit Lines -->
+  <path d="M50 20V35" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <path d="M50 65V80" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <path d="M20 50H35" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <path d="M65 50H80" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Central Pulse/Heartbeat -->
+  <path d="M40 50H45L48 42L52 58L55 50H60" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

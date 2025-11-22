@@ -1,0 +1,42 @@
+// Frontend/src/components/Navbar.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+
+export default function Navbar() {
+  return (
+    <header className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="flex items-center justify-between h-16">
+
+          {/* Logo */}
+          <Link to="/" className="text-2xl font-bold text-red-600 tracking-wide">
+            Dr.AI
+          </Link>
+
+          {/* Center Navigation */}
+          <nav className="hidden md:flex space-x-10 text-gray-700 font-medium">
+            <Link to="/" className="hover:text-red-600 transition">Home</Link>
+            <Link to="/chat" className="hover:text-red-600 transition">Chat</Link>
+            <Link to="/symptoms" className="hover:text-red-600 transition">Symptoms</Link>
+            <Link to="/meds" className="hover:text-red-600 transition">Medicines</Link>
+            <Link to="/about" className="hover:text-red-600 transition">About</Link>
+          </nav>
+
+          {/* Right Button */}
+          <div className="hidden md:block">
+            <Link
+              to="/chat"
+              className="px-4 py-2 rounded-lg bg-red-600 text-white font-medium hover:bg-red-700 transition"
+            >
+              Start Chat
+            </Link>
+          </div>
+
+        </div>
+      </div>
+
+      {/* Spacer so hero is not hidden below navbar */}
+      <div className="h-16"></div>
+    </header>
+  );
+}
