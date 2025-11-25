@@ -2,7 +2,7 @@
    Self-contained navbar with inline CSS (no Tailwind required). 
 */
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -33,6 +33,13 @@ export default function Navbar() {
         .drai-mobilemenu a { padding:8px 6px; display:block; color:#374151; text-decoration:none; border-radius:6px; }
         .drai-mobilemenu a:hover { background: rgba(0,0,0,0.03); color:#b91c1c; }
 
+        .active-link {
+          background: rgba(220, 38, 38, 0.12);
+          color: #dc2626 !important;
+          font-weight: 600;
+          border-radius: 8px;
+        }
+
         @media (max-width: 767px) {
           .drai-center { display:none; }
           .drai-right { display:none; }
@@ -47,32 +54,53 @@ export default function Navbar() {
       <header className="drai-nav">
         <div className="drai-wrap">
           <div className="drai-row">
-
-            {/* LEFT — LOGO + TEXT */}
+          
             <div className="drai-left">
               <img
                 src="/dr.ai-logo.svg"
                 alt="Dr.AI logo"
-                style={{ height: "90px", width: "90px", objectFit: "contain" }} 
+                style={{
+                  height: "90px",
+                  width: "90px",
+                  objectFit: "contain",
+                  filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(-5deg)"
+                }} 
               />
 
               <Link to="/" className="drai-logo" onClick={() => setOpen(false)}>
-                
               </Link>
             </div>
 
-            {/* CENTER LINKS */}
             <div className="drai-center">
               <ul className="drai-links">
-                <li><Link to="/">Home</Link></li>
-                <li><Link to="/chat">Chat</Link></li>
-                <li><Link to="/symptoms">Symptoms</Link></li>
-                <li><Link to="/meds">Medicines</Link></li>
-                <li><Link to="/about">About</Link></li>
+                <li>
+                  <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/chat" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    Chat
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/symptoms" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    Symptoms
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/meds" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    Medicines
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/about" className={({ isActive }) => (isActive ? "active-link" : "")}>
+                    About
+                  </NavLink>
+                </li>
               </ul>
             </div>
 
-            {/* RIGHT — CTA */}
             <div className="drai-right">
               <Link to="/chat" className="drai-cta">Start Chat</Link>
 
@@ -94,7 +122,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* MOBILE MENU */}
           {open && (
             <div className="drai-mobilemenu">
               <Link to="/" onClick={() => setOpen(false)}>Home</Link>
@@ -107,6 +134,9 @@ export default function Navbar() {
           )}
         </div>
       </header>
+
+      {/* ⭐ Content starts 74px below navbar (64px header + 10px gap) ⭐ */}
+      <div style={{ height: "40px" }}></div>
     </>
   );
 }

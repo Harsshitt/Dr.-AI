@@ -1,8 +1,9 @@
 // Frontend/src/App.jsx
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer"; // <-- ADDED FOOTER IMPORT
 
 /* ---------------------------
    Framer Motion variant defs
@@ -36,19 +37,18 @@ function HomeHero() {
 
       {/* push content down so fixed navbar doesn't overlap */}
       <div className="pt-20">
-        {/* Ambient layers (absolute) */}
+        {/* Ambient layers */}
         <div
           className="pointer-events-none absolute inset-0 opacity-10 mix-blend-overlay"
           style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }}
         />
+
+        {/* floating blobs */}
         <div className="pointer-events-none absolute inset-0 rounded-[40px] shadow-[inset_0_0_120px_40px_rgba(255,190,180,0.35)]" />
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[220px] bg-red-300/30 blur-3xl rounded-full" />
         <div className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[260px] bg-red-200/25 blur-3xl rounded-full" />
-        <div className="pointer-events-none absolute left-0 top-1/3 w-[260px] h-[420px] bg-red-100/20 blur-2xl rounded-full" />
-        <div className="pointer-events-none absolute right-0 top-1/2 w-[260px] h-[420px] bg-orange-100/20 blur-2xl rounded-full" />
-        <div className="pointer-events-none absolute top-36 left-1/2 -translate-x-1/2 w-[900px] h-[420px] bg-white/40 blur-[120px] rounded-full" />
 
-        {/* Decorative heartbeat */}
+        {/* heartbeat svg */}
         <motion.svg
           viewBox="0 0 1200 300"
           className="pointer-events-none absolute left-0 top-10 w-[1600px] opacity-20"
@@ -65,42 +65,7 @@ function HomeHero() {
           />
         </motion.svg>
 
-        {/* Floating icons (kept for style) */}
-        {[
-          {
-            svg: (
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#ef4444" strokeWidth="1.5" fill="white" />
-                <path d="M12 7v10M7 12h10" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            ),
-            style: { right: "6%", top: "18%" },
-          },
-          {
-            svg: (
-              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 21s8-4.5 8-10a8 8 0 10-16 0c0 5.5 8 10 8 10z" stroke="#ef4444" strokeWidth="1.25" fill="white" />
-                <path d="M10 11h4M12 9v4" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            ),
-            style: { left: "6%", top: "12%" },
-          },
-          {
-            svg: (
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="#ef4444" strokeWidth="1.25" fill="white" />
-                <path d="M8 12h8M12 8v8" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            ),
-            style: { right: "12%", top: "36%" },
-          },
-        ].map((ic, i) => (
-          <motion.div key={i} style={ic.style} className="absolute rounded-full p-1" animate={floatVariants.floatUp(i)}>
-            {ic.svg}
-          </motion.div>
-        ))}
-
-        {/* Centered main (only hero title & subtitle) */}
+        {/* centered content */}
         <main className="min-h-screen flex items-center justify-center md:ml-72 relative z-10 px-6 pt-16">
           <div className="w-full max-w-3xl text-center">
             <motion.header
@@ -111,10 +76,8 @@ function HomeHero() {
             >
               <motion.h1
                 variants={heroTitleVariant}
-                className="text-4xl sm:text-5xl font-extrabold text-gray-900 leading-tight"
-                style={{ textShadow: "0 8px 30px rgba(239,68,68,0.06)" }}
-                whileHover={{ scale: 1.02, textShadow: "0 14px 40px rgba(239,68,68,0.12)" }}
-                transition={{ type: "spring", stiffness: 100, damping: 10 }}
+                className="text-4xl sm:text-5xl font-extrabold text-gray-900"
+                whileHover={{ scale: 1.5 }}
               >
                 Welcome to <span className="text-red-600">Dr.AI</span>
               </motion.h1>
@@ -122,7 +85,6 @@ function HomeHero() {
               <motion.p
                 variants={heroSubVariant}
                 className="text-lg text-gray-700 mt-4 max-w-2xl mx-auto"
-                style={{ textShadow: "0 6px 18px rgba(0,0,0,0.03)" }}
               >
                 Your intelligent health assistant — safe, simple, and always available.
               </motion.p>
@@ -143,7 +105,6 @@ function ChatPage() {
       <Navbar />
       <main className="pt-20 p-6 max-w-5xl mx-auto">
         <h1 className="text-2xl font-semibold mb-4">Chat with Dr.AI</h1>
-        <p className="text-gray-600 mb-4">This is the chat page. Replace the content below with your ChatWindow component.</p>
       </main>
     </div>
   );
@@ -152,82 +113,10 @@ function ChatPage() {
 /* ------------------------
    About page (user-facing content based on your project spec)
    ------------------------ */
-function AboutPage() {
-  return (
-    <div className="min-h-screen bg-gray-50 relative">
-      <Navbar />
-      <main className="pt-20 p-6 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-semibold mb-4">About Dr.AI</h1>
-
-        <p className="text-gray-700 mb-4">
-          <strong>Dr.AI</strong> is an educational health assistant that helps people understand symptoms, learn about medications, and interpret lab reports — all in plain language.
-          I’m not a doctor; I provide information, triage guidance, and clear next steps to help you decide when to seek care.
-        </p>
-
-        <section className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">Mission</h2>
-          <p className="text-gray-700">
-            Provide clear, compassionate, evidence-informed guidance that reduces unnecessary worry and unnecessary visits while also helping spot red flags early.
-            Always educational — never a medical diagnosis or prescription.
-          </p>
-        </section>
-
-        <section className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">What Dr.AI can help with</h2>
-          <ul className="list-disc pl-5 text-gray-700 space-y-2">
-            <li><strong>Symptom triage & self-care:</strong> Ask focused questions, estimate urgency (Emergency / Urgent / Routine / Self-care OK), and suggest safe self-care and OTC options when appropriate.</li>
-            <li><strong>Medication education:</strong> Explain what medicines do, common side effects, warnings, who should avoid them, and label-based OTC dosing guidance (education only; not personal prescriptions).</li>
-            <li><strong>Lab report explainer:</strong> Parse lab report values and explain what tests measure, whether values are clearly flagged by the lab, and common non-diagnostic reasons tests change (e.g., fasting, timing, medicines).</li>
-            <li><strong>Care navigation:</strong> Recommend where to go for care (emergency, urgent care, primary care, pharmacist) and how to find local services.</li>
-            <li><strong>Prevention & education:</strong> Offer plain-language lifestyle and prevention tips, vaccine info, and what signs to watch for.</li>
-          </ul>
-        </section>
-
-        <section className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">Intake — what I’ll ask</h2>
-          <p className="text-gray-700">To give useful guidance I usually ask for:</p>
-          <ul className="list-disc pl-5 text-gray-700 space-y-1">
-            <li>Age, sex at birth, pregnancy/breastfeeding status, and country.</li>
-            <li>Major conditions, allergies, and current medications/supplements.</li>
-            <li>For symptoms: onset, severity, location, pattern, associated symptoms, and anything tried so far.</li>
-            <li>For labs: exact test names, values, units, reference ranges, date, and whether fasting.</li>
-          </ul>
-        </section>
-
-        <section className="mb-4">
-          <h2 className="text-xl font-semibold mb-2">Important limits — what I don’t do</h2>
-          <ul className="list-disc pl-5 text-gray-700 space-y-1">
-            <li>I do <strong>not</strong> diagnose conditions or prescribe/adjust prescription medicines.</li>
-            <li>I will not interpret raw medical images (X-ray, CT, MRI, ultrasound). I can explain a radiology report text if you paste it.</li>
-            <li>I won’t provide unsafe instructions that require in-person evaluation (e.g., start/stop Rx, use leftover antibiotics).</li>
-          </ul>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Safety & red flags</h2>
-          <p className="text-gray-700">
-            If you have any emergency signs — severe chest pain, severe difficulty breathing, sudden weakness or slurred speech, severe allergic reaction, uncontrolled bleeding, signs of stroke, or suicidal thoughts — <strong>seek emergency care now</strong>.
-            For less urgent but concerning issues, Dr.AI will recommend urgent or primary care.
-          </p>
-        </section>
-
-        <section className="mb-6">
-          <h2 className="text-xl font-semibold mb-2">Privacy & use</h2>
-          <p className="text-gray-700">
-            The assistant provides educational information only. Treat any personal data you share carefully. If you prefer, avoid sending highly sensitive details. If you want something deleted, tell us and we’ll remove it (if the host app supports deletion).
-          </p>
-        </section>
-
-        <div className="text-sm text-gray-500">
-          <strong>Disclaimer:</strong> I’m a health information assistant, not a medical professional. This is educational information, not a diagnosis. If you need urgent help, contact local emergency services or your healthcare provider.
-        </div>
-      </main>
-    </div>
-  );
-}
+import About from "./pages/About";
 
 /* ------------------------
-   App wrapper w/ routing (single default export)
+   App wrapper w/ routing
    ------------------------ */
 export default function AppRouter() {
   return (
@@ -235,26 +124,11 @@ export default function AppRouter() {
       <Routes>
         <Route path="/" element={<HomeHero />} />
         <Route path="/chat" element={<ChatPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route
-          path="/symptoms"
-          element={
-            <div className="min-h-screen">
-              <Navbar />
-              <main className="pt-20 p-6">Symptoms page placeholder</main>
-            </div>
-          }
-        />
-        <Route
-          path="/meds"
-          element={
-            <div className="min-h-screen">
-              <Navbar />
-              <main className="pt-20 p-6">Medicines page placeholder</main>
-            </div>
-          }
-        />
+        <Route path="/about" element={<About />} />
       </Routes>
+
+      {/* ⭐ FIXED FOOTER ALWAYS ON BOTTOM ⭐ */}
+      <Footer />
     </BrowserRouter>
   );
 }
