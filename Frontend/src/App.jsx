@@ -9,7 +9,7 @@ import Footer from "./components/Footer";
 import About from "./pages/About";
 import SymptomsPage from "./pages/SymptomsPage";
 import Medicines from "./pages/Medicines";
-import Home from "./pages/Home"; // Restored Home import
+import Home from "./pages/Home";
 
 /* ------------------------
    Chat Page
