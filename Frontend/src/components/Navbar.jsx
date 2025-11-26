@@ -11,7 +11,7 @@ export default function Navbar() {
     <>
       <style>{`
         .drai-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 60; background: rgba(255,255,255,0.97); backdrop-filter: blur(6px); border-bottom: 1px solid rgba(0,0,0,0.06); }
-        .drai-wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .drai-wrap { max-width: 100%; margin: 0 auto; padding: 0 32px; }
         .drai-row { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
         .drai-left { display:flex; align-items:center; gap:12px; }

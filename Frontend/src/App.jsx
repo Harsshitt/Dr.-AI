@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 import About from "./pages/About";
 import SymptomsPage from "./pages/SymptomsPage";
@@ -33,6 +34,7 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       {/* Navbar global */}
+      <ScrollToTop />
       <Navbar />
 
       <Routes>
