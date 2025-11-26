@@ -303,7 +303,7 @@ const styles = {
 
   heroWrap: {
     width: "100%",
-    background: "linear-gradient(90deg,#0a8df2 0%, #0074e0 100%)",
+    background: "linear-gradient(90deg, #dc2626 0%, #e11d48 100%)",
     paddingTop: 44,
     paddingBottom: 44,
   },
@@ -368,7 +368,7 @@ const styles = {
     width: 56,
     height: 56,
     borderRadius: 12,
-    background: "linear-gradient(180deg,#16aaff,#0077ee)",
+    background: "linear-gradient(180deg, #ef4444, #dc2626)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -376,7 +376,7 @@ const styles = {
   missionContent: { flex: 1 },
   missionTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#081226" },
   missionText: { marginTop: 10, color: "#374151" },
-  missionNote: { marginTop: 12, color: "#0b78e6", fontWeight: 500 },
+  missionNote: { marginTop: 12, color: "#dc2626", fontWeight: 500 },
 };
 
 /* ---------- PRIVACY STYLES ---------- */
