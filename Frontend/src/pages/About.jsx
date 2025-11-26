@@ -1,5 +1,6 @@
 // src/pages/About.jsx
 import React from "react";
+
 import "./AboutFeatures.css";
 import "./AboutExtra.css"; // intake + limits CSS
 import "./AboutSafety.css"; // (kept in case other styles used)

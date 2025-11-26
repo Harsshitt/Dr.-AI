@@ -21,23 +21,65 @@ export default function Navbar() {
         .drai-right { display:flex; align-items:center; gap:12px; }
 
         .drai-links { display:flex; gap:18px; list-style:none; margin:0; padding:0; }
-        .drai-links a { color:#374151; text-decoration:none; font-weight:500; padding:8px 10px; border-radius:8px; transition: background .12s, color .12s; }
-        .drai-links a:hover { background: rgba(0,0,0,0.04); color:#b91c1c; }
+        .drai-links a { 
+          color:#374151; 
+          text-decoration:none; 
+          font-weight:500; 
+          padding:8px 12px; 
+          border-radius:8px; 
+          transition: background .12s, color .12s; 
+        }
+        .drai-links a:hover { 
+          background: rgba(0,0,0,0.05); 
+          color:#b91c1c; 
+        }
 
-        .drai-cta { background:#dc2626; color:white; padding:8px 14px; border-radius:8px; text-decoration:none; font-weight:600; }
+        /* ACTIVE LINK */
+        .active-link {
+          background: rgba(220, 38, 38, 0.14);
+          color: #dc2626 !important;
+          font-weight: 600 !important;
+        }
+
+        .drai-cta { 
+          background:#dc2626; 
+          color:white; 
+          padding:8px 14px; 
+          border-radius:8px; 
+          text-decoration:none; 
+          font-weight:600; 
+        }
         .drai-cta:hover { background:#b91c1c; }
 
-        .drai-hambtn { display:flex; align-items:center; justify-content:center; width:40px; height:40px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:white; }
+        .drai-hambtn { 
+          display:flex; 
+          align-items:center; 
+          justify-content:center; 
+          width:40px; 
+          height:40px; 
+          border-radius:8px; 
+          border:1px solid rgba(0,0,0,0.06); 
+          background:white; 
+        }
 
-        .drai-mobilemenu { display:none; flex-direction:column; gap:8px; padding:12px 20px; border-top:1px solid rgba(0,0,0,0.06); background:rgba(255,255,255,0.98); }
-        .drai-mobilemenu a { padding:8px 6px; display:block; color:#374151; text-decoration:none; border-radius:6px; }
-        .drai-mobilemenu a:hover { background: rgba(0,0,0,0.03); color:#b91c1c; }
-
-        .active-link {
-          background: rgba(220, 38, 38, 0.12);
-          color: #dc2626 !important;
-          font-weight: 600;
-          border-radius: 8px;
+        .drai-mobilemenu { 
+          display:none; 
+          flex-direction:column; 
+          gap:8px; 
+          padding:12px 20px; 
+          border-top:1px solid rgba(0,0,0,0.06); 
+          background:rgba(255,255,255,0.98); 
+        }
+        .drai-mobilemenu a { 
+          padding:8px 6px; 
+          display:block; 
+          color:#374151; 
+          text-decoration:none; 
+          border-radius:6px; 
+        }
+        .drai-mobilemenu a:hover { 
+          background: rgba(0,0,0,0.03); 
+          color:#b91c1c; 
         }
 
         @media (max-width: 767px) {
@@ -54,7 +96,8 @@ export default function Navbar() {
       <header className="drai-nav">
         <div className="drai-wrap">
           <div className="drai-row">
-          
+
+            {/* LEFT — LOGO */}
             <div className="drai-left">
               <img
                 src="/dr.ai-logo.svg"
@@ -64,64 +107,54 @@ export default function Navbar() {
                   width: "90px",
                   objectFit: "contain",
                   filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(-5deg)"
-                }} 
+                }}
               />
-
-              <Link to="/" className="drai-logo" onClick={() => setOpen(false)}>
-              </Link>
+              <Link to="/" className="drai-logo"></Link>
             </div>
 
+            {/* CENTER — LINK MENU */}
             <div className="drai-center">
               <ul className="drai-links">
                 <li>
-                  <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>
-                    Home
-                  </NavLink>
+                  <NavLink to="/" className={({ isActive }) => (isActive ? "active-link" : "")}>Home</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/chat" className={({ isActive }) => (isActive ? "active-link" : "")}>
-                    Chat
-                  </NavLink>
+                  <NavLink to="/chat" className={({ isActive }) => (isActive ? "active-link" : "")}>Chat</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/symptoms" className={({ isActive }) => (isActive ? "active-link" : "")}>
-                    Symptoms
-                  </NavLink>
+                  <NavLink to="/symptoms" className={({ isActive }) => (isActive ? "active-link" : "")}>Symptoms</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/meds" className={({ isActive }) => (isActive ? "active-link" : "")}>
-                    Medicines
-                  </NavLink>
+                  <NavLink to="/meds" className={({ isActive }) => (isActive ? "active-link" : "")}>Medicines</NavLink>
                 </li>
                 <li>
-                  <NavLink to="/about" className={({ isActive }) => (isActive ? "active-link" : "")}>
-                    About
-                  </NavLink>
+                  <NavLink to="/about" className={({ isActive }) => (isActive ? "active-link" : "")}>About</NavLink>
                 </li>
               </ul>
             </div>
 
+            {/* RIGHT — CTA + MENU DROPDOWN */}
             <div className="drai-right">
               <Link to="/chat" className="drai-cta">Start Chat</Link>
 
               <button
                 className="drai-mobile-toggle drai-hambtn"
-                aria-expanded={open}
                 onClick={() => setOpen(!open)}
               >
                 {open ? (
                   <svg width="22" height="22" stroke="currentColor" fill="none">
-                    <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    <path strokeWidth="2" strokeLinecap="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 ) : (
                   <svg width="22" height="22" stroke="currentColor" fill="none">
-                    <path strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    <path strokeWidth="2" strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
                   </svg>
                 )}
               </button>
             </div>
           </div>
 
+          {/* MOBILE MENU */}
           {open && (
             <div className="drai-mobilemenu">
               <Link to="/" onClick={() => setOpen(false)}>Home</Link>
@@ -135,7 +168,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* ⭐ Content starts 74px below navbar (64px header + 10px gap) ⭐ */}
+      {/* spacing below navbar */}
       <div style={{ height: "40px" }}></div>
     </>
   );
