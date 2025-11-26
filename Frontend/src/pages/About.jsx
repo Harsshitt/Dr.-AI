@@ -2,16 +2,15 @@
 import React from "react";
 import "./AboutFeatures.css";
 import "./AboutExtra.css"; // intake + limits CSS
-import "./AboutSafety.css"; // safety section CSS
+import "./AboutSafety.css"; // (kept in case other styles used)
 import Navbar from "../components/Navbar";
-import AboutSafety from "../components/AboutSafety";
 
 export default function About() {
   return (
     <div style={styles.page}>
       <Navbar />
 
-      {/* ---------------- HERO SECTION ---------------- */}
+      {/* 1. ABOUT (HERO) */}
       <div style={styles.heroWrap}>
         <div style={styles.heroInner}>
           <div style={styles.iconCol}>
@@ -47,7 +46,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ---------------- MISSION CARD ---------------- */}
+      {/* 2. MISSION */}
       <div style={styles.missionArea}>
         <div style={styles.missionCard}>
           <div style={styles.missionLeftIcon}>
@@ -89,10 +88,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ---------------- SAFETY SECTION ---------------- */}
-      <AboutSafety />
-
-      {/* ---------------- INTAKE SECTION ---------------- */}
+      {/* 3. INTAKE */}
       <section className="intake-section">
         <h2 className="intake-title">Intake — What I'll Ask</h2>
 
@@ -121,7 +117,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ---------------- IMPORTANT LIMITS ---------------- */}
+      {/* 4. IMPORTANT LIMITS */}
       <section className="limits-section">
         <h2 className="limits-title">Important Limits — What I Don’t Do</h2>
 
@@ -144,56 +140,17 @@ export default function About() {
         </div>
       </section>
 
-      {/* ---------------- PRIVACY & USE (Added Section) ---------------- */}
+      {/* 5. WHAT Dr.AI CAN HELP WITH (FEATURES GRID) */}
+      <FeaturesGrid />
+
+      {/* 6. PRIVACY & USE */}
       <PrivacyUse />
 
-      {/* ---------------- FEATURES GRID ---------------- */}
-      <FeaturesGrid />
+      {/* 7. DISCLAIMER */}
+      <Disclaimer />
     </div>
   );
 }
-
-/* ---------- PRIVACY & USE COMPONENT ---------- */
-const PrivacyUse = () => {
-  return (
-    <section style={privacyStyles.container}>
-      <div style={privacyStyles.card}>
-        <div style={privacyStyles.iconWrap}>
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="10" width="18" height="11" rx="2" stroke="#0b1b2b" strokeWidth="1.2" />
-            <path
-              d="M7 10V8a5 5 0 0110 0v2"
-              stroke="#0b1b2b"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        <div style={privacyStyles.content}>
-          <h3 style={privacyStyles.title}>Privacy & Use</h3>
-
-          <p style={privacyStyles.paragraph}>
-            The assistant provides educational information only. Treat any personal data you share carefully.
-          </p>
-
-          <p style={privacyStyles.paragraph}>
-            If you prefer, avoid sending highly sensitive details. If you want something deleted, tell us and we'll remove it (if the host app supports deletion).
-          </p>
-        </div>
-      </div>
-
-      <div style={privacyStyles.disclaimerBox}>
-        <strong>Disclaimer:</strong>{" "}
-        <span style={privacyStyles.disclaimerText}>
-          I'm a health information assistant, not a medical professional.
-          This is educational information, not a diagnosis. If you need urgent help,
-          contact local emergency services or your healthcare provider.
-        </span>
-      </div>
-    </section>
-  );
-};
 
 /* ---------------- FEATURES GRID ---------------- */
 const FeaturesGrid = () => {
@@ -281,6 +238,54 @@ const FeaturesGrid = () => {
             </div>
           </article>
         ))}
+      </div>
+    </section>
+  );
+};
+
+/* ---------------- PRIVACY & USE ---------------- */
+const PrivacyUse = () => {
+  return (
+    <section style={privacyStyles.container}>
+      <div style={privacyStyles.card}>
+        <div style={privacyStyles.iconWrap}>
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="10" width="18" height="11" rx="2" stroke="#0b1b2b" strokeWidth="1.2" />
+            <path
+              d="M7 10V8a5 5 0 0110 0v2"
+              stroke="#0b1b2b"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+
+        <div style={privacyStyles.content}>
+          <h3 style={privacyStyles.title}>Privacy & Use</h3>
+
+          <p style={privacyStyles.paragraph}>
+            The assistant provides educational information only. Treat any personal data you share carefully.
+          </p>
+
+          <p style={privacyStyles.paragraph}>
+            If you prefer, avoid sending highly sensitive details. If you want something deleted, tell us and we'll remove it (if the host app supports deletion).
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+/* ---------------- DISCLAIMER (separate) ---------------- */
+const Disclaimer = () => {
+  return (
+    <section style={privacyStyles.disclaimerBoxOuter}>
+      <div style={privacyStyles.disclaimerBox}>
+        <strong>Disclaimer:</strong>{" "}
+        <span style={privacyStyles.disclaimerText}>
+          I'm a health information assistant, not a medical professional. This is educational information, not a diagnosis.
+          If you need urgent help, contact local emergency services or your healthcare provider.
+        </span>
       </div>
     </section>
   );
@@ -403,8 +408,12 @@ const privacyStyles = {
   title: { margin: 0, fontSize: 22, fontWeight: 700, color: "#081226" },
   paragraph: { marginTop: 10, color: "#374151", lineHeight: 1.6 },
 
+  disclaimerBoxOuter: {
+    maxWidth: 1100,
+    margin: "12px auto 48px",
+    padding: "0 20px",
+  },
   disclaimerBox: {
-    marginTop: 16,
     padding: "18px 20px",
     borderRadius: 12,
     background: "#f3f8fb",
@@ -412,4 +421,3 @@ const privacyStyles = {
   },
   disclaimerText: { marginLeft: 6, color: "#0b1b2b", fontSize: 14, lineHeight: 1.5 },
 };
-
