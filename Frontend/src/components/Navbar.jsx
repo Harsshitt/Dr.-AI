@@ -99,17 +99,18 @@ export default function Navbar() {
 
             {/* LEFT — LOGO */}
             <div className="drai-left">
-              <img
-                src="/dr.ai-logo.svg"
-                alt="Dr.AI logo"
-                style={{
-                  height: "90px",
-                  width: "90px",
-                  objectFit: "contain",
-                  filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(-5deg)"
-                }}
-              />
-              <Link to="/" className="drai-logo"></Link>
+              <Link to="/">
+                <img
+                  src="/dr.ai-logo.svg"
+                  alt="Dr.AI logo"
+                  style={{
+                    height: "90px",
+                    width: "90px",
+                    objectFit: "contain",
+                    filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(-5deg)"
+                  }}
+                />
+              </Link>
             </div>
 
             {/* CENTER — LINK MENU */}

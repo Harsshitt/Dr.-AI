@@ -4,12 +4,12 @@ import React from "react";
 import "./AboutFeatures.css";
 import "./AboutExtra.css"; // intake + limits CSS
 import "./AboutSafety.css"; // (kept in case other styles used)
-import Navbar from "../components/Navbar";
+
 
 export default function About() {
   return (
     <div style={styles.page}>
-      <Navbar />
+
 
       {/* 1. ABOUT (HERO) */}
       <div style={styles.heroWrap}>
@@ -299,6 +299,8 @@ const styles = {
     background: "#ffffff",
     fontFamily: "'Inter', system-ui",
     color: "#0b1b2b",
+    paddingTop: 80,
+    paddingBottom: 120,
   },
 
   heroWrap: {

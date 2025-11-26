@@ -20,7 +20,7 @@ import {
 
 export default function Medicines() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-10">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-32">
 
       {/* Hero */}
       <section className="relative py-16 px-6 overflow-hidden">

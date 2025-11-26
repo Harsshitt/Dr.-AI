@@ -64,7 +64,7 @@ export default function SymptomsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-10">
+        <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-32">
 
             {/* Hero Section */}
             <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
