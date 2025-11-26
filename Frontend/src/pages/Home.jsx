@@ -277,13 +277,15 @@ export default function Home() {
                   </motion.div>
                 </motion.button>
               </Link>
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-red-600 hover:text-red-600 transition-all"
-              >
-                Learn More
-              </motion.button>
+              <Link to="/about">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-red-600 hover:text-red-600 transition-all"
+                >
+                  Learn More
+                </motion.button>
+              </Link>
             </motion.div>
 
             <motion.div
