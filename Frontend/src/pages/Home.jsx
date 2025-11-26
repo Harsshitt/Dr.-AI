@@ -1,5 +1,6 @@
 // src/pages/Home.jsx
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Stethoscope,
@@ -210,7 +211,7 @@ export default function Home() {
               >
                 <Sparkles className="w-4 h-4" />
               </motion.div>
-              <span className="text-sm">Your AI Health Education Assistant</span>
+              <span className="text-sm">Your AI Health Care Assistant</span>
             </motion.div>
 
             <motion.h1
@@ -254,26 +255,28 @@ export default function Home() {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl hover:shadow-red-500/50 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-600"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: 0 }}
-                  transition={{ duration: 0.3 }}
-                />
-                <span className="relative z-10">Start Learning</span>
-                <motion.div
-                  className="relative z-10"
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 1.5, repeat: Infinity }}
+              <Link to="/chat">
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl hover:shadow-red-500/50 transition-all flex items-center justify-center gap-2 relative overflow-hidden"
                 >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.div>
-              </motion.button>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-600"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: 0 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                  <span className="relative z-10">Start Chat</span>
+                  <motion.div
+                    className="relative z-10"
+                    animate={{ x: [0, 5, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    <ArrowRight className="w-5 h-5" />
+                  </motion.div>
+                </motion.button>
+              </Link>
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
@@ -1016,34 +1019,36 @@ export default function Home() {
             >
               Start getting clear, compassionate guidance on your health concerns today
             </motion.p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl hover:shadow-red-500/50 transition-all text-lg flex items-center justify-center gap-3 mx-auto relative overflow-hidden"
-            >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-600"
-                initial={{ x: "-100%" }}
-                whileHover={{ x: "100%" }}
-                transition={{ duration: 0.6 }}
-              />
-              <span className="relative z-10">Get Started Now</span>
-              <motion.div
-                className="relative z-10"
-                animate={{
-                  x: [0, 10, 0],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                }}
+            <Link to="/chat">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl hover:shadow-red-500/50 transition-all text-lg flex items-center justify-center gap-3 mx-auto relative overflow-hidden"
               >
-                <ArrowRight className="w-6 h-6" />
-              </motion.div>
-            </motion.button>
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-rose-600 to-red-600"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.6 }}
+                />
+                <span className="relative z-10">Get Started Now</span>
+                <motion.div
+                  className="relative z-10"
+                  animate={{
+                    x: [0, 10, 0],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                  }}
+                >
+                  <ArrowRight className="w-6 h-6" />
+                </motion.div>
+              </motion.button>
+            </Link>
           </motion.div>
         </div>
-      </section>
-    </div>
+      </section >
+    </div >
   );
 }
