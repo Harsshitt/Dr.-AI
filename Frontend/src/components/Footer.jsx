@@ -17,10 +17,10 @@ export default function Footer() {
                     <a href="#" className="hover:text-red-200 transition-colors">
                         <i className="fa-brands fa-twitter text-xl"></i>
                     </a>
-                    <a href="#" className="hover:text-red-200 transition-colors">
+                    <a href="https://github.com/Harsshitt" target="_blank" rel="noopener noreferrer" className="hover:text-red-200 transition-colors">
                         <i className="fa-brands fa-github text-xl"></i>
                     </a>
-                    <a href="#" className="hover:text-red-200 transition-colors">
+                    <a href="mailto:harshit956584@gmail.com" className="hover:text-red-200 transition-colors">
                         <i className="fa-solid fa-envelope text-xl"></i>
                     </a>
                 </div>
