@@ -1,6 +1,4 @@
-/* Frontend/src/components/Navbar.jsx
-   Self-contained navbar with inline CSS (no Tailwind required). 
-*/
+
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
@@ -31,13 +29,13 @@ export default function Navbar() {
         }
         .drai-links a:hover { 
           background: rgba(0,0,0,0.05); 
-          color:#b91c1c; 
+          color:#4b5563; 
         }
 
-        /* ACTIVE LINK */
+
         .active-link {
-          background: rgba(220, 38, 38, 0.14);
-          color: #dc2626 !important;
+          background: rgba(0,0,0,0.08);
+          color: #1f2937 !important;
           font-weight: 600 !important;
         }
 
@@ -84,7 +82,7 @@ export default function Navbar() {
 
         @media (max-width: 767px) {
           .drai-center { display:none; }
-          .drai-right { display:none; }
+          .drai-cta { display:none; }
           .drai-mobile-toggle { display:block; }
         }
         @media (min-width: 768px) {
@@ -97,7 +95,6 @@ export default function Navbar() {
         <div className="drai-wrap">
           <div className="drai-row">
 
-            {/* LEFT — LOGO */}
             <div className="drai-left">
               <Link to="/">
                 <img
@@ -113,7 +110,6 @@ export default function Navbar() {
               </Link>
             </div>
 
-            {/* CENTER — LINK MENU */}
             <div className="drai-center">
               <ul className="drai-links">
                 <li>
@@ -134,7 +130,6 @@ export default function Navbar() {
               </ul>
             </div>
 
-            {/* RIGHT — CTA + MENU DROPDOWN */}
             <div className="drai-right">
               <Link to="/chat" className="drai-cta">Start Chat</Link>
 
@@ -155,7 +150,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* MOBILE MENU */}
           {open && (
             <div className="drai-mobilemenu">
               <Link to="/" onClick={() => setOpen(false)}>Home</Link>
@@ -169,7 +163,6 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* spacing below navbar */}
       <div style={{ height: "40px" }}></div>
     </>
   );

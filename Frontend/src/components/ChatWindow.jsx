@@ -73,13 +73,11 @@ export default function ChatWindow() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-140px)] max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      {/* Header */}
       <div className="bg-white border-b border-gray-100 p-4 flex items-center gap-3">
         <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
         <span className="font-semibold text-gray-700">Dr. AI Assistant</span>
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
         {messages.map((msg) => (
           <div
@@ -88,8 +86,8 @@ export default function ChatWindow() {
           >
             <div
               className={`max-w-[80%] rounded-2xl px-5 py-3 text-sm leading-relaxed shadow-sm ${msg.role === "user"
-                  ? "bg-red-600 text-white rounded-br-none"
-                  : "bg-white text-gray-800 border border-gray-100 rounded-bl-none"
+                ? "bg-red-600 text-white rounded-br-none"
+                : "bg-white text-gray-800 border border-gray-100 rounded-bl-none"
                 }`}
             >
               {msg.content}
@@ -109,7 +107,6 @@ export default function ChatWindow() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
       <div className="p-4 bg-white border-t border-gray-100">
         <form onSubmit={handleSend} className="relative flex items-center gap-2">
           <input

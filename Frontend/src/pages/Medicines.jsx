@@ -1,4 +1,4 @@
-// src/pages/Medicines.jsx
+
 import React from "react";
 import { motion } from "framer-motion";
 import {
@@ -22,7 +22,6 @@ export default function Medicines() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-32">
 
-      {/* Hero */}
       <section className="relative py-16 px-6 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
@@ -61,7 +60,6 @@ export default function Medicines() {
         </div>
       </section>
 
-      {/* How medicine guidance works */}
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-4 text-center text-gray-900">
@@ -83,7 +81,6 @@ export default function Medicines() {
         </div>
       </section>
 
-      {/* OTC Medicines */}
       <section className="py-12 px-6 bg-gradient-to-br from-red-50 to-rose-50 rounded-3xl mx-4">
         <div className="max-w-5xl mx-auto">
           <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-900">
@@ -109,7 +106,6 @@ export default function Medicines() {
         </div>
       </section>
 
-      {/* Prescription Medicines */}
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-900">
@@ -131,7 +127,6 @@ export default function Medicines() {
         </div>
       </section>
 
-      {/* When to seek medical help */}
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-red-700">
@@ -158,7 +153,6 @@ export default function Medicines() {
         </div>
       </section>
 
-      {/* Disclaimer */}
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
           <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center">
