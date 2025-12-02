@@ -1,4 +1,4 @@
-// src/pages/SymptomsPage.jsx
+
 import { motion } from "framer-motion";
 import {
     Stethoscope,
@@ -66,7 +66,6 @@ export default function SymptomsPage() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-32">
 
-            {/* Hero Section */}
             <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -89,10 +88,8 @@ export default function SymptomsPage() {
 
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-10">
 
-                {/* Left Column: Main Content */}
                 <div className="md:col-span-8 space-y-12">
 
-                    {/* How It Works */}
                     <section>
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                             <Zap className="w-6 h-6 text-red-500" />
@@ -120,7 +117,6 @@ export default function SymptomsPage() {
                         </div>
                     </section>
 
-                    {/* Self Care Steps */}
                     <section>
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                             <Heart className="w-6 h-6 text-rose-500" />
@@ -143,7 +139,6 @@ export default function SymptomsPage() {
                         </div>
                     </section>
 
-                    {/* Questions Asked */}
                     <section className="bg-white p-8 rounded-3xl border border-gray-200">
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                             <MessageSquare className="w-6 h-6 text-blue-500" />
@@ -161,10 +156,8 @@ export default function SymptomsPage() {
 
                 </div>
 
-                {/* Right Column: Sidebar (Warnings) */}
                 <div className="md:col-span-4 space-y-8">
 
-                    {/* Red Flags - Critical */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -190,7 +183,6 @@ export default function SymptomsPage() {
                         </ul>
                     </motion.div>
 
-                    {/* Urgent Signs */}
                     <div className="bg-orange-50 border border-orange-200 rounded-3xl p-6">
                         <h3 className="text-xl font-bold text-orange-700 mb-4 flex items-center gap-2">
                             <Clock className="w-6 h-6" />
@@ -206,7 +198,6 @@ export default function SymptomsPage() {
                         </ul>
                     </div>
 
-                    {/* Disclaimer */}
                     <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
                         <h3 className="font-bold text-gray-700 mb-2 flex items-center gap-2">
                             <Shield className="w-5 h-5" />

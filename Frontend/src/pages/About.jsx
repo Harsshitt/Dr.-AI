@@ -1,9 +1,10 @@
-// src/pages/About.jsx
+
 import React from "react";
 
 import "./AboutFeatures.css";
-import "./AboutExtra.css"; // intake + limits CSS
-import "./AboutSafety.css"; // (kept in case other styles used)
+import "./AboutFeatures.css";
+import "./AboutExtra.css";
+import "./AboutSafety.css";
 
 
 export default function About() {
@@ -11,7 +12,7 @@ export default function About() {
     <div style={styles.page}>
 
 
-      {/* 1. ABOUT (HERO) */}
+
       <div style={styles.heroWrap}>
         <div style={styles.heroInner}>
           <div style={styles.iconCol}>
@@ -47,7 +48,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* 2. MISSION */}
+
       <div style={styles.missionArea}>
         <div style={styles.missionCard}>
           <div style={styles.missionLeftIcon}>
@@ -89,7 +90,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* 3. INTAKE */}
+
       <section className="intake-section">
         <h2 className="intake-title">Intake — What I'll Ask</h2>
 
@@ -118,7 +119,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* 4. IMPORTANT LIMITS */}
+
       <section className="limits-section">
         <h2 className="limits-title">Important Limits — What I Don’t Do</h2>
 
@@ -141,19 +142,16 @@ export default function About() {
         </div>
       </section>
 
-      {/* 5. WHAT Dr.AI CAN HELP WITH (FEATURES GRID) */}
       <FeaturesGrid />
 
-      {/* 6. PRIVACY & USE */}
       <PrivacyUse />
 
-      {/* 7. DISCLAIMER */}
       <Disclaimer />
     </div>
   );
 }
 
-/* ---------------- FEATURES GRID ---------------- */
+
 const FeaturesGrid = () => {
   const features = [
     {
@@ -244,7 +242,7 @@ const FeaturesGrid = () => {
   );
 };
 
-/* ---------------- PRIVACY & USE ---------------- */
+
 const PrivacyUse = () => {
   return (
     <section style={privacyStyles.container}>
@@ -277,7 +275,7 @@ const PrivacyUse = () => {
   );
 };
 
-/* ---------------- DISCLAIMER (separate) ---------------- */
+
 const Disclaimer = () => {
   return (
     <section style={privacyStyles.disclaimerBoxOuter}>
@@ -292,7 +290,7 @@ const Disclaimer = () => {
   );
 };
 
-/* ---------------- INLINE STYLES ---------------- */
+
 const styles = {
   page: {
     minHeight: "100vh",
@@ -381,7 +379,7 @@ const styles = {
   missionNote: { marginTop: 12, color: "#dc2626", fontWeight: 500 },
 };
 
-/* ---------- PRIVACY STYLES ---------- */
+
 const privacyStyles = {
   container: {
     maxWidth: 1100,

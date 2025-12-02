@@ -76,9 +76,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 overflow-hidden">
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
-        {/* Animated Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
             className="absolute top-20 left-10 w-72 h-72 bg-red-200/30 rounded-full blur-3xl"
@@ -96,7 +94,6 @@ export default function Home() {
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
 
-          {/* Floating medical icons (deterministic positions for stability) */}
           {floatingIcons.map((item, i) => (
             <motion.div
               key={i}
@@ -114,7 +111,6 @@ export default function Home() {
             </motion.div>
           ))}
 
-          {/* Subtle grid overlay */}
           <motion.div
             className="absolute inset-0 opacity-10"
             style={{
@@ -130,7 +126,6 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -159,7 +154,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link to="/chat">
                 <button className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl flex items-center gap-2 relative overflow-hidden">
-                  <span>Start Learning</span>
+                  <span>Start Chat</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
@@ -177,14 +172,12 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Right Content - Animated Doctor Illustration */}
           <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative">
             <div className="relative mx-auto w-80 h-80 lg:w-96 lg:h-96">
               <motion.div className="absolute inset-0 bg-gradient-to-br from-red-500 to-rose-500 rounded-full shadow-2xl flex items-center justify-center" whileHover={{ scale: 1.03 }}>
                 <Stethoscope className="w-40 h-40 text-white" strokeWidth={1.5} />
               </motion.div>
 
-              {/* Orbiting widgets */}
               <div className="absolute -top-4 -left-4">
                 <div className="bg-white p-3 rounded-2xl shadow-xl">
                   <Heart className="w-6 h-6 text-rose-500" />
@@ -201,13 +194,11 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Pulse rings */}
               <motion.div className="absolute inset-0 rounded-full border-4 border-red-300" animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0.05, 0.6] }} transition={{ duration: 3, repeat: Infinity }} />
             </div>
           </motion.div>
         </div>
 
-        {/* Scroll Indicator */}
         <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2" animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Infinity }}>
           <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
             <motion.div className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2" animate={{ y: [0, 16, 0] }} transition={{ duration: 2, repeat: Infinity }} />
@@ -215,7 +206,6 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* Stats Section */}
       <section className="py-16 px-6 bg-white/50 backdrop-blur-sm relative overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -232,7 +222,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 px-6 relative">
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
@@ -256,7 +245,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Safety Notice */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-3xl p-8 md:p-12 border-2 border-rose-200 relative overflow-hidden">
@@ -279,7 +267,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="bg-gradient-to-br from-red-500 to-rose-500 rounded-full p-6 w-fit mx-auto mb-8">
