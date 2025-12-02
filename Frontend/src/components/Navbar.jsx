@@ -1,9 +1,27 @@
 
 import React, { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("dr_ai_token");
+    localStorage.removeItem("dr_ai_user");
+    localStorage.removeItem("dr_ai_auth");
+    navigate("/login");
+  };
+
+  // Check if user is logged in
+  const isAuthenticated = !!localStorage.getItem("dr_ai_token");
+
+  // Check if current page is login or signup
+  const isAuthPage = ["/login", "/signup"].includes(location.pathname);
+
+  // Show Sign Out only if authenticated AND not on auth pages
+  const showSignOut = isAuthenticated && !isAuthPage;
 
   return (
     <>
@@ -16,7 +34,7 @@ export default function Navbar() {
         .drai-logo { font-weight:700; font-size:20px; color:#dc2626; text-decoration:none; }
 
         .drai-center { display:flex; align-items:center; justify-content:center; flex:1; }
-        .drai-right { display:flex; align-items:center; gap:12px; }
+        .drai-right { display:flex; align-items:center; gap:16px; }
 
         .drai-links { display:flex; gap:18px; list-style:none; margin:0; padding:0; }
         .drai-links a { 
@@ -49,6 +67,21 @@ export default function Navbar() {
         }
         .drai-cta:hover { background:#b91c1c; }
 
+        .drai-signout {
+          background: transparent;
+          color: #4b5563;
+          padding: 8px 14px;
+          border-radius: 8px;
+          font-weight: 500;
+          border: 1px solid #e5e7eb;
+          transition: all 0.2s;
+        }
+        .drai-signout:hover {
+          background: #f3f4f6;
+          color: #dc2626;
+          border-color: #dc2626;
+        }
+
         .drai-hambtn { 
           display:flex; 
           align-items:center; 
@@ -68,14 +101,19 @@ export default function Navbar() {
           border-top:1px solid rgba(0,0,0,0.06); 
           background:rgba(255,255,255,0.98); 
         }
-        .drai-mobilemenu a { 
+        .drai-mobilemenu a, .drai-mobilemenu button { 
           padding:8px 6px; 
           display:block; 
           color:#374151; 
           text-decoration:none; 
           border-radius:6px; 
+          text-align: left;
+          background: transparent;
+          border: none;
+          font-size: 16px;
+          width: 100%;
         }
-        .drai-mobilemenu a:hover { 
+        .drai-mobilemenu a:hover, .drai-mobilemenu button:hover { 
           background: rgba(0,0,0,0.03); 
           color:#b91c1c; 
         }
@@ -83,6 +121,7 @@ export default function Navbar() {
         @media (max-width: 767px) {
           .drai-center { display:none; }
           .drai-cta { display:none; }
+          .drai-signout { display:none; }
           .drai-mobile-toggle { display:block; }
         }
         @media (min-width: 768px) {
@@ -133,6 +172,12 @@ export default function Navbar() {
             <div className="drai-right">
               <Link to="/chat" className="drai-cta">Start Chat</Link>
 
+              {showSignOut && (
+                <button onClick={handleSignOut} className="drai-signout">
+                  Sign Out
+                </button>
+              )}
+
               <button
                 className="drai-mobile-toggle drai-hambtn"
                 onClick={() => setOpen(!open)}
@@ -157,6 +202,9 @@ export default function Navbar() {
               <Link to="/symptoms" onClick={() => setOpen(false)}>Symptoms</Link>
               <Link to="/meds" onClick={() => setOpen(false)}>Medicines</Link>
               <Link to="/about" onClick={() => setOpen(false)}>About</Link>
+              {showSignOut && (
+                <button onClick={() => { handleSignOut(); setOpen(false); }}>Sign Out</button>
+              )}
               <Link to="/chat" onClick={() => setOpen(false)} className="drai-cta">Start Chat</Link>
             </div>
           )}
