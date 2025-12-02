@@ -1,4 +1,6 @@
 // src/App.jsx
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -6,14 +8,11 @@ import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 
+import Home from "./pages/Home";
 import About from "./pages/About";
 import SymptomsPage from "./pages/SymptomsPage";
 import Medicines from "./pages/Medicines";
-import Home from "./pages/Home";
-
-import ChatPage from "./pages/Chat";     // Chat Page
-import Login from "./pages/Login";       // NEW Login page
-import Signup from "./pages/Signup";     // NEW Signup page
+import ChatPage from "./pages/Chat"; // ensure this file exists (or use your Chat.jsx)
 
 export default function AppRouter() {
   return (
@@ -22,22 +21,11 @@ export default function AppRouter() {
       <Navbar />
 
       <Routes>
-        {/* Main pages */}
         <Route path="/" element={<Home />} />
-
-        {/* Auth pages */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        {/* Chat page */}
         <Route path="/chat" element={<ChatPage />} />
-
-        {/* Other pages */}
         <Route path="/about" element={<About />} />
         <Route path="/symptoms" element={<SymptomsPage />} />
         <Route path="/meds" element={<Medicines />} />
-
-        {/* fallback */}
         <Route path="*" element={<Home />} />
       </Routes>
 

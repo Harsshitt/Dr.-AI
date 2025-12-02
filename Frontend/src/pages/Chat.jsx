@@ -1,10 +1,6 @@
 // src/pages/Chat.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
-// AI Engine Import
-import { generateHealthResponse } from "../lib/aiHealthEngine";
-
 import {
   Pill,
   Send,
@@ -18,8 +14,6 @@ import {
 } from "lucide-react";
 
 export default function ChatPage() {
-
-  // MAIN CHAT MESSAGES
   const [messages, setMessages] = useState([
     {
       id: "1",
@@ -30,8 +24,6 @@ export default function ChatPage() {
       structuredData: null,
     },
   ]);
-
-  // PATIENT PROFILE (Needed by AI Engine)
   const [patientProfile] = useState({
     age: null,
     sex_at_birth: null,
@@ -55,13 +47,32 @@ export default function ChatPage() {
     { icon: Heart, label: "Prevention Tips", text: "What are some prevention tips?" },
   ];
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
+
+  // send to backend endpoint(s)
+  const sendToBackend = async (payload) => {
+    const endpoints = ["/api/chat", "http://localhost:5001/api/chat"]; // try relative then localhost
+    let lastErr;
+    for (const ep of endpoints) {
+      try {
+        const res = await fetch(ep, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const text = await res.text().catch(() => "");
+          throw new Error(`${res.status} ${res.statusText} ${text}`);
+        }
+        return await res.json();
+      } catch (err) {
+        lastErr = err;
+        // try next endpoint
+      }
+    }
+    throw lastErr;
   };
 
-  useEffect(() => scrollToBottom(), [messages]);
-
-  // fallback if AI engine fails
   const localFallback = (msg) => {
     const t = msg.toLowerCase();
     if (t.includes("fever")) return "Normal fever range is 97–99°F. High fever + red flags = seek care.";
@@ -70,7 +81,6 @@ export default function ChatPage() {
     return "Please tell me your symptom, medicine name, or lab result.";
   };
 
-  // MAIN MESSAGE HANDLER
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
 
@@ -79,7 +89,6 @@ export default function ChatPage() {
       text: inputValue,
       sender: "user",
       timestamp: new Date(),
-      structuredData: null,
     };
 
     setMessages((p) => [...p, userMsg]);
@@ -87,32 +96,33 @@ export default function ChatPage() {
     setIsTyping(true);
 
     try {
-      const result = await generateHealthResponse(inputValue, messages, patientProfile);
-
-      const botMsg = {
-        id: (Date.now() + 1).toString(),
-        text: result?.text || localFallback(inputValue),
-        sender: "bot",
-        timestamp: new Date(),
-        structuredData: result?.structuredData || null,
+      // Use conversation history (optional; we send all messages)
+      const payload = {
+        messages: [...messages.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })), { role: "user", content: inputValue }]
       };
 
-      setMessages((p) => [...p, botMsg]);
+      const result = await sendToBackend(payload);
+
+      if (result && result.ok && result.reply) {
+        const assistant = {
+          id: (Date.now()+1).toString(),
+          text: result.reply.content ?? result.reply.message ?? JSON.stringify(result.reply),
+          sender: "bot",
+          timestamp: new Date(),
+          structuredData: result.reply.structuredData ?? null,
+        };
+        setMessages((p) => [...p, assistant]);
+      } else if (result && result.ok && result.received) {
+        setMessages((p) => [...p, { id: (Date.now()+2).toString(), text: "Server received your message.", sender: "bot", timestamp: new Date() }]);
+      } else {
+        setMessages((p) => [...p, { id: (Date.now()+3).toString(), text: result?.error || "No reply from server.", sender: "bot", timestamp: new Date() }]);
+      }
     } catch (err) {
-      console.error("AI error:", err);
-
-      const botMsg = {
-        id: (Date.now() + 2).toString(),
-        text: localFallback(inputValue),
-        sender: "bot",
-        timestamp: new Date(),
-        structuredData: null,
-      };
-
-      setMessages((p) => [...p, botMsg]);
+      console.error("Chat send error:", err);
+      setMessages((p) => [...p, { id: (Date.now()+4).toString(), text: localFallback(inputValue), sender: "bot", timestamp: new Date() }]);
+    } finally {
+      setIsTyping(false);
     }
-
-    setIsTyping(false);
   };
 
   const handleQuickAction = (text) => {
@@ -145,47 +155,23 @@ export default function ChatPage() {
           </motion.div>
         )}
 
-        {/* MESSAGES */}
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
-              <motion.div
-                key={m.id}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: i * 0.02 }}
-                className={`flex gap-3 ${
-                  m.sender === "user" ? "justify-end" : "justify-start"
-                }`}
-              >
+              <motion.div key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.02 }} className={`flex gap-3 ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
                 {m.sender === "bot" && (
                   <div className="bg-gradient-to-br from-red-600 to-rose-600 rounded-full p-2 h-10 w-10 flex items-center justify-center">
                     <BotIcon className="w-5 h-5 text-white" />
                   </div>
                 )}
 
-                <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 whitespace-pre-line ${
-                    m.sender === "user"
-                      ? "bg-gradient-to-r from-red-600 to-rose-600 text-white"
-                      : "bg-white border border-gray-200 shadow-sm"
-                  }`}
-                >
+                <div className={`max-w-[80%] rounded-2xl px-4 py-3 whitespace-pre-line ${m.sender === "user" ? "bg-gradient-to-r from-red-600 to-rose-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
                   <div className="text-sm leading-relaxed">{m.text}</div>
 
-                  {/* Structured Data Badges */}
-                  {m.structuredData?.urgency && (
-                    <div className="text-xs mt-2 inline-block bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
-                      Urgency: {m.structuredData.urgency}
-                    </div>
-                  )}
+                  {m.structuredData?.urgency && <div className="text-xs mt-2 inline-block bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Urgency: {m.structuredData.urgency}</div>}
 
                   <div className="text-xs mt-2 text-gray-400">
-                    {m.timestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+                    {m.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </div>
                 </div>
 
@@ -217,7 +203,6 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* INPUT */}
         <div className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm">
           <div className="flex gap-3">
             <input
@@ -229,19 +214,12 @@ export default function ChatPage() {
               placeholder="Ask about symptoms, medications, or lab tests..."
               className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-500"
             />
-            <button
-              onClick={handleSendMessage}
-              disabled={!inputValue.trim()}
-              className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-xl disabled:opacity-50"
-            >
+            <button onClick={handleSendMessage} disabled={!inputValue.trim()} className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-xl disabled:opacity-50">
               <Send className="w-4 h-4" />
             </button>
           </div>
 
-          <p className="text-xs text-gray-500 mt-3 text-center">
-            <Sparkles className="inline-block w-3 h-3 mr-1" />
-            Educational information only — Not medical advice
-          </p>
+          <p className="text-xs text-gray-500 mt-3 text-center"><Sparkles className="inline-block w-3 h-3 mr-1" />Educational information only — Not medical advice</p>
         </div>
       </main>
     </div>

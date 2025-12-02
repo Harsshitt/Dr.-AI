@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+// Home.jsx
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
 import {
-  Stethoscope,
   Heart,
   Pill,
   FlaskConical,
@@ -17,10 +18,99 @@ import {
   Brain,
   Activity,
   Plus,
-  Zap,
-  Target
 } from "lucide-react";
 
+/* =========================
+   DrAvatarLottie Component
+   (unchanged from previous - Lottie with SVG fallback)
+   ========================= */
+function DrAvatarLottie({ src = "/dr-avatar.json", className = "w-40 h-40" }) {
+  const [animData, setAnimData] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    let canceled = false;
+    fetch(src)
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch Lottie JSON");
+        return r.json();
+      })
+      .then((j) => {
+        if (!canceled) setAnimData(j);
+      })
+      .catch(() => {
+        if (!canceled) setError(true);
+      });
+    return () => {
+      canceled = true;
+    };
+  }, [src]);
+
+  const FallbackSVG = () => (
+    <motion.div
+      className={`inline-block ${className}`}
+      initial={{ y: 0, rotate: 0 }}
+      animate={{ y: [0, -8, 0], rotate: [0, 2, -2, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      whileHover={{ scale: 1.06, rotate: 0 }}
+      style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+    >
+      <svg viewBox="0 0 160 160" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0" stopColor="#ff6b6b" />
+            <stop offset="1" stopColor="#ff95a1" />
+          </linearGradient>
+        </defs>
+
+        <motion.circle
+          cx="80"
+          cy="80"
+          r="72"
+          fill="url(#g1)"
+          initial={{ scale: 1 }}
+          animate={{ scale: [1, 1.03, 1] }}
+          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+          opacity="0.95"
+        />
+
+        <motion.g initial={{ y: 0 }} animate={{ y: [0, 3, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }} transform="translate(0,6)">
+          <rect x="38" y="88" rx="10" ry="10" width="84" height="44" fill="#fff" opacity="0.95" />
+          <path d="M80 88 L80 132" stroke="#fca5a5" strokeWidth="2" strokeLinecap="round" />
+        </motion.g>
+
+        <motion.g initial={{ rotate: -1 }} animate={{ rotate: [-2, 2, -2] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", originX: "80px", originY: "56px" }}>
+          <circle cx="80" cy="56" r="28" fill="#fff" />
+          <path d="M52 48 Q80 24 108 48 Q95 40 80 38 Q65 40 52 48" fill="#3b3b3b" opacity="0.95" />
+          <g fill="#111" opacity="0.9">
+            <motion.circle cx="70" cy="56" r="3" animate={{ y: [0, -1, 0] }} transition={{ duration: 2, repeat: Infinity }} />
+            <motion.circle cx="90" cy="56" r="3" animate={{ y: [0, -1, 0] }} transition={{ duration: 2, repeat: Infinity, delay: 0.4 }} />
+          </g>
+          <path d="M70 66 Q80 72 90 66" stroke="#ff6b6b" strokeWidth="2" fill="transparent" strokeLinecap="round" />
+          <path d="M62 76 C64 88, 96 88, 98 76" stroke="#9ca3af" strokeWidth="4" strokeLinecap="round" fill="none" />
+          <circle cx="72" cy="82" r="4" fill="#9ca3af" />
+          <circle cx="88" cy="82" r="4" fill="#9ca3af" />
+        </motion.g>
+
+        <ellipse cx="58" cy="46" rx="8" ry="4" fill="rgba(255,255,255,0.18)" />
+      </svg>
+    </motion.div>
+  );
+
+  if (error) return <FallbackSVG />;
+  if (!animData) return <FallbackSVG />;
+
+  return (
+    <div className={className} style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <Lottie animationData={animData} loop={true} autoplay={true} style={{ width: "100%", height: "100%" }} />
+    </div>
+  );
+}
+
+
+/* =========================
+   Main Home component (combined)
+   ========================= */
 export default function Home() {
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -37,16 +127,14 @@ export default function Home() {
     {
       icon: Activity,
       title: "Symptom Analysis",
-      description:
-        "Get instant triage guidance and understand urgency levels for your symptoms",
+      description: "Get instant triage guidance and understand urgency levels for your symptoms",
       color: "from-rose-500 to-pink-500",
       delay: 0.1,
     },
     {
       icon: Pill,
       title: "Medication Guide",
-      description:
-        "Learn about medicines, side effects, and safe OTC options in plain language",
+      description: "Learn about medicines, side effects, and safe OTC options in plain language",
       color: "from-violet-500 to-purple-500",
       delay: 0.2,
     },
@@ -60,8 +148,7 @@ export default function Home() {
     {
       icon: MapPin,
       title: "Care Navigation",
-      description:
-        "Find the right care at the right time — emergency, urgent, or routine",
+      description: "Find the right care at the right time — emergency, urgent, or routine",
       color: "from-amber-500 to-orange-500",
       delay: 0.4,
     },
@@ -75,63 +162,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 overflow-x-hidden">
       <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-red-200/30 rounded-full blur-3xl"
-            animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl"
-            animate={{ x: [0, -30, 0], y: [0, 50, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          />
+          <motion.div className="absolute top-20 left-10 w-72 h-72 bg-red-200/30 rounded-full blur-3xl" animate={{ x: [0, 50, 0], y: [0, 30, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div className="absolute bottom-20 right-10 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl" animate={{ x: [0, -30, 0], y: [0, 50, 0] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.div className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
 
           {floatingIcons.map((item, i) => (
-            <motion.div
-              key={i}
-              className={`absolute ${item.color}`}
-              style={{ top: item.top, left: item.left }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                y: [0, (i % 2 === 0 ? -18 : 18), 0],
-                opacity: [0.2, 0.9, 0.2],
-                rotate: [0, 360, 0],
-              }}
-              transition={{ duration: 12 + i, repeat: Infinity, delay: item.delay, ease: "easeInOut" }}
-            >
+            <motion.div key={i} className={`absolute ${item.color}`} style={{ top: item.top, left: item.left }} initial={{ opacity: 0, scale: 0.8 }} animate={{ y: [0, i % 2 === 0 ? -18 : 18, 0], opacity: [0.2, 0.9, 0.2], rotate: [0, 360, 0] }} transition={{ duration: 12 + i, repeat: Infinity, delay: item.delay, ease: "easeInOut" }}>
               <item.Icon className="w-8 h-8" />
             </motion.div>
           ))}
 
-          <motion.div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: `
-                linear-gradient(0deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%),
-                linear-gradient(90deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%)
-              `,
-              backgroundSize: "80px 80px",
-            }}
-            animate={{ backgroundPosition: ["0px 0px", "80px 80px"] }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          />
+          <motion.div className="absolute inset-0 opacity-10" style={{ backgroundImage: `linear-gradient(0deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%), linear-gradient(90deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%)`, backgroundSize: "80px 80px" }} animate={{ backgroundPosition: ["0px 0px", "80px 80px"] }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center lg:text-left"
-          >
+          <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="text-center lg:text-left">
             <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full mb-6">
               <motion.div animate={{ rotate: [0, 360] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
                 <Sparkles className="w-4 h-4" />
@@ -141,14 +189,11 @@ export default function Home() {
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6 font-extrabold">
               Meet{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600 inline-block">
-                Dr.AI
-              </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600 inline-block">Dr.AI</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl lg:mx-0">
-              Understand your symptoms, medications, and lab reports in plain language.
-              Get clear guidance on when to seek care.
+              Understand your symptoms, medications, and lab reports in plain language. Get clear guidance on when to seek care.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -160,9 +205,7 @@ export default function Home() {
               </Link>
 
               <Link to="/about">
-                <button className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-red-600 hover:text-red-600">
-                  Learn More
-                </button>
+                <button className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-red-600 hover:text-red-600">Learn More</button>
               </Link>
             </div>
 
@@ -175,7 +218,8 @@ export default function Home() {
           <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="relative">
             <div className="relative mx-auto w-80 h-80 lg:w-96 lg:h-96">
               <motion.div className="absolute inset-0 bg-gradient-to-br from-red-500 to-rose-500 rounded-full shadow-2xl flex items-center justify-center" whileHover={{ scale: 1.03 }}>
-                <Stethoscope className="w-40 h-40 text-white" strokeWidth={1.5} />
+                {/* Lottie avatar */}
+                <DrAvatarLottie src="/dr-avatar.json" className="w-40 h-40" />
               </motion.div>
 
               <div className="absolute -top-4 -left-4">
@@ -275,12 +319,10 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl mb-6">Ready to Learn About Your Health?</h2>
           <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Start getting clear, compassionate guidance on your health concerns today</p>
           <Link to="/chat">
-            <button className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl transition-all">
-              Get Started Now
-            </button>
+            <button className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl transition-all">Get Started Now</button>
           </Link>
         </div>
-      </section >
-    </div >
+      </section>
+    </div>
   );
 }
