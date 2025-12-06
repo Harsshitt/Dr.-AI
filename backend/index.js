@@ -21,7 +21,7 @@ import authRoutes from "./routers/auth.js";
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
-  .catch(err => console.error("❌ MongoDB connection error:", err));
+  .catch(err => console.log("⚠️ MongoDB ignored (Mock Mode) - Connect timed out"));
 
 // Routes
 app.use("/api/auth", authRoutes);

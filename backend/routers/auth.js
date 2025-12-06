@@ -1,15 +1,17 @@
-// routes/auth.js
+// routes/auth.js (MOCK MODE - IN MEMORY)
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+
+// MOCK DATABASE
+const users = [];
 
 const router = express.Router();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 const JWT_EXPIRES = process.env.JWT_EXPIRES || '7d';
 
-// Password validation helper (same rules as frontend)
+// Password validation helper
 const validatePassword = (password) => {
   if (!password) return "Password is required.";
   if (password.length < 8) return "Password must be at least 8 characters.";
@@ -45,8 +47,8 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ ok: false, message: passErr });
     }
 
-    // check existing user
-    const existing = await User.findOne({ email: normalizedEmail });
+    // check existing user (in memory)
+    const existing = users.find(u => u.email === normalizedEmail);
     if (existing) {
       return res.status(400).json({ ok: false, message: 'Email already registered.' });
     }
@@ -56,31 +58,29 @@ router.post('/signup', async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // create user
-    const user = new User({
+    const newUser = {
+      _id: Date.now().toString(), // Mock ID
       name: name.trim(),
       email: normalizedEmail,
       passwordHash,
-    });
+    };
 
-    await user.save();
+    users.push(newUser);
+    console.log(`[MOCK DB] User created: ${newUser.email} (Total users: ${users.length})`);
 
-    // generate token (do not include passwordHash in payload)
-    const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+    // generate token
+    const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
 
-    // respond (do NOT return password hash)
+    // respond
     return res.json({
       ok: true,
-      message: 'Account created.',
+      message: 'Account created (Mock Mode).',
       token,
-      user: { id: user._id, name: user.name, email: user.email }
+      user: { id: newUser._id, name: newUser.name, email: newUser.email }
     });
   } catch (err) {
     console.error('Signup error:', err);
-    // handle duplicate key error more clearly
-    if (err.code === 11000) {
-      return res.status(400).json({ ok: false, message: 'Email already registered.' });
-    }
-    return res.status(500).json({ ok: false, message: 'Server error. Try again later.' });
+    return res.status(500).json({ ok: false, message: 'Server error.' });
   }
 });
 
@@ -93,16 +93,19 @@ router.post('/login', async (req, res) => {
     }
 
     const normalizedEmail = String(email).toLowerCase().trim();
-    const user = await User.findOne({ email: normalizedEmail });
+
+    // Find user in memory
+    const user = users.find(u => u.email === normalizedEmail);
     if (!user) return res.status(400).json({ ok: false, message: 'Invalid credentials.' });
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
     if (!isMatch) return res.status(400).json({ ok: false, message: 'Invalid credentials.' });
 
     const token = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
+
     return res.json({
       ok: true,
-      message: 'Login successful.',
+      message: 'Login successful (Mock Mode).',
       token,
       user: { id: user._id, name: user.name, email: user.email }
     });
