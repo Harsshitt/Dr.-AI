@@ -49,23 +49,48 @@ export default function ChatPage() {
 
   useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
 
-  // send to backend endpoint(s)
+  // ---------------------------
+  // Configure your endpoints here:
+  // Put your real API URL first (example: "https://api.mydomain.com/chat")
+  // ---------------------------
+  const endpoints = [
+    "http://localhost:5001/api/chat" // <-- apna real backend URL yahin daalo
+  ];
+
+
+  // send to backend endpoint(s) with debug logs and safe JSON parse
   const sendToBackend = async (payload) => {
-    const endpoints = ["/api/chat", "http://localhost:5001/api/chat"]; // try relative then localhost
+    console.log("sendToBackend payload:", payload);
     let lastErr;
     for (const ep of endpoints) {
       try {
+        console.log("Trying endpoint:", ep);
         const res = await fetch(ep, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        if (!res.ok) {
-          const text = await res.text().catch(() => "");
-          throw new Error(`${res.status} ${res.statusText} ${text}`);
+
+        console.log(`Response status from ${ep}:`, res.status);
+        const raw = await res.text();
+        console.log(`Raw response text from ${ep}:`, raw);
+
+        // try parse, else keep raw string
+        let json;
+        try {
+          json = JSON.parse(raw);
+        } catch (e) {
+          json = raw;
         }
-        return await res.json();
+
+        if (!res.ok) {
+          throw new Error(`Endpoint ${ep} returned ${res.status} - ${res.statusText} - ${raw}`);
+        }
+
+        console.log("Parsed JSON from", ep, json);
+        return json;
       } catch (err) {
+        console.error("Error calling endpoint", ep, err);
         lastErr = err;
         // try next endpoint
       }
@@ -91,35 +116,94 @@ export default function ChatPage() {
       timestamp: new Date(),
     };
 
+    // show user message immediately
     setMessages((p) => [...p, userMsg]);
+
+    // keep a copy of current input for fallback & logs (because setInputValue is async)
+    const currentInput = inputValue;
     setInputValue("");
     setIsTyping(true);
 
     try {
-      // Use conversation history (optional; we send all messages)
+      // build payload: send recent conversation plus current user message
       const payload = {
-        messages: [...messages.map(m => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })), { role: "user", content: inputValue }]
+        messages: [
+          ...messages.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })),
+          { role: "user", content: currentInput },
+        ],
       };
 
       const result = await sendToBackend(payload);
+      console.log("Result from sendToBackend:", result);
 
-      if (result && result.ok && result.reply) {
+      // ---------- Unified parsing logic ----------
+      // handle many common response shapes:
+      // { answer: "text" }
+      // { message: "text" }
+      // { reply: { content: "text", structuredData: {...} } }
+      // { ok: true, data: {...} }
+      // string directly
+      let text = null;
+      let structuredData = null;
+
+      if (result === null || result === undefined) {
+        text = null;
+      } else if (result.ok === false) {
+        // Backend returned an error explicitly
+        throw new Error(result.error || "Backend returned ok:false");
+      } else if (typeof result === "string") {
+        text = result;
+      } else if (result.answer) {
+        text = result.answer;
+        structuredData = result.structuredData ?? null;
+      } else if (result.message) {
+        text = result.message;
+      } else if (result.reply) {
+        if (typeof result.reply === "string") {
+          text = result.reply;
+        } else if (result.reply.content) {
+          text = result.reply.content;
+          structuredData = result.reply.structuredData ?? null;
+        } else {
+          text = JSON.stringify(result.reply);
+        }
+      } else if (result.ok && result.data) {
+        const d = result.data;
+        text = d.answer || d.message || d.reply || JSON.stringify(d);
+        structuredData = d.structuredData ?? null;
+      } else if (result.text) {
+        text = result.text;
+      } else if (result.response) {
+        text = result.response;
+      } else {
+        // fallback: stringify whole result so user sees something
+        text = JSON.stringify(result);
+      }
+
+      if (!text) {
+        setMessages((p) => [
+          ...p,
+          { id: (Date.now() + 2).toString(), text: "No reply from server.", sender: "bot", timestamp: new Date() },
+        ]);
+      } else {
         const assistant = {
-          id: (Date.now()+1).toString(),
-          text: result.reply.content ?? result.reply.message ?? JSON.stringify(result.reply),
+          id: (Date.now() + 1).toString(),
+          text: text,
           sender: "bot",
           timestamp: new Date(),
-          structuredData: result.reply.structuredData ?? null,
+          structuredData: structuredData,
         };
         setMessages((p) => [...p, assistant]);
-      } else if (result && result.ok && result.received) {
-        setMessages((p) => [...p, { id: (Date.now()+2).toString(), text: "Server received your message.", sender: "bot", timestamp: new Date() }]);
-      } else {
-        setMessages((p) => [...p, { id: (Date.now()+3).toString(), text: result?.error || "No reply from server.", sender: "bot", timestamp: new Date() }]);
       }
     } catch (err) {
       console.error("Chat send error:", err);
-      setMessages((p) => [...p, { id: (Date.now()+4).toString(), text: localFallback(inputValue), sender: "bot", timestamp: new Date() }]);
+      // show fallback local response
+      setMessages((p) => [
+        ...p,
+        { id: (Date.now() + 3).toString(), text: localFallback(currentInput), sender: "bot", timestamp: new Date() },
+      ]);
+      // also notify user (optional)
+      // alert("Chat error: " + (err.message || err));
     } finally {
       setIsTyping(false);
     }
@@ -207,7 +291,7 @@ export default function ChatPage() {
           <div className="flex gap-3">
             <input
               ref={inputRef}
-              type="text"
+              type="Text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}

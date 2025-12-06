@@ -1,15 +1,342 @@
-
+// src/pages/About.jsx
 import React from "react";
-
-import "./AboutFeatures.css";
-import "./AboutFeatures.css";
-import "./AboutExtra.css";
-import "./AboutSafety.css";
 
 
 export default function About() {
   return (
     <div style={styles.page}>
+      <style>{`
+/* -------------------- INTAKE SECTION -------------------- */
+.intake-section {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 32px;
+    border-radius: 26px;
+    background: linear-gradient(180deg, #fff1f2, #ffe4e6);
+    border: 1px solid #fecdd3;
+}
+
+.intake-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #0c1a2c;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.intake-sub {
+    text-align: center;
+    font-size: 16px;
+    color: #44546a;
+    margin-bottom: 30px;
+}
+
+.intake-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.intake-card {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 14.5px;
+    color: #37475a;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.04);
+}
+
+.intake-icon {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #dc2626;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+}
+
+
+/* -------------------- LIMITS SECTION -------------------- */
+.limits-section {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 32px;
+    background: #fff7f4;
+    border: 1px solid #ffdcd0;
+    border-radius: 26px;
+}
+
+.limits-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #081226;
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.limits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.limit-item {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #37475a;
+    font-size: 15px;
+    box-shadow: 0 10px 26px rgba(255, 120, 80, 0.08);
+}
+
+.limit-icon {
+    min-width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ff5f40;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 14px;
+}
+
+/* AboutFeatures.css - scoped styles for the features grid */
+.af-section {
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 28px 20px;
+}
+
+.af-title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  color: #081226;
+  margin-bottom: 22px;
+}
+
+/* grid */
+.af-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* card */
+.af-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(12, 20, 35, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.03);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+
+.af-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(220, 38, 38, 0.08);
+}
+
+/* icon box (color square rounded) */
+.af-icon {
+  min-width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(3, 102, 214, 0.06);
+}
+
+/* title + text */
+.af-body {
+  flex: 1;
+}
+
+.af-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #081226;
+  margin: 0 0 8px 0;
+}
+
+.af-text {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* small responsive */
+@media (max-width: 1024px) {
+  .af-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .af-section {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .af-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .af-title {
+    font-size: 26px;
+  }
+
+  .af-card {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .af-icon {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .af-heading {
+    font-size: 16px;
+  }
+
+  .af-text {
+    font-size: 13px;
+  }
+}
+
+/* container */
+.safety-wrap {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 20px;
+}
+
+/* outer gradient red rounded block */
+.safety-inner {
+    background: linear-gradient(90deg, #ff3b4d 0%, #ff6b78 60%, #ff4b5f 100%);
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 18px 40px rgba(253, 63, 77, 0.18);
+}
+
+/* header with icon and title */
+.safety-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.safety-icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 -6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.safety-title {
+    margin: 0;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* inner translucent rounded panel */
+.safety-card {
+    margin-top: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 20px rgba(11, 14, 25, 0.06);
+}
+
+/* intro text */
+.safety-lead {
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0 0 16px 0;
+    font-weight: 600;
+}
+
+/* two-column grid of signs */
+.safety-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 18px;
+    margin-bottom: 14px;
+}
+
+/* each item */
+.safety-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.94);
+    background: transparent;
+    padding: 6px 2px;
+    font-size: 15px;
+}
+
+/* small circular bullet (you can replace emoji with svg) */
+.safety-bullet {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* note at bottom */
+.safety-note {
+    color: rgba(255, 255, 255, 0.88);
+    margin: 8px 0 0 0;
+    font-size: 14px;
+}
+
+/* responsive */
+@media (max-width: 880px) {
+    .safety-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .safety-inner {
+        padding: 20px;
+    }
+
+    .safety-title {
+        font-size: 22px;
+    }
+}
+
+
+      `}</style>
 
 
 
@@ -47,6 +374,7 @@ export default function About() {
           </div>
         </div>
       </div>
+
 
 
       <div style={styles.missionArea}>
@@ -142,6 +470,8 @@ export default function About() {
         </div>
       </section>
 
+      <SafetySection />
+
       <FeaturesGrid />
 
       <PrivacyUse />
@@ -151,6 +481,47 @@ export default function About() {
   );
 }
 
+
+const SafetySection = () => {
+  return (
+    <section className="safety-wrap">
+      <div className="safety-inner">
+        <div className="safety-header">
+          <div className="safety-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <h2 className="safety-title">When to Seek Immediate Care</h2>
+        </div>
+
+        <div className="safety-card">
+          <p className="safety-lead">If you experience any of these red flags, call emergency services immediately:</p>
+
+          <div className="safety-grid">
+            {[
+              "Chest pain or pressure",
+              "Difficulty breathing",
+              "Severe bleeding",
+              "Sudden severe pain",
+              "Confusion or fainting",
+              "Signs of stroke (face drooping)"
+            ].map((item, i) => (
+              <div key={i} className="safety-item">
+                <span className="safety-bullet">!</span>
+                {item}
+              </div>
+            ))}
+          </div>
+
+          <p className="safety-note">
+            * This list is not exhaustive. If you feel something is wrong, trust your instincts and seek help.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const FeaturesGrid = () => {
   const features = [
@@ -320,14 +691,15 @@ const styles = {
     width: 224,
     height: 224,
     borderRadius: "50%",
-    background: "rgba(255,255,255,0.12)",
-    border: "1px solid rgba(255,255,255,0.2)",
-    boxShadow: "0 10px 35px rgba(9,30,66,0.18)",
+    background: "rgba(255, 255, 255, 0.05)",
+    border: "1px solid rgba(255, 255, 255, 0.2)",
+    boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    backdropFilter: "blur(6px)",
+    backdropFilter: "blur(12px)",
+    WebkitBackdropFilter: "blur(12px)",
   },
 
   heroTextCol: { flex: 1 },
@@ -349,7 +721,7 @@ const styles = {
   },
 
   missionArea: {
-    marginTop: 28,
+    marginTop: 60,
     padding: "36px 20px",
     background: "#f4f8fb",
   },
@@ -383,7 +755,7 @@ const styles = {
 const privacyStyles = {
   container: {
     maxWidth: 1100,
-    margin: "28px auto",
+    margin: "80px auto",
     padding: "0 20px",
   },
   card: {
