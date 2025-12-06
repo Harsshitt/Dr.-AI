@@ -8,7 +8,7 @@ export default function Symptoms() {
         <h1 className="text-3xl font-semibold mb-4">Symptoms Checker — Quick guide</h1>
 
         <p className="text-gray-700 mb-4">
-          This tool helps you understand common symptoms and decide what to do next. I’m an assistant, not a doctor — I provide educational guidance and red-flag checks only.
+          This tool helps you understand common symptoms and decide what to do next. I’m an assistant, not a doctor — I provide guidance and red-flag checks only.
         </p>
 
         <section className="mb-6">

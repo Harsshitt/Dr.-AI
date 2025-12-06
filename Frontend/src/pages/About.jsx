@@ -1,8 +1,7 @@
 // src/pages/About.jsx
 import React from "react";
 
-
-export default function About() {
+function About() {
   return (
     <div style={styles.page}>
       <style>{`
@@ -12,8 +11,8 @@ export default function About() {
     margin: 80px auto;
     padding: 32px;
     border-radius: 26px;
-    background: linear-gradient(180deg, #fff1f2, #ffe4e6);
-    border: 1px solid #fecdd3;
+    background: linear-gradient(180deg, #ecfdf5, #d1fae5);
+    border: 1px solid #a7f3d0;
 }
 
 .intake-title {
@@ -53,7 +52,7 @@ export default function About() {
     min-width: 32px;
     height: 32px;
     border-radius: 50%;
-    background: #dc2626;
+    background: #059669;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,8 +66,8 @@ export default function About() {
     max-width: 1100px;
     margin: 80px auto;
     padding: 32px;
-    background: #fff7f4;
-    border: 1px solid #ffdcd0;
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
     border-radius: 26px;
 }
 
@@ -102,7 +101,7 @@ export default function About() {
     min-width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: #ff5f40;
+    background: #10b981;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -110,7 +109,8 @@ export default function About() {
     font-size: 14px;
 }
 
-/* AboutFeatures.css - scoped styles for the features grid */
+/* -------------------- FEATURES GRID -------------------- */
+
 .af-section {
   max-width: 1100px;
   margin: 80px auto;
@@ -125,14 +125,12 @@ export default function About() {
   margin-bottom: 22px;
 }
 
-/* grid */
 .af-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 22px;
 }
 
-/* card */
 .af-card {
   background: #ffffff;
   border-radius: 14px;
@@ -147,10 +145,9 @@ export default function About() {
 
 .af-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 40px rgba(220, 38, 38, 0.08);
+  box-shadow: 0 18px 40px rgba(16, 185, 129, 0.08);
 }
 
-/* icon box (color square rounded) */
 .af-icon {
   min-width: 56px;
   height: 56px;
@@ -162,7 +159,6 @@ export default function About() {
   box-shadow: 0 8px 22px rgba(3, 102, 214, 0.06);
 }
 
-/* title + text */
 .af-body {
   flex: 1;
 }
@@ -181,62 +177,21 @@ export default function About() {
   line-height: 1.6;
 }
 
-/* small responsive */
-@media (max-width: 1024px) {
-  .af-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* SAFETY SECTION */
 
-  .af-section {
-    padding: 24px;
-  }
-}
-
-@media (max-width: 640px) {
-  .af-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .af-title {
-    font-size: 26px;
-  }
-
-  .af-card {
-    padding: 18px;
-    gap: 12px;
-  }
-
-  .af-icon {
-    min-width: 48px;
-    height: 48px;
-    border-radius: 10px;
-  }
-
-  .af-heading {
-    font-size: 16px;
-  }
-
-  .af-text {
-    font-size: 13px;
-  }
-}
-
-/* container */
 .safety-wrap {
     max-width: 1100px;
     margin: 80px auto;
     padding: 20px;
 }
 
-/* outer gradient red rounded block */
 .safety-inner {
-    background: linear-gradient(90deg, #ff3b4d 0%, #ff6b78 60%, #ff4b5f 100%);
+    background: linear-gradient(90deg, #059669 0%, #10b981 60%, #34d399 100%);
     border-radius: 18px;
     padding: 28px;
-    box-shadow: 0 18px 40px rgba(253, 63, 77, 0.18);
+    box-shadow: 0 18px 40px rgba(16, 185, 129, 0.18);
 }
 
-/* header with icon and title */
 .safety-header {
     display: flex;
     align-items: center;
@@ -263,7 +218,6 @@ export default function About() {
     line-height: 1;
 }
 
-/* inner translucent rounded panel */
 .safety-card {
     margin-top: 6px;
     background: rgba(255, 255, 255, 0.06);
@@ -273,14 +227,12 @@ export default function About() {
     box-shadow: 0 8px 20px rgba(11, 14, 25, 0.06);
 }
 
-/* intro text */
 .safety-lead {
     color: rgba(255, 255, 255, 0.95);
     margin: 0 0 16px 0;
     font-weight: 600;
 }
 
-/* two-column grid of signs */
 .safety-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -288,60 +240,42 @@ export default function About() {
     margin-bottom: 14px;
 }
 
-/* each item */
 .safety-item {
     display: flex;
     align-items: center;
     gap: 12px;
     color: rgba(255, 255, 255, 0.94);
-    background: transparent;
-    padding: 6px 2px;
     font-size: 15px;
 }
 
-/* small circular bullet (you can replace emoji with svg) */
 .safety-bullet {
-    display: inline-grid;
-    place-items: center;
     width: 28px;
     height: 28px;
     border-radius: 7px;
     background: rgba(255, 255, 255, 0.12);
+    display: grid;
+    place-items: center;
     color: #fff;
-    font-size: 14px;
-    line-height: 1;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
-/* note at bottom */
 .safety-note {
     color: rgba(255, 255, 255, 0.88);
     margin: 8px 0 0 0;
     font-size: 14px;
 }
 
-/* responsive */
+/* RESPONSIVE */
 @media (max-width: 880px) {
     .safety-grid {
         grid-template-columns: 1fr;
     }
-
-    .safety-inner {
-        padding: 20px;
-    }
-
-    .safety-title {
-        font-size: 22px;
-    }
 }
-
-
       `}</style>
 
-
-
+      {/* HERO SECTION */}
       <div style={styles.heroWrap}>
         <div style={styles.heroInner}>
+
           <div style={styles.iconCol}>
             <div style={styles.iconCircle}>
               <img
@@ -352,7 +286,7 @@ export default function About() {
                   height: 120,
                   objectFit: "contain",
                   display: "block",
-                  filter: "brightness(0) invert(1)",
+                  filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(100deg)",
                 }}
               />
             </div>
@@ -362,44 +296,27 @@ export default function About() {
             <h1 style={styles.heroTitle}>About Dr.AI</h1>
 
             <p style={styles.heroSubtitle}>
-              Your educational health assistant that helps you understand
-              symptoms, medications, and lab reports — all in plain language.
+              Your health assistant that helps you understand symptoms, medications,
+              and lab reports — all in plain language.
             </p>
 
             <div style={styles.badgeWrap}>
-              <span style={styles.badgeInner}>
-                Educational assistant — not a medical professional
-              </span>
+              <span style={styles.badgeInner}>Informational assistant — not a medical professional</span>
             </div>
           </div>
+
         </div>
       </div>
 
-
-
+      {/* MISSION SECTION */}
       <div style={styles.missionArea}>
         <div style={styles.missionCard}>
           <div style={styles.missionLeftIcon}>
             <div style={styles.missionIconBox}>
               <svg viewBox="0 0 24 24" width="24" height="24">
-                <path
-                  d="M12 3c-2.8 0-5 2.2-5 5v3"
-                  stroke="#fff"
-                  strokeWidth="1.4"
-                  fill="none"
-                />
-                <path
-                  d="M12 14v6"
-                  stroke="#fff"
-                  strokeWidth="1.4"
-                  fill="none"
-                />
-                <path
-                  d="M8 21h8"
-                  stroke="#fff"
-                  strokeWidth="1.4"
-                  fill="none"
-                />
+                <path d="M12 3c-2.8 0-5 2.2-5 5v3" stroke="#fff" strokeWidth="1.4" fill="none" />
+                <path d="M12 14v6" stroke="#fff" strokeWidth="1.4" fill="none" />
+                <path d="M8 21h8" stroke="#fff" strokeWidth="1.4" fill="none" />
               </svg>
             </div>
           </div>
@@ -407,189 +324,130 @@ export default function About() {
           <div style={styles.missionContent}>
             <h3 style={styles.missionTitle}>Mission</h3>
             <p style={styles.missionText}>
-              Provide clear, compassionate, evidence-informed guidance that
-              reduces unnecessary worry and unnecessary visits while also
-              helping spot red flags early.
+              Provide clear, compassionate, evidence-informed guidance that reduces unnecessary worry
+              while helping spot red flags early.
             </p>
-            <p style={styles.missionNote}>
-              Always educational — never a medical diagnosis or prescription.
-            </p>
+            <p style={styles.missionNote}>Always informational — never a medical diagnosis or prescription.</p>
           </div>
         </div>
       </div>
 
+      {/* INTAKE SECTION */}
+      <IntakeSection />
 
-      <section className="intake-section">
-        <h2 className="intake-title">Intake — What I'll Ask</h2>
+      {/* LIMITS SECTION */}
+      <LimitsSection />
 
-        <p className="intake-sub">To give useful guidance I usually ask for:</p>
-
-        <div className="intake-grid">
-          <div className="intake-card">
-            <div className="intake-icon"><span>✓</span></div>
-            Age, sex at birth, pregnancy/breastfeeding status, and country
-          </div>
-
-          <div className="intake-card">
-            <div className="intake-icon"><span>✓</span></div>
-            Major conditions, allergies, and current medications/supplements
-          </div>
-
-          <div className="intake-card">
-            <div className="intake-icon"><span>✓</span></div>
-            For symptoms: onset, severity, location, pattern, associated symptoms, and anything tried so far
-          </div>
-
-          <div className="intake-card">
-            <div className="intake-icon"><span>✓</span></div>
-            For labs: exact test names, values, units, reference ranges, date, and whether fasting
-          </div>
-        </div>
-      </section>
-
-
-      <section className="limits-section">
-        <h2 className="limits-title">Important Limits — What I Don’t Do</h2>
-
-        <div className="limits-list">
-          <div className="limit-item">
-            <div className="limit-icon"><span>✕</span></div>
-            I do not diagnose conditions or prescribe/adjust prescription medicines.
-          </div>
-
-          <div className="limit-item">
-            <div className="limit-icon"><span>✕</span></div>
-            I will not interpret raw medical images (X-ray, CT, MRI, ultrasound).
-            I can explain a radiology report text if you paste it.
-          </div>
-
-          <div className="limit-item">
-            <div className="limit-icon"><span>✕</span></div>
-            I won't provide unsafe instructions that require in-person evaluation.
-          </div>
-        </div>
-      </section>
-
+      {/* SAFETY */}
       <SafetySection />
 
+      {/* FEATURES */}
       <FeaturesGrid />
 
+      {/* PRIVACY */}
       <PrivacyUse />
 
+      {/* DISCLAIMER */}
       <Disclaimer />
+
     </div>
   );
 }
 
+/* ------------------ COMPONENTS ------------------ */
 
-const SafetySection = () => {
-  return (
-    <section className="safety-wrap">
-      <div className="safety-inner">
-        <div className="safety-header">
-          <div className="safety-icon">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-              <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <h2 className="safety-title">When to Seek Immediate Care</h2>
+const IntakeSection = () => (
+  <section className="intake-section">
+    <h2 className="intake-title">Intake — What I'll Ask</h2>
+    <p className="intake-sub">To give useful guidance I usually ask for:</p>
+
+    <div className="intake-grid">
+      {[
+        "Age, sex at birth, pregnancy/breastfeeding status, and country",
+        "Major conditions, allergies, and current medications/supplements",
+        "For symptoms: onset, severity, location, pattern, associated symptoms, and anything tried so far",
+        "For labs: test names, values, units, ranges, date, and fasting status",
+      ].map((t, i) => (
+        <div key={i} className="intake-card">
+          <div className="intake-icon"><span>✓</span></div>
+          {t}
         </div>
+      ))}
+    </div>
+  </section>
+);
 
-        <div className="safety-card">
-          <p className="safety-lead">If you experience any of these red flags, call emergency services immediately:</p>
+const LimitsSection = () => (
+  <section className="limits-section">
+    <h2 className="limits-title">Important Limits — What I Don’t Do</h2>
 
-          <div className="safety-grid">
-            {[
-              "Chest pain or pressure",
-              "Difficulty breathing",
-              "Severe bleeding",
-              "Sudden severe pain",
-              "Confusion or fainting",
-              "Signs of stroke (face drooping)"
-            ].map((item, i) => (
-              <div key={i} className="safety-item">
-                <span className="safety-bullet">!</span>
-                {item}
-              </div>
-            ))}
-          </div>
-
-          <p className="safety-note">
-            * This list is not exhaustive. If you feel something is wrong, trust your instincts and seek help.
-          </p>
+    <div className="limits-list">
+      {[
+        "I do not diagnose conditions or prescribe/adjust prescription medicines.",
+        "I will not interpret raw medical images (X-ray, CT, MRI, ultrasound). I can explain radiology reports.",
+        "I won't provide unsafe instructions that require in-person evaluation."
+      ].map((t, i) => (
+        <div key={i} className="limit-item">
+          <div className="limit-icon"><span>✕</span></div>
+          {t}
         </div>
+      ))}
+    </div>
+  </section>
+);
+
+const SafetySection = () => (
+  <section className="safety-wrap">
+    <div className="safety-inner">
+
+      <div className="safety-header">
+        <div className="safety-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+              stroke="#fff"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <h2 className="safety-title">When to Seek Immediate Care</h2>
       </div>
-    </section>
-  );
-};
+
+      <div className="safety-card">
+        <p className="safety-lead">If you experience any of these red flags, call emergency services immediately:</p>
+
+        <div className="safety-grid">
+          {[
+            "Chest pain or pressure",
+            "Difficulty breathing",
+            "Severe bleeding",
+            "Sudden severe pain",
+            "Confusion or fainting",
+            "Signs of stroke (face drooping)",
+          ].map((t, i) => (
+            <div key={i} className="safety-item">
+              <span className="safety-bullet">!</span>
+              {t}
+            </div>
+          ))}
+        </div>
+
+        <p className="safety-note">* This list is not exhaustive. Trust your instincts.</p>
+      </div>
+
+    </div>
+  </section>
+);
 
 const FeaturesGrid = () => {
   const features = [
-    {
-      title: "Symptom Triage & Self-Care",
-      text: "Ask focused questions, estimate urgency and suggest safe self-care options.",
-      color: "#ff5a9e",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M12 12c2 0 3-1 3-3s-1-3-3-3-3 1-3 3 1 3 3 3z" stroke="#fff" strokeWidth="1.2" />
-          <path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke="#fff" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      title: "Medication Education",
-      text: "Understand medicine uses, side effects, warnings, and OTC guidance.",
-      color: "#9b6bff",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M6 12h12" stroke="#fff" strokeWidth="1.4" />
-          <path d="M12 6v12" stroke="#fff" strokeWidth="1.4" />
-        </svg>
-      ),
-    },
-    {
-      title: "Lab Report Explainer",
-      text: "Explain what each test means and why values change.",
-      color: "#11c26d",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M12 2v20" stroke="#fff" strokeWidth="1.2" />
-          <path d="M6 8h12" stroke="#fff" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      title: "Care Navigation",
-      text: "Find where to go: emergency, urgent care, primary care, or pharmacy.",
-      color: "#ff9a2b",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M12 2l4 7-4 13-4-13 4-7z" stroke="#fff" strokeWidth="1.1" />
-        </svg>
-      ),
-    },
-    {
-      title: "Prevention & Education",
-      text: "Lifestyle guidance, vaccine info, and early warning signs.",
-      color: "#2fb3ff",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M12 3v18" stroke="#fff" strokeWidth="1.2" />
-          <path d="M3 8h18" stroke="#fff" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
-    {
-      title: "24/7 Availability",
-      text: "Health information anytime — helping you decide when to seek care.",
-      color: "#9b9bff",
-      icon: (
-        <svg width="22" height="22" viewBox="0 0 24 24">
-          <path d="M12 6v6l4 2" stroke="#fff" strokeWidth="1.2" />
-          <circle cx="12" cy="12" r="9" stroke="#fff" strokeWidth="1.2" />
-        </svg>
-      ),
-    },
+    { title: "Symptom Triage", text: "Estimate urgency + suggest safe self-care.", color: "#ff5a9e" },
+    { title: "Medication Guide", text: "Understand medicines, side effects & warnings.", color: "#9b6bff" },
+    { title: "Lab Report Help", text: "Explain test meanings + abnormal values.", color: "#11c26d" },
+    { title: "Care Navigation", text: "Find the right care: ER, urgent, or clinic.", color: "#ff9a2b" },
+    { title: "Prevention Tips", text: "Lifestyle guidance & early warning signs.", color: "#2fb3ff" },
+    { title: "24/7 Availability", text: "Instant help anytime.", color: "#9b9bff" },
   ];
 
   return (
@@ -597,14 +455,12 @@ const FeaturesGrid = () => {
       <h2 className="af-title">What Dr.AI Can Help With</h2>
 
       <div className="af-grid">
-        {features.map((item, i) => (
+        {features.map((f, i) => (
           <article key={i} className="af-card">
-            <div className="af-icon" style={{ background: item.color }}>
-              {item.icon}
-            </div>
+            <div className="af-icon" style={{ background: f.color }}></div>
             <div className="af-body">
-              <h3 className="af-heading">{item.title}</h3>
-              <p className="af-text">{item.text}</p>
+              <h3 className="af-heading">{f.title}</h3>
+              <p className="af-text">{f.text}</p>
             </div>
           </article>
         ))}
@@ -613,54 +469,42 @@ const FeaturesGrid = () => {
   );
 };
 
-
-const PrivacyUse = () => {
-  return (
-    <section style={privacyStyles.container}>
-      <div style={privacyStyles.card}>
-        <div style={privacyStyles.iconWrap}>
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="10" width="18" height="11" rx="2" stroke="#0b1b2b" strokeWidth="1.2" />
-            <path
-              d="M7 10V8a5 5 0 0110 0v2"
-              stroke="#0b1b2b"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-
-        <div style={privacyStyles.content}>
-          <h3 style={privacyStyles.title}>Privacy & Use</h3>
-
-          <p style={privacyStyles.paragraph}>
-            The assistant provides educational information only. Treat any personal data you share carefully.
-          </p>
-
-          <p style={privacyStyles.paragraph}>
-            If you prefer, avoid sending highly sensitive details. If you want something deleted, tell us and we'll remove it (if the host app supports deletion).
-          </p>
-        </div>
+const PrivacyUse = () => (
+  <section style={privacyStyles.container}>
+    <div style={privacyStyles.card}>
+      <div style={privacyStyles.iconWrap}>
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="10" width="18" height="11" rx="2" stroke="#0b1b2b" strokeWidth="1.2" />
+          <path d="M7 10V8a5 5 0 0110 0v2" stroke="#0b1b2b" strokeWidth="1.2" strokeLinecap="round" />
+        </svg>
       </div>
-    </section>
-  );
-};
 
-
-const Disclaimer = () => {
-  return (
-    <section style={privacyStyles.disclaimerBoxOuter}>
-      <div style={privacyStyles.disclaimerBox}>
-        <strong>Disclaimer:</strong>{" "}
-        <span style={privacyStyles.disclaimerText}>
-          I'm a health information assistant, not a medical professional. This is educational information, not a diagnosis.
-          If you need urgent help, contact local emergency services or your healthcare provider.
-        </span>
+      <div style={privacyStyles.content}>
+        <h3 style={privacyStyles.title}>Privacy & Use</h3>
+        <p style={privacyStyles.paragraph}>
+          The assistant provides informational content only. Treat personal data carefully.
+        </p>
+        <p style={privacyStyles.paragraph}>
+          If you want something deleted, tell us — if supported, we will remove it.
+        </p>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
+const Disclaimer = () => (
+  <section style={privacyStyles.disclaimerBoxOuter}>
+    <div style={privacyStyles.disclaimerBox}>
+      <strong>Disclaimer:</strong>{" "}
+      <span style={privacyStyles.disclaimerText}>
+        I am a health information assistant — not a doctor. This is not a diagnosis.
+        For emergencies, contact medical services immediately.
+      </span>
+    </div>
+  </section>
+);
+
+/* ------------------ MAIN STYLES ------------------ */
 
 const styles = {
   page: {
@@ -674,10 +518,11 @@ const styles = {
 
   heroWrap: {
     width: "100%",
-    background: "linear-gradient(90deg, #dc2626 0%, #e11d48 100%)",
+    background: "linear-gradient(90deg, #059669 0%, #0d9488 100%)",
     paddingTop: 44,
     paddingBottom: 44,
   },
+
   heroInner: {
     maxWidth: 1100,
     margin: "0 auto",
@@ -686,31 +531,43 @@ const styles = {
     alignItems: "center",
     padding: "0 20px",
   },
+
   iconCol: { flex: "0 0 auto" },
+
+  /* 🔥 FINAL GLASS CIRCLE YOU WANTED */
   iconCircle: {
     width: 224,
     height: 224,
     borderRadius: "50%",
-    background: "rgba(255, 255, 255, 0.05)",
-    border: "1px solid rgba(255, 255, 255, 0.2)",
-    boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
+
+    background: "#ffffff",
+    border: "4px solid rgba(255, 255, 255, 0.2)",
+    boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
   },
 
   heroTextCol: { flex: 1 },
-  heroTitle: { margin: 0, fontSize: 48, fontWeight: 700, color: "#fff" },
+
+  heroTitle: {
+    margin: 0,
+    fontSize: 48,
+    fontWeight: 700,
+    color: "#fff",
+  },
+
   heroSubtitle: {
     marginTop: 18,
     fontSize: 18,
     color: "rgba(255,255,255,0.95)",
     lineHeight: 1.6,
   },
+
   badgeWrap: { marginTop: 22 },
+
   badgeInner: {
     padding: "10px 20px",
     borderRadius: 999,
@@ -725,6 +582,7 @@ const styles = {
     padding: "36px 20px",
     background: "#f4f8fb",
   },
+
   missionCard: {
     maxWidth: 1100,
     margin: "0 auto",
@@ -735,22 +593,31 @@ const styles = {
     gap: 18,
     boxShadow: "0 12px 40px rgba(12,20,35,0.08)",
   },
+
   missionLeftIcon: { flex: "0 0 auto" },
+
   missionIconBox: {
     width: 56,
     height: 56,
     borderRadius: 12,
-    background: "linear-gradient(180deg, #ef4444, #dc2626)",
+    background: "linear-gradient(180deg, #10b981, #059669)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
-  missionContent: { flex: 1 },
-  missionTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#081226" },
-  missionText: { marginTop: 10, color: "#374151" },
-  missionNote: { marginTop: 12, color: "#dc2626", fontWeight: 500 },
-};
 
+  missionContent: { flex: 1 },
+
+  missionTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#081226" },
+
+  missionText: { marginTop: 10, color: "#374151" },
+
+  missionNote: {
+    marginTop: 12,
+    color: "#059669",
+    fontWeight: 500,
+  },
+};
 
 const privacyStyles = {
   container: {
@@ -794,3 +661,5 @@ const privacyStyles = {
   },
   disclaimerText: { marginLeft: 6, color: "#0b1b2b", fontSize: 14, lineHeight: 1.5 },
 };
+
+export default About;

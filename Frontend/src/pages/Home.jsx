@@ -25,12 +25,12 @@ export default function Home() {
   const [hoveredCard, setHoveredCard] = useState(null);
 
   const floatingIcons = [
-    { Icon: Heart, color: "text-rose-400", top: "12%", left: "8%", delay: 0 },
+    { Icon: Heart, color: "text-emerald-400", top: "12%", left: "8%", delay: 0 },
     { Icon: Pill, color: "text-violet-400", top: "20%", left: "75%", delay: 2 },
-    { Icon: Plus, color: "text-red-400", top: "48%", left: "60%", delay: 4 },
+    { Icon: Plus, color: "text-emerald-400", top: "48%", left: "60%", delay: 4 },
     { Icon: FlaskConical, color: "text-emerald-400", top: "65%", left: "14%", delay: 1 },
     { Icon: Sparkles, color: "text-amber-400", top: "36%", left: "40%", delay: 3 },
-    { Icon: Shield, color: "text-rose-400", top: "72%", left: "82%", delay: 5 },
+    { Icon: Shield, color: "text-emerald-400", top: "72%", left: "82%", delay: 5 },
   ];
 
   const features = [
@@ -39,7 +39,7 @@ export default function Home() {
       title: "Symptom Analysis",
       description:
         "Get instant triage guidance and understand urgency levels for your symptoms.",
-      color: "from-rose-500 to-pink-500",
+      color: "from-emerald-500 to-teal-500",
       delay: 0.1,
     },
     {
@@ -72,14 +72,14 @@ export default function Home() {
     { icon: Users, value: "24/7", label: "Always Available" },
     { icon: MessageSquare, value: "Plain", label: "Language" },
     { icon: Shield, value: "Safe", label: "Guidance" },
-    { icon: Brain, value: "Smart", label: "Education" },
+    { icon: Brain, value: "Smart", label: "Insights" },
   ];
 
   const audience = [
     {
       icon: Users,
-      title: "Students & Young Adults",
-      text: "Clear health education to support hostel life, college stress, and daily issues.",
+      title: "Young Adults",
+      text: "Clear health guidance to support daily life and stress management.",
     },
     {
       icon: Heart,
@@ -119,7 +119,7 @@ export default function Home() {
   const faqs = [
     {
       q: "Is Dr.AI a real doctor?",
-      a: "No. Dr.AI is an educational assistant. It does not diagnose, treat, or replace a medical professional.",
+      a: "No. Dr.AI is an informational assistant. It does not diagnose, treat, or replace a medical professional.",
     },
     {
       q: "Can I use Dr.AI in an emergency?",
@@ -136,17 +136,17 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 overflow-hidden">
       {/* HERO */}
       <section className="relative min-h-screen flex items-center justify-center px-6 py-20">
         <div className="absolute inset-0 overflow-hidden">
           <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-red-200/30 rounded-full blur-3xl"
+            className="absolute top-20 left-10 w-72 h-72 bg-emerald-200/30 rounded-full blur-3xl"
             animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <motion.div
-            className="absolute bottom-20 right-10 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl"
+            className="absolute bottom-20 right-10 w-96 h-96 bg-teal-200/30 rounded-full blur-3xl"
             animate={{ x: [0, -30, 0], y: [0, 50, 0] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -182,8 +182,8 @@ export default function Home() {
             className="absolute inset-0 opacity-10"
             style={{
               backgroundImage: `
-                linear-gradient(0deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%),
-                linear-gradient(90deg, transparent 24%, rgba(239, 68, 68, 0.12) 25%, rgba(239, 68, 68, 0.12) 26%, transparent 27%)
+                linear-gradient(0deg, transparent 24%, rgba(16, 185, 129, 0.12) 25%, rgba(16, 185, 129, 0.12) 26%, transparent 27%),
+                linear-gradient(90deg, transparent 24%, rgba(16, 185, 129, 0.12) 25%, rgba(16, 185, 129, 0.12) 26%, transparent 27%)
               `,
               backgroundSize: "80px 80px",
             }}
@@ -200,19 +200,19 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center lg:text-left"
           >
-            <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full mb-6">
               <motion.div
                 animate={{ rotate: [0, 360] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               >
                 <Sparkles className="w-4 h-4" />
               </motion.div>
-              <span className="text-sm">Your AI Health Education Assistant</span>
+              <span className="text-sm">Your AI Health Assistant</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6 font-extrabold">
               Meet{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-rose-600 inline-block">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-600 inline-block">
                 Dr.AI
               </span>
             </h1>
@@ -224,14 +224,14 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link to="/chat">
-                <button className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl flex items-center gap-2 relative overflow-hidden">
+                <button className="group bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-xl hover:shadow-2xl flex items-center gap-2 relative overflow-hidden">
                   <span>Start Chat</span>
                   <ArrowRight className="w-5 h-5" />
                 </button>
               </Link>
 
               <Link to="/about">
-                <button className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-red-600 hover:text-red-600">
+                <button className="bg-white text-gray-700 px-8 py-4 rounded-xl border-2 border-gray-200 hover:border-emerald-600 hover:text-emerald-600">
                   Learn More
                 </button>
               </Link>
@@ -239,7 +239,7 @@ export default function Home() {
 
             <div className="mt-8 flex items-center gap-2 text-sm text-gray-500 justify-center lg:justify-start">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
-              <span>Educational only — not a medical diagnosis</span>
+              <span>Informational only — not a medical diagnosis</span>
             </div>
           </motion.div>
 
@@ -252,7 +252,7 @@ export default function Home() {
           >
             <div className="relative mx-auto w-80 h-80 lg:w-96 lg:h-96">
               <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-red-500 to-rose-500 rounded-full shadow-2xl flex items-center justify-center"
+                className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full shadow-2xl flex items-center justify-center"
                 whileHover={{ scale: 1.03 }}
               >
                 <Stethoscope className="w-40 h-40 text-white" strokeWidth={1.5} />
@@ -260,7 +260,7 @@ export default function Home() {
 
               <div className="absolute -top-4 -left-4">
                 <div className="bg-white p-3 rounded-2xl shadow-xl">
-                  <Heart className="w-6 h-6 text-rose-500" />
+                  <Heart className="w-6 h-6 text-emerald-500" />
                 </div>
               </div>
               <div className="absolute right-0 top-16">
@@ -275,7 +275,7 @@ export default function Home() {
               </div>
 
               <motion.div
-                className="absolute inset-0 rounded-full border-4 border-red-300"
+                className="absolute inset-0 rounded-full border-4 border-emerald-300"
                 animate={{ scale: [1, 1.25, 1], opacity: [0.6, 0.05, 0.6] }}
                 transition={{ duration: 3, repeat: Infinity }}
               />
@@ -312,8 +312,8 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 className="text-center"
               >
-                <div className="bg-gradient-to-br from-red-50 to-rose-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <stat.icon className="w-8 h-8 text-red-600" />
+                <div className="bg-gradient-to-br from-emerald-50 to-teal-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <stat.icon className="w-8 h-8 text-emerald-600" />
                 </div>
                 <div className="text-3xl text-gray-900 mb-1">{stat.value}</div>
                 <div className="text-sm text-gray-600">{stat.label}</div>
@@ -360,7 +360,7 @@ export default function Home() {
       </section>
 
       {/* WHO IT'S FOR */}
-      <section className="py-20 px-6 bg-rose-50/60 border-t border-rose-100">
+      <section className="py-20 px-6 bg-teal-50/60 border-t border-teal-100">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl mb-3">Who Dr.AI Is For</h2>
@@ -377,10 +377,10 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="bg-white rounded-3xl p-5 shadow-sm border border-rose-100"
+                className="bg-white rounded-3xl p-5 shadow-sm border border-teal-100"
               >
-                <div className="bg-rose-100 w-12 h-12 rounded-2xl flex items-center justify-center mb-4">
-                  <item.icon className="w-6 h-6 text-rose-600" />
+                <div className="bg-teal-100 w-12 h-12 rounded-2xl flex items-center justify-center mb-4">
+                  <item.icon className="w-6 h-6 text-teal-600" />
                 </div>
                 <h3 className="font-semibold mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600">{item.text}</p>
@@ -396,7 +396,7 @@ export default function Home() {
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl mb-3">How Dr.AI Works</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Simple 3-step flow built for clarity, safety, and education — not diagnosis.
+              Simple 3-step flow built for clarity, safety, and information — not diagnosis.
             </p>
           </div>
 
@@ -411,11 +411,11 @@ export default function Home() {
                 className="flex gap-4 items-start"
               >
                 <div className="flex flex-col items-center">
-                  <div className="bg-gradient-to-br from-red-500 to-rose-500 text-white rounded-2xl p-3">
+                  <div className="bg-gradient-to-br from-emerald-500 to-teal-500 text-white rounded-2xl p-3">
                     <step.icon className="w-6 h-6" />
                   </div>
                   {idx < steps.length - 1 && (
-                    <div className="w-px h-12 bg-gradient-to-b from-red-300 to-transparent mt-2" />
+                    <div className="w-px h-12 bg-gradient-to-b from-emerald-300 to-transparent mt-2" />
                   )}
                 </div>
                 <div>
@@ -433,19 +433,19 @@ export default function Home() {
       {/* SAFETY BOX */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-3xl p-8 md:p-12 border-2 border-rose-200 relative overflow-hidden">
-            <div className="flex items-start gap-4 mb-6">
-              <div className="bg-rose-500 rounded-2xl p-3">
-                <Shield className="w-8 h-8 text-white" />
+          <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-3xl p-8 md:p-12 border-2 border-teal-200 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center">
+              <div className="bg-white p-4 rounded-2xl shadow-sm">
+                <Shield className="w-12 h-12 text-emerald-600" />
               </div>
               <div>
                 <h3 className="text-3xl mb-4">Important Safety Information</h3>
                 <p className="text-gray-700 text-lg leading-relaxed mb-4">
-                  Dr.AI is an <strong>educational tool</strong>, not a medical professional. For
+                  Dr.AI is an <strong>informational tool</strong>, not a medical professional. For
                   emergencies like severe chest pain, difficulty breathing, or signs of stroke,{" "}
                   <strong>seek emergency care immediately</strong>.
                 </p>
-                <div className="flex items-center gap-2 text-rose-600">
+                <div className="flex items-center gap-2 text-emerald-600">
                   <CheckCircle2 className="w-5 h-5" />
                   <span>Always consult healthcare providers for medical decisions.</span>
                 </div>
@@ -456,7 +456,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 px-6 bg-rose-50/60 border-t border-rose-100">
+      <section className="py-20 px-6 bg-teal-50/60 border-t border-teal-100">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl mb-3">Frequently Asked Questions</h2>
@@ -473,11 +473,11 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.05 }}
-                className="bg-white rounded-2xl p-4 shadow-sm border border-rose-100"
+                className="bg-white rounded-2xl p-4 shadow-sm border border-teal-100"
               >
                 <div className="flex items-start gap-3">
                   <div className="mt-1">
-                    <MessageSquare className="w-4 h-4 text-rose-500" />
+                    <MessageSquare className="w-4 h-4 text-teal-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">{item.q}</h3>
@@ -493,8 +493,8 @@ export default function Home() {
       {/* FINAL CTA */}
       <section className="py-20 px-6 bg-gradient-to-br from-gray-900 to-gray-800 text-white relative overflow-hidden">
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="bg-gradient-to-br from-red-500 to-rose-500 rounded-full p-6 w-fit mx-auto mb-8">
-            <Clock className="w-16 h-16" />
+          <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full p-6 w-fit mx-auto mb-8">
+            <Stethoscope className="w-12 h-12 text-white" />
           </div>
           <h2 className="text-4xl md:text-5xl mb-6">
             Ready to Learn About Your Health?
@@ -503,7 +503,7 @@ export default function Home() {
             Start getting clear, compassionate guidance on your health concerns today.
           </p>
           <Link to="/chat">
-            <button className="group bg-gradient-to-r from-red-600 to-rose-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl transition-all">
+            <button className="group bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-10 py-5 rounded-xl hover:shadow-2xl transition-all">
               Get Started Now
             </button>
           </Link>

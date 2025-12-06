@@ -31,7 +31,7 @@ export default function Navbar() {
         .drai-row { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
         .drai-left { display:flex; align-items:center; gap:12px; }
-        .drai-logo { font-weight:700; font-size:20px; color:#dc2626; text-decoration:none; }
+        .drai-logo { font-weight:700; font-size:20px; color:#059669; text-decoration:none; }
 
         .drai-center { display:flex; align-items:center; justify-content:center; flex:1; }
         .drai-right { display:flex; align-items:center; gap:16px; }
@@ -58,14 +58,14 @@ export default function Navbar() {
         }
 
         .drai-cta { 
-          background:#dc2626; 
+          background:#059669; 
           color:white; 
           padding:8px 14px; 
           border-radius:8px; 
           text-decoration:none; 
           font-weight:600; 
         }
-        .drai-cta:hover { background:#b91c1c; }
+        .drai-cta:hover { background:#047857; }
 
         .drai-signout {
           background: transparent;
@@ -78,8 +78,8 @@ export default function Navbar() {
         }
         .drai-signout:hover {
           background: #f3f4f6;
-          color: #dc2626;
-          border-color: #dc2626;
+          color: #059669;
+          border-color: #059669;
         }
 
         .drai-hambtn { 
@@ -115,7 +115,7 @@ export default function Navbar() {
         }
         .drai-mobilemenu a:hover, .drai-mobilemenu button:hover { 
           background: rgba(0,0,0,0.03); 
-          color:#b91c1c; 
+          color:#047857; 
         }
 
         @media (max-width: 767px) {
@@ -143,7 +143,7 @@ export default function Navbar() {
                     height: "90px",
                     width: "90px",
                     objectFit: "contain",
-                    filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(-5deg)"
+                    filter: "invert(20%) sepia(100%) saturate(6000%) hue-rotate(100deg)"
                   }}
                 />
               </Link>

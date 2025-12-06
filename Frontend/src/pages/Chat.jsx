@@ -12,27 +12,20 @@ import {
   Thermometer,
   Bot as BotIcon,
 } from "lucide-react";
+import { generateHealthResponse } from "../lib/aiHealthEngine";
+
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
     {
       id: "1",
       text:
-        "Hello! I'm Dr.AI, your health education assistant. I can help you understand symptoms, learn about medications, and interpret lab reports. How can I assist you today?",
+        "Hello! I'm Dr.AI, your health assistant. I can help you understand symptoms, learn about medications, and interpret lab reports. How can I assist you today?",
       sender: "bot",
       timestamp: new Date(),
       structuredData: null,
     },
   ]);
-  const [patientProfile] = useState({
-    age: null,
-    sex_at_birth: null,
-    pregnancy: null,
-    country: null,
-    allergies: [],
-    conditions: [],
-    meds: [],
-  });
 
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -54,7 +47,7 @@ export default function ChatPage() {
   // Put your real API URL first (example: "https://api.mydomain.com/chat")
   // ---------------------------
   const endpoints = [
-    "http://localhost:5001/api/chat" // <-- apna real backend URL yahin daalo
+    "http://localhost:5001/api/chat"
   ];
 
 
@@ -116,17 +109,17 @@ export default function ChatPage() {
       timestamp: new Date(),
     };
 
-    // show user message immediately
     setMessages((p) => [...p, userMsg]);
-
-    // keep a copy of current input for fallback & logs (because setInputValue is async)
     const currentInput = inputValue;
     setInputValue("");
     setIsTyping(true);
 
     try {
-      // build payload: send recent conversation plus current user message
+      // 1. Try Backend (Gemini) FIRST
+      // This gives the "smart" AI response the user expects.
+      console.log("Calling Backend...");
       const payload = {
+        message: currentInput, // Add this line to match backend expectation
         messages: [
           ...messages.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })),
           { role: "user", content: currentInput },
@@ -134,76 +127,55 @@ export default function ChatPage() {
       };
 
       const result = await sendToBackend(payload);
-      console.log("Result from sendToBackend:", result);
 
-      // ---------- Unified parsing logic ----------
-      // handle many common response shapes:
-      // { answer: "text" }
-      // { message: "text" }
-      // { reply: { content: "text", structuredData: {...} } }
-      // { ok: true, data: {...} }
-      // string directly
       let text = null;
       let structuredData = null;
 
-      if (result === null || result === undefined) {
-        text = null;
-      } else if (result.ok === false) {
-        // Backend returned an error explicitly
-        throw new Error(result.error || "Backend returned ok:false");
-      } else if (typeof result === "string") {
-        text = result;
-      } else if (result.answer) {
-        text = result.answer;
-        structuredData = result.structuredData ?? null;
-      } else if (result.message) {
-        text = result.message;
-      } else if (result.reply) {
-        if (typeof result.reply === "string") {
-          text = result.reply;
-        } else if (result.reply.content) {
-          text = result.reply.content;
-          structuredData = result.reply.structuredData ?? null;
-        } else {
-          text = JSON.stringify(result.reply);
-        }
-      } else if (result.ok && result.data) {
-        const d = result.data;
-        text = d.answer || d.message || d.reply || JSON.stringify(d);
-        structuredData = d.structuredData ?? null;
-      } else if (result.text) {
+      if (result && result.reply) {
+        text = typeof result.reply === 'string' ? result.reply : JSON.stringify(result.reply);
+      } else if (result && result.text) {
         text = result.text;
-      } else if (result.response) {
-        text = result.response;
       } else {
-        // fallback: stringify whole result so user sees something
-        text = JSON.stringify(result);
+        // If backend returns empty/weird, throw to trigger fallback
+        throw new Error("Invalid response from backend");
       }
 
-      if (!text) {
-        setMessages((p) => [
-          ...p,
-          { id: (Date.now() + 2).toString(), text: "No reply from server.", sender: "bot", timestamp: new Date() },
-        ]);
-      } else {
-        const assistant = {
-          id: (Date.now() + 1).toString(),
-          text: text,
-          sender: "bot",
-          timestamp: new Date(),
-          structuredData: structuredData,
-        };
-        setMessages((p) => [...p, assistant]);
-      }
+      const assistant = {
+        id: (Date.now() + 1).toString(),
+        text: text,
+        sender: "bot",
+        timestamp: new Date(),
+        structuredData: structuredData,
+      };
+      setMessages((p) => [...p, assistant]);
+
     } catch (err) {
-      console.error("Chat send error:", err);
-      // show fallback local response
+      console.error("Backend failed, switching to Local Engine:", err);
+
+      // 2. Fallback to Local AI Engine (Offline Mode)
+      // We need a basic patient profile.
+      const profile = {
+        age: null,
+        sex_at_birth: null,
+        pregnancy: null,
+        country: "usa",
+        allergies: [],
+        conditions: [],
+        meds: []
+      };
+
+      const localResponse = await generateHealthResponse(currentInput, messages, profile);
+
       setMessages((p) => [
         ...p,
-        { id: (Date.now() + 3).toString(), text: localFallback(currentInput), sender: "bot", timestamp: new Date() },
+        {
+          id: (Date.now() + 3).toString(),
+          text: localResponse.text,
+          sender: "bot",
+          timestamp: new Date(),
+          structuredData: localResponse.structuredData
+        },
       ]);
-      // also notify user (optional)
-      // alert("Chat error: " + (err.message || err));
     } finally {
       setIsTyping(false);
     }
@@ -215,7 +187,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex flex-col">
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-28 pb-32 flex flex-col">
 
         {messages.length <= 1 && (
@@ -229,7 +201,7 @@ export default function ChatPage() {
                   onClick={() => handleQuickAction(a.text)}
                   className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 flex flex-col items-center gap-2"
                 >
-                  <div className="bg-gradient-to-br from-red-500 to-rose-500 rounded-lg p-2">
+                  <div className="bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg p-2">
                     <a.icon className="w-5 h-5 text-white" />
                   </div>
                   <span className="text-sm text-gray-700">{a.label}</span>
@@ -239,17 +211,18 @@ export default function ChatPage() {
           </motion.div>
         )}
 
+        {/* MESSAGES */}
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
               <motion.div key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.02 }} className={`flex gap-3 ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
                 {m.sender === "bot" && (
-                  <div className="bg-gradient-to-br from-red-600 to-rose-600 rounded-full p-2 h-10 w-10 flex items-center justify-center">
+                  <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-full p-2 h-10 w-10 flex items-center justify-center">
                     <BotIcon className="w-5 h-5 text-white" />
                   </div>
                 )}
 
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 whitespace-pre-line ${m.sender === "user" ? "bg-gradient-to-r from-red-600 to-rose-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
+                <div className={`max-w-[80%] rounded-2xl px-4 py-3 whitespace-pre-line ${m.sender === "user" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
                   <div className="text-sm leading-relaxed">{m.text}</div>
 
                   {m.structuredData?.urgency && <div className="text-xs mt-2 inline-block bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Urgency: {m.structuredData.urgency}</div>}
@@ -268,17 +241,18 @@ export default function ChatPage() {
             ))}
           </AnimatePresence>
 
+          {/* TYPING INDICATOR */}
           {isTyping && (
             <div className="flex items-end gap-3">
-              <div className="bg-gradient-to-br from-red-600 to-rose-600 p-2 rounded-full h-10 w-10 flex items-center justify-center text-white">
+              <div className="bg-gradient-to-br from-emerald-600 to-teal-600 p-2 rounded-full h-10 w-10 flex items-center justify-center text-white">
                 <Loader2 className="w-5 h-5 animate-spin" />
               </div>
 
               <div className="bg-white rounded-2xl px-5 py-3 shadow-sm border border-gray-200">
                 <div className="flex gap-1">
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce" />
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce delay-150" />
-                  <div className="w-2 h-2 bg-red-600 rounded-full animate-bounce delay-300" />
+                  <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce" />
+                  <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-150" />
+                  <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce delay-300" />
                 </div>
               </div>
             </div>
@@ -287,23 +261,24 @@ export default function ChatPage() {
           <div ref={messagesEndRef} />
         </div>
 
+        {/* INPUT BOX */}
         <div className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm">
           <div className="flex gap-3">
             <input
               ref={inputRef}
-              type="Text"
+              type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
               placeholder="Ask about symptoms, medications, or lab tests..."
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-red-500"
+              className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-emerald-500"
             />
-            <button onClick={handleSendMessage} disabled={!inputValue.trim()} className="bg-gradient-to-r from-red-600 to-rose-600 text-white px-4 py-3 rounded-xl disabled:opacity-50">
+            <button onClick={handleSendMessage} disabled={!inputValue.trim()} className="bg-emerald-600 text-white p-3 rounded-xl hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
               <Send className="w-4 h-4" />
             </button>
           </div>
 
-          <p className="text-xs text-gray-500 mt-3 text-center"><Sparkles className="inline-block w-3 h-3 mr-1" />Educational information only — Not medical advice</p>
+          <p className="text-xs text-gray-500 mt-3 text-center"><Sparkles className="inline-block w-3 h-3 mr-1" />Informational purposes only — Not medical advice</p>
         </div>
       </main>
     </div>

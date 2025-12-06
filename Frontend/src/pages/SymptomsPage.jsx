@@ -64,7 +64,7 @@ export default function SymptomsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-rose-50 pt-20 pb-32">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-20 pb-32">
 
             <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
                 <motion.div
@@ -72,16 +72,16 @@ export default function SymptomsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-2 rounded-full mb-6">
+                    <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full mb-6">
                         <Activity className="w-5 h-5" />
                         <span className="font-semibold">Symptom Checker Guide</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                        Understand Your <span className="text-red-600">Symptoms</span>
+                        Understand Your <span className="text-emerald-600">Symptoms</span>
                     </h1>
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
                         This tool helps you understand common symptoms and decide what to do next.
-                        I’m an assistant, not a doctor — I provide educational guidance and red-flag checks only.
+                        I’m an assistant, not a doctor — I provide guidance and red-flag checks only.
                     </p>
                 </motion.div>
             </div>
@@ -92,7 +92,7 @@ export default function SymptomsPage() {
 
                     <section>
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                            <Zap className="w-6 h-6 text-red-500" />
+                            <Zap className="w-6 h-6 text-emerald-500" />
                             How it works
                         </h2>
                         <div className="grid gap-6">
@@ -103,13 +103,13 @@ export default function SymptomsPage() {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="bg-white p-6 rounded-2xl shadow-sm border border-red-100 flex gap-4 items-start"
+                                    className="bg-white p-6 rounded-2xl shadow-sm border border-emerald-100 flex gap-4 items-start"
                                 >
-                                    <div className="bg-red-50 p-3 rounded-xl shrink-0">
-                                        <item.icon className="w-6 h-6 text-red-600" />
+                                    <div className="bg-emerald-50 p-3 rounded-xl shrink-0">
+                                        <item.icon className="w-6 h-6 text-emerald-600" />
                                     </div>
                                     <div>
-                                        <span className="text-sm font-bold text-red-400 uppercase tracking-wider mb-1 block">Step 0{item.step}</span>
+                                        <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1 block">Step 0{item.step}</span>
                                         <p className="text-gray-700 leading-relaxed">{item.text}</p>
                                     </div>
                                 </motion.div>
@@ -119,7 +119,7 @@ export default function SymptomsPage() {
 
                     <section>
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                            <Heart className="w-6 h-6 text-rose-500" />
+                            <Heart className="w-6 h-6 text-emerald-500" />
                             Common self-care steps
                         </h2>
                         <div className="grid md:grid-cols-3 gap-6">
@@ -129,8 +129,8 @@ export default function SymptomsPage() {
                                     whileHover={{ y: -5 }}
                                     className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
                                 >
-                                    <div className="bg-rose-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                                        <step.icon className="w-6 h-6 text-rose-500" />
+                                    <div className="bg-emerald-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
+                                        <step.icon className="w-6 h-6 text-emerald-500" />
                                     </div>
                                     <h3 className="font-bold text-gray-900 mb-2">{step.title}</h3>
                                     <p className="text-sm text-gray-600">{step.description}</p>
@@ -158,30 +158,30 @@ export default function SymptomsPage() {
 
                 <div className="md:col-span-4 space-y-8">
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="bg-red-50 border-2 border-red-200 rounded-3xl p-6 relative overflow-hidden"
-                    >
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <AlertOctagon className="w-32 h-32 text-red-600" />
+                    <div className="max-w-4xl mx-auto mt-20">
+                        <div
+                            className="bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-6 relative overflow-hidden"
+                        >
+                            <div className="absolute -right-10 -top-10 opacity-10">
+                                <AlertOctagon className="w-32 h-32 text-emerald-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-emerald-700 mb-4 flex items-center gap-2 relative z-10">
+                                <AlertTriangle className="w-6 h-6" />
+                                Red Flags (Emergency)
+                            </h3>
+                            <p className="text-emerald-800 text-sm mb-4 font-medium relative z-10">
+                                If you experience any of these, seek immediate medical attention:
+                            </p>
+                            <ul className="grid md:grid-cols-2 gap-3 relative z-10">
+                                {redFlags.map((flag, idx) => (
+                                    <li key={idx} className="flex items-start gap-2 text-emerald-900 text-sm">
+                                        <span className="mt-1.5 w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0" />
+                                        {flag}
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <h3 className="text-xl font-bold text-red-700 mb-4 flex items-center gap-2 relative z-10">
-                            <AlertOctagon className="w-6 h-6" />
-                            Red Flags (Emergency)
-                        </h3>
-                        <p className="text-red-800 text-sm mb-4 font-medium relative z-10">
-                            Call emergency services immediately if:
-                        </p>
-                        <ul className="space-y-3 relative z-10">
-                            {redFlags.map((flag, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-red-900 text-sm">
-                                    <span className="mt-1.5 w-1.5 h-1.5 bg-red-500 rounded-full shrink-0" />
-                                    {flag}
-                                </li>
-                            ))}
-                        </ul>
-                    </motion.div>
+                    </div>
 
                     <div className="bg-orange-50 border border-orange-200 rounded-3xl p-6">
                         <h3 className="text-xl font-bold text-orange-700 mb-4 flex items-center gap-2">

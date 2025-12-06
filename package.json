@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.2",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
@@ -9,7 +10,7 @@
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.555.0",
     "node-fetch": "^3.3.2",
-    "openai": "^6.9.1",
+    "openai": "^6.10.0",
     "react-router-dom": "^7.9.6"
   },
   "name": "dr.-ai-project",
@@ -17,7 +18,8 @@
   "description": "Dr. AI — Health Information & Triage Assistant",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix Frontend\""
   },
   "repository": {
     "type": "git",
@@ -30,5 +32,8 @@
   "bugs": {
     "url": "https://github.com/Harsshitt/Dr.-AI/issues"
   },
-  "homepage": "https://github.com/Harsshitt/Dr.-AI#readme"
+  "homepage": "https://github.com/Harsshitt/Dr.-AI#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
 }

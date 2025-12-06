@@ -51,7 +51,7 @@ const AboutSafety = () => {
                     </div>
 
                     <p className="safety-note">
-                        Dr.AI is an educational tool, not a replacement for emergency medical services.
+                        Dr.AI is an informational tool, not a replacement for emergency medical services.
                     </p>
                 </div>
             </div>

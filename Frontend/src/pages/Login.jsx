@@ -45,7 +45,7 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4">
             <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
-                <h2 className="text-2xl font-semibold mb-2 text-center">Welcome back — Login</h2>
+                <h2 className="text-3xl font-bold text-center mb-6 text-emerald-700">Welcome Back — Login</h2>
                 <p className="text-sm text-gray-500 mb-6 text-center">
                     Login to continue to <span className="font-medium">Dr.AI</span>
                 </p>
@@ -61,7 +61,7 @@ export default function Login() {
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+                            className="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             placeholder="you@example.com"
                         />
                     </label>
@@ -72,25 +72,25 @@ export default function Login() {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-400"
+                            className="mt-1 block w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                             placeholder="your password"
                         />
                     </label>
 
                     <button
                         type="submit"
-                        className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white py-2 rounded-lg font-medium hover:shadow-lg transition"
+                        className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-emerald-200 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center"
                     >
                         Login
                     </button>
                 </form>
 
-                <div className="mt-4 text-center text-sm text-gray-600">
+                <p className="text-center mt-6 text-gray-600">
                     Don't have an account?{" "}
-                    <Link to="/signup" className="text-red-600 font-medium hover:underline">
-                        Sign up
+                    <Link to="/signup" className="text-emerald-600 font-semibold hover:text-emerald-700">
+                        Sign Up
                     </Link>
-                </div>
+                </p>
             </div>
         </div>
     );

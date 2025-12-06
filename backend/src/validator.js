@@ -1,4 +1,4 @@
-const Ajv = require("ajv");
+import Ajv from "ajv";
 const ajv = new Ajv();
 
 const schema = {
@@ -15,8 +15,7 @@ const schema = {
 
 const validate = ajv.compile(schema);
 
-function validateJSON(obj) {
+export function validateJSON(obj) {
   return { valid: validate(obj), errors: validate.errors };
 }
 
-module.exports = { validateJSON };
