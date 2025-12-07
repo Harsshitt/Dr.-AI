@@ -13,6 +13,8 @@ import {
   Bot as BotIcon,
 } from "lucide-react";
 import { generateHealthResponse } from "../lib/aiHealthEngine";
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 
 export default function ChatPage() {
@@ -222,8 +224,32 @@ export default function ChatPage() {
                   </div>
                 )}
 
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 whitespace-pre-line ${m.sender === "user" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
-                  <div className="text-sm leading-relaxed">{m.text}</div>
+
+
+
+
+                <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${m.sender === "user" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
+                  <div className="text-sm leading-relaxed">
+                    {m.sender === "user" ? (
+                      m.text
+                    ) : (
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          ul: ({ node, ...props }) => <ul className="list-disc ml-4 my-2" {...props} />,
+                          ol: ({ node, ...props }) => <ol className="list-decimal ml-4 my-2" {...props} />,
+                          h1: ({ node, ...props }) => <h1 className="text-lg font-bold my-2" {...props} />,
+                          h2: ({ node, ...props }) => <h2 className="text-base font-bold my-2" {...props} />,
+                          h3: ({ node, ...props }) => <h3 className="text-sm font-bold my-1" {...props} />,
+                          p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                          strong: ({ node, ...props }) => <strong className="font-semibold text-emerald-800" {...props} />,
+                          a: ({ node, ...props }) => <a className="text-emerald-600 underline hover:text-emerald-700" target="_blank" rel="noopener noreferrer" {...props} />,
+                        }}
+                      >
+                        {m.text}
+                      </ReactMarkdown>
+                    )}
+                  </div>
 
                   {m.structuredData?.urgency && <div className="text-xs mt-2 inline-block bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Urgency: {m.structuredData.urgency}</div>}
 

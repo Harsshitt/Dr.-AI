@@ -1,1 +1,37 @@
 @import "tailwindcss";
+
+@layer utilities {
+    .liquid-glass {
+        @apply bg-emerald-50/70 backdrop-blur-xl border border-emerald-100/40;
+        box-shadow: 0 8px 32px 0 rgba(5, 150, 105, 0.1);
+    }
+
+    /* Dark mode support (optional, if app supports it, good to have ready) */
+    @media (prefers-color-scheme: dark) {
+        .liquid-glass {
+            @apply bg-black/20 border-white/10;
+        }
+    }
+
+    .glass-btn {
+        @apply relative overflow-hidden transition-all duration-300 bg-gradient-to-br from-emerald-500/90 to-teal-600/90 text-white font-semibold shadow-lg shadow-emerald-500/20 border border-white/20 backdrop-blur-md;
+    }
+
+    .glass-btn:hover {
+        @apply scale-[1.02] shadow-emerald-500/40 brightness-110;
+    }
+
+    .glass-btn:active {
+        @apply scale-[0.98];
+    }
+
+    /* Shimmer effect for buttons */
+    .glass-btn::after {
+        content: '';
+        @apply absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 transition-all duration-700 ease-in-out;
+    }
+
+    .glass-btn:hover::after {
+        @apply left-full;
+    }
+}
