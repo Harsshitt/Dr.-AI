@@ -23,6 +23,19 @@ export default function Navbar() {
   // Show Sign Out only if authenticated AND not on auth pages
   const showSignOut = isAuthenticated && !isAuthPage;
 
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - left - width / 2) / 5; // Higher sensitivity for smaller element
+    const y = (e.clientY - top - height / 2) / 5;
+    setTilt({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
   return (
     <>
       <style>{`
@@ -30,7 +43,7 @@ export default function Navbar() {
         .drai-wrap { max-width: 100%; margin: 0 auto; padding: 0 32px; }
         .drai-row { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 
-        .drai-left { display:flex; align-items:center; gap:12px; }
+        .drai-left { display:flex; align-items:center; gap:12px; perspective: 500px; } /* Added perspective */
         .drai-logo { font-weight:700; font-size:20px; color:#059669; text-decoration:none; }
 
         .drai-center { display:flex; align-items:center; justify-content:center; flex:1; }
@@ -135,7 +148,17 @@ export default function Navbar() {
           <div className="drai-row">
 
             <div className="drai-left">
-              <Link to="/">
+              <Link
+                to="/"
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  display: "inline-block",
+                  transformStyle: "preserve-3d",
+                  transform: `perspective(500px) rotateX(${-tilt.y}deg) rotateY(${tilt.x}deg) scale3d(1.1, 1.1, 1.1)`,
+                  transition: "transform 0.1s ease-out"
+                }}
+              >
                 <img
                   src="/dr.ai-logo.svg"
                   alt="Dr.AI logo"

@@ -71,6 +71,19 @@ export default function Signup() {
         }
     };
 
+    const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+    const handleMouseMove = (e) => {
+        const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+        const x = (e.clientX - left - width / 2) / 25; // Sensitivity
+        const y = (e.clientY - top - height / 2) / 25;
+        setTilt({ x, y });
+    };
+
+    const handleMouseLeave = () => {
+        setTilt({ x: 0, y: 0 });
+    };
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4">
 
@@ -87,9 +100,13 @@ export default function Signup() {
           to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
+        @keyframes counter-orbit {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+
         .doctor-float {
           animation: floatDoctor 3s ease-in-out infinite;
-          filter: drop-shadow(0 15px 25px rgba(16,185,129,0.45));
         }
 
         .orbit-container {
@@ -101,22 +118,36 @@ export default function Signup() {
           animation: orbit 8s linear infinite;
           pointer-events: none;
         }
+
+        .plus-stable {
+          animation: counter-orbit 8s linear infinite;
+        }
       `}</style>
 
             <div className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-10 md:gap-32 px-4 md:px-12">
 
-                {/* ✅ LEFT SIDE: DOCTOR IMAGE */}
-                <div className="flex-1 flex justify-center items-center relative">
-                    <div className="relative">
+                {/* ✅ LEFT SIDE: DOCTOR IMAGE (4D TILT EFFECT) */}
+                <div className="flex-1 flex justify-center items-center relative perspective-1000">
+                    <div
+                        className="relative doctor-float"
+                        onMouseMove={handleMouseMove}
+                        onMouseLeave={handleMouseLeave}
+                        style={{
+                            transformStyle: "preserve-3d",
+                        }}
+                    >
                         <img
                             src="/doctor-ai.png"
                             alt="Doctor & AI"
-                            className="w-64 md:w-96 doctor-float object-contain relative z-10"
+                            className="w-64 md:w-96 object-contain relative z-10 transition-transform duration-100 ease-out"
+                            style={{
+                                transform: `perspective(1000px) rotateX(${-tilt.y}deg) rotateY(${tilt.x}deg) scale3d(1.05, 1.05, 1.05)`,
+                            }}
                         />
 
                         {/* 🏥 ORBITING RED PLUS SYMBOL */}
-                        <div className="orbit-container">
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500 text-6xl font-bold filter drop-shadow-md">
+                        <div className="orbit-container" style={{ transform: `translateZ(50px)` }}>
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-red-500 text-6xl font-bold filter drop-shadow-md plus-stable">
                                 +
                             </div>
                         </div>
