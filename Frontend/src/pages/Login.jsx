@@ -44,7 +44,7 @@ export default function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-4 md:p-6">
                 <h2 className="text-3xl font-bold text-center mb-6 text-emerald-700">Welcome Back — Login</h2>
                 <p className="text-sm text-gray-500 mb-6 text-center">
                     Login to continue to <span className="font-medium">Dr.AI</span>

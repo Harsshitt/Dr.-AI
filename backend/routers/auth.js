@@ -1,15 +1,17 @@
-// routes/auth.js (MOCK MODE - IN MEMORY)
+
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-// MOCK DATABASE
-const users = [];
+import User from '../models/User.js'; // MongoDB Model
+import { sendEmail } from '../utils/mailer.js';
 
 const router = express.Router();
 
 const JWT_SECRET = process.env.JWT_SECRET || 'change_this_secret';
 const JWT_EXPIRES = process.env.JWT_EXPIRES || '7d';
+
+// OTP Store (In-Memory for ephemeral codes)
+const otpStore = {};
 
 // Password validation helper
 const validatePassword = (password) => {
@@ -22,18 +24,101 @@ const validatePassword = (password) => {
     return "";
 };
 
+// POST /api/auth/send-otp
+router.post('/send-otp', async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) return res.status(400).json({ ok: false, message: "Email is required." });
+
+        const normalizedEmail = String(email).toLowerCase().trim();
+
+        // Check if user already exists in DB
+        const existing = await User.findOne({ email: normalizedEmail });
+        if (existing) {
+            return res.status(400).json({ ok: false, message: 'Email already registered.' });
+        }
+
+        // Generate 6-digit OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Store OTP (expires in 10 mins)
+        otpStore[normalizedEmail] = {
+            otp,
+            expires: Date.now() + 10 * 60 * 1000
+        };
+
+        // Send Email
+        await sendEmail(normalizedEmail, "Your Dr.AI Verification Code", `Your OTP code is: ${otp} `);
+
+        console.log(`[OTP] Generated for ${normalizedEmail}: ${otp} `);
+
+        res.json({ ok: true, message: "OTP sent to your email." });
+    } catch (err) {
+        console.error("Send OTP Error:", err);
+        res.status(500).json({ ok: false, message: "Failed to send OTP." });
+    }
+});
+
+// POST /api/auth/verify-otp
+router.post('/verify-otp', async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+        if (!email || !otp) return res.status(400).json({ ok: false, message: "Email and OTP required." });
+
+        const normalizedEmail = String(email).toLowerCase().trim();
+        const record = otpStore[normalizedEmail];
+
+        if (!record) {
+            return res.status(400).json({ ok: false, message: "No OTP found. Request a new one." });
+        }
+
+        if (Date.now() > record.expires) {
+            delete otpStore[normalizedEmail];
+            return res.status(400).json({ ok: false, message: "OTP expired. Request a new one." });
+        }
+
+        if (record.otp !== otp) {
+            return res.status(400).json({ ok: false, message: "Invalid OTP." });
+        }
+
+        // OTP Verified - Generate a temporary verification token
+        // This token proves the user verified this email
+        const verificationToken = jwt.sign({ email: normalizedEmail, verified: true }, JWT_SECRET, { expiresIn: '15m' });
+
+        delete otpStore[normalizedEmail]; // Clear used OTP
+        res.json({ ok: true, message: "Email verified successfully.", verificationToken });
+
+    } catch (err) {
+        console.error("Verify OTP Error:", err);
+        res.status(500).json({ ok: false, message: "Verification failed." });
+    }
+});
+
 // POST /api/auth/signup
 router.post('/signup', async (req, res) => {
     try {
-        const { name = '', email = '', password = '', dob = '', sex = '' } = req.body;
+        const { name = '', email = '', password = '', dob = '', sex = '', verificationToken } = req.body;
 
         // basic checks
         if (!name.trim() || !email.trim() || !password || !dob || !sex) {
-            return res.status(400).json({ ok: false, message: 'Please provide all fields (name, email, password, dob, sex).' });
+            return res.status(400).json({ ok: false, message: 'Please provide all fields.' });
         }
 
-        // normalize email
+        if (!verificationToken) {
+            return res.status(400).json({ ok: false, message: 'Email verification required.' });
+        }
+
         const normalizedEmail = String(email).toLowerCase().trim();
+
+        // Verify the token
+        try {
+            const decoded = jwt.verify(verificationToken, JWT_SECRET);
+            if (decoded.email !== normalizedEmail || !decoded.verified) {
+                return res.status(400).json({ ok: false, message: 'Invalid verification token.' });
+            }
+        } catch (e) {
+            return res.status(400).json({ ok: false, message: 'Verification token expired or invalid.' });
+        }
 
         // email basic regex
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,8 +132,8 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ ok: false, message: passErr });
         }
 
-        // check existing user (in memory)
-        const existing = users.find(u => u.email === normalizedEmail);
+        // check existing user in DB
+        const existing = await User.findOne({ email: normalizedEmail });
         if (existing) {
             return res.status(400).json({ ok: false, message: 'Email already registered.' });
         }
@@ -57,26 +142,24 @@ router.post('/signup', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        // create user
-        const newUser = {
-            _id: Date.now().toString(), // Mock ID
+        // create user in DB
+        const newUser = await User.create({
             name: name.trim(),
             email: normalizedEmail,
             passwordHash,
             dob,
             sex
-        };
+        });
 
-        users.push(newUser);
-        console.log(`[MOCK DB] User created: ${newUser.email} (Total users: ${users.length})`);
+        console.log(`[DB] User created: ${newUser.email} `);
 
-        // generate token
+        // generate auth token
         const token = jwt.sign({ id: newUser._id, email: newUser.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES });
 
         // respond
         return res.json({
             ok: true,
-            message: 'Account created (Mock Mode).',
+            message: 'Account created successfully.',
             token,
             user: { id: newUser._id, name: newUser.name, email: newUser.email }
         });
@@ -96,8 +179,8 @@ router.post('/login', async (req, res) => {
 
         const normalizedEmail = String(email).toLowerCase().trim();
 
-        // Find user in memory
-        const user = users.find(u => u.email === normalizedEmail);
+        // Find user in DB
+        const user = await User.findOne({ email: normalizedEmail });
         if (!user) return res.status(400).json({ ok: false, message: 'Invalid credentials.' });
 
         const isMatch = await bcrypt.compare(password, user.passwordHash);
@@ -107,7 +190,7 @@ router.post('/login', async (req, res) => {
 
         return res.json({
             ok: true,
-            message: 'Login successful (Mock Mode).',
+            message: 'Login successful.',
             token,
             user: { id: user._id, name: user.name, email: user.email }
         });
@@ -118,3 +201,4 @@ router.post('/login', async (req, res) => {
 });
 
 export default router;
+

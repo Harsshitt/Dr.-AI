@@ -26,10 +26,76 @@ export default function Signup() {
         return "";
     };
 
+    const [otp, setOtp] = useState("");
+    const [otpSent, setOtpSent] = useState(false);
+    const [otpVerified, setOtpVerified] = useState(false);
+    const [verificationToken, setVerificationToken] = useState("");
+
+    const handleSendOtp = async () => {
+        if (!email || !email.includes("@")) {
+            setError("Please enter a valid email first.");
+            return;
+        }
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:5001/api/auth/send-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setOtpSent(true);
+                setSuccess("OTP sent to " + email);
+                setError("");
+            } else {
+                setError(data.message || "Failed to send OTP");
+            }
+        } catch (err) {
+            setError("Server error sending OTP");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleVerifyOtp = async () => {
+        if (!otp) {
+            setError("Please enter the OTP.");
+            return;
+        }
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:5001/api/auth/verify-otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, otp }),
+            });
+            const data = await res.json();
+            if (res.ok) {
+                setOtpVerified(true);
+                setVerificationToken(data.verificationToken); // Store token
+                setSuccess("Email verified successfully!");
+                setError("");
+                setOtpSent(false);
+            } else {
+                setError(data.message || "Invalid OTP");
+            }
+        } catch (err) {
+            setError("Server error verifying OTP");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
         setSuccess("");
+
+        if (!otpVerified || !verificationToken) {
+            setError("Please verify your email first.");
+            return;
+        }
 
         if (!name || !email || !dob || !sex || !password || !confirm) {
             setError("Please fill all fields.");
@@ -52,7 +118,7 @@ export default function Signup() {
             const response = await fetch("http://localhost:5001/api/auth/signup", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, dob, sex, password }),
+                body: JSON.stringify({ name, email, dob, sex, password, verificationToken }), // Send token
             });
 
             const data = await response.json();
@@ -122,12 +188,21 @@ export default function Signup() {
         .plus-stable {
           animation: counter-orbit 8s linear infinite;
         }
+        
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.3s ease-out forwards;
+        }
       `}</style>
 
-            <div className="w-full max-w-7xl flex flex-col md:flex-row items-center justify-between gap-10 md:gap-32 px-4 md:px-12">
+            <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-16 lg:gap-32 px-4 md:px-8 lg:px-12">
 
                 {/* ✅ LEFT SIDE: DOCTOR IMAGE (4D TILT EFFECT) */}
-                <div className="flex-1 flex justify-center items-center relative perspective-1000">
+                <div className="flex-1 flex justify-center items-center relative perspective-1000 w-full">
                     <div
                         className="relative doctor-float"
                         onMouseMove={handleMouseMove}
@@ -139,7 +214,7 @@ export default function Signup() {
                         <img
                             src="/doctor-ai.png"
                             alt="Doctor & AI"
-                            className="w-64 md:w-96 object-contain relative z-10 transition-transform duration-100 ease-out"
+                            className="w-48 md:w-72 lg:w-96 object-contain relative z-10 transition-transform duration-100 ease-out"
                             style={{
                                 transform: `perspective(1000px) rotateX(${-tilt.y}deg) rotateY(${tilt.x}deg) scale3d(1.05, 1.05, 1.05)`,
                             }}
@@ -176,8 +251,54 @@ export default function Signup() {
 
                         <label className="block">
                             <span className="text-sm text-gray-700">Email</span>
-                            <input value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" placeholder="you@example.com" />
+                            <div className="flex gap-2">
+                                <input
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className={`flex-1 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none ${otpVerified ? 'bg-green-50 border-green-500' : ''}`}
+                                    placeholder="you@example.com"
+                                    disabled={otpVerified}
+                                />
+                                {!otpVerified && (
+                                    <button
+                                        type="button"
+                                        onClick={handleSendOtp}
+                                        disabled={loading || otpSent}
+                                        className="px-3 py-2 bg-emerald-100 text-emerald-700 rounded-xl text-sm font-semibold hover:bg-emerald-200 transition-colors whitespace-nowrap"
+                                    >
+                                        {otpSent ? "Sent" : "Verify"}
+                                    </button>
+                                )}
+                            </div>
                         </label>
+
+                        {/* OTP INPUT (Visible only when Sent and Not Verified) */}
+                        {otpSent && !otpVerified && (
+                            <label className="block animate-fade-in">
+                                <span className="text-sm text-gray-700">Enter OTP</span>
+                                <div className="flex gap-2">
+                                    <input
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                handleVerifyOtp();
+                                            }
+                                        }}
+                                        className="flex-1 px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
+                                        placeholder="6-digit code"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleVerifyOtp}
+                                        className="px-3 py-2 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-colors"
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </label>
+                        )}
 
                         <div className="grid grid-cols-2 gap-3">
                             <label className="block">
@@ -185,7 +306,7 @@ export default function Signup() {
                                 <input type="date" value={dob} onChange={(e) => setDob(e.target.value)} className="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none text-sm" required />
                             </label>
                             <label className="block">
-                                <span className="text-sm text-gray-700">Sex</span>
+                                <span className="text-sm text-gray-700">Gender</span>
                                 <select value={sex} onChange={(e) => setSex(e.target.value)} className="w-full px-3 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none bg-white text-sm" required>
                                     <option value="">Select</option>
                                     <option value="male">Male</option>
@@ -205,8 +326,8 @@ export default function Signup() {
                             <input type="password" placeholder="Repeat password" value={confirm} onChange={(e) => setConfirm(e.target.value)} className="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none" />
                         </label>
 
-                        <button disabled={loading} className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-emerald-200 transition-all mt-2">
-                            {loading ? "Creating..." : "Create account"}
+                        <button disabled={loading || !otpVerified} className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-emerald-200 transition-all mt-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            {loading ? "Processing..." : "Create account"}
                         </button>
                     </form>
 
