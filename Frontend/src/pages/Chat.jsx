@@ -42,7 +42,41 @@ export default function ChatPage() {
     { icon: Heart, label: "Prevention Tips", text: "What are some prevention tips?" },
   ];
 
-  useEffect(() => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }), [messages]);
+  // Load user for history saving
+  const [userEmail, setUserEmail] = useState("");
+
+  useEffect(() => {
+    try {
+      const user = JSON.parse(localStorage.getItem("dr_ai_user") || "{}");
+      if (user.email) setUserEmail(user.email);
+    } catch (e) { console.error(e); }
+  }, []);
+
+  // Save/Load History
+  useEffect(() => {
+    if (!userEmail) return;
+
+    const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
+    const storageKey = `dr_ai_chat_history_${userEmail}`;
+
+    // On mount, load today's chat if empty (optional, or we can just append)
+    // For now, we'll just save continuously. 
+
+    // Save to local storage on message update
+    if (messages.length > 1) { // Only save if we have actual messages
+      try {
+        const history = JSON.parse(localStorage.getItem(storageKey) || "{}");
+        history[today] = messages;
+        localStorage.setItem(storageKey, JSON.stringify(history));
+      } catch (e) { console.error("Failed to save chat", e); }
+    }
+  }, [messages, userEmail]);
+
+  useEffect(() => {
+    if (messages.length > 1) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   // ---------------------------
   // Configure your endpoints here:
@@ -190,7 +224,7 @@ export default function ChatPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex flex-col">
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-28 pb-32 flex flex-col">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-6 pb-4 flex flex-col">
 
         {messages.length <= 1 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
@@ -304,7 +338,7 @@ export default function ChatPage() {
             </button>
           </div>
 
-          <p className="text-xs text-gray-500 mt-3 text-center"><Sparkles className="inline-block w-3 h-3 mr-1" />Informational purposes only — Not medical advice</p>
+          <p className="text-xs text-gray-500 mt-3 text-center"><Sparkles className="inline-block w-3 h-3 mr-1" />Informational purpose and medical diagnosis</p>
         </div>
       </main>
     </div>

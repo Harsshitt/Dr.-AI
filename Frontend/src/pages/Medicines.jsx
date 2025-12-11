@@ -20,7 +20,7 @@ import {
 
 export default function Medicines() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-20 pb-32">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-6 pb-4">
 
       <section className="relative py-16 px-6 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -44,7 +44,7 @@ export default function Medicines() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl mb-4 font-semibold text-gray-900">Medicines — General Guide</h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               This section helps you understand medicines — what they do, common side effects, safety warnings, and who should avoid them.
-              I’m an assistant, not a clinician — this is informational info only, not personalized medical advice.
+              I’m an assistant, not a clinician — this is for informational purpose and medical diagnosis.
             </p>
 
             <motion.div className="mt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
@@ -158,7 +158,7 @@ export default function Medicines() {
           <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center">
             <h3 className="text-xl font-semibold mb-2 text-gray-900">Disclaimer</h3>
             <p className="text-gray-700 text-sm mb-4">
-              I provide <strong>informational guidance only</strong>. For any medicine-related decision, consult a clinician or pharmacist.
+              I provide <strong>informational purpose and medical diagnosis</strong>. For any medicine-related decision, consult a clinician or pharmacist.
             </p>
           </motion.div>
         </div>

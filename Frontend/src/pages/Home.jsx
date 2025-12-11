@@ -239,7 +239,7 @@ export default function Home() {
 
             <div className="mt-8 flex items-center gap-2 text-sm text-gray-500 justify-center lg:justify-start">
               <CheckCircle2 className="w-4 h-4 text-green-600" />
-              <span>Informational only — not a medical diagnosis</span>
+              <span>Informational purpose and medical diagnosis</span>
             </div>
           </motion.div>
 
@@ -441,7 +441,7 @@ export default function Home() {
               <div>
                 <h3 className="text-3xl mb-4">Important Safety Information</h3>
                 <p className="text-gray-700 text-lg leading-relaxed mb-4">
-                  Dr.AI is an <strong>informational tool</strong>, not a medical professional. For
+                  Dr.AI is an <strong>informational purpose and medical diagnosis</strong> tool. For
                   emergencies like severe chest pain, difficulty breathing, or signs of stroke,{" "}
                   <strong>seek emergency care immediately</strong>.
                 </p>

@@ -151,7 +151,7 @@ export default function Signup() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4">
+        <div className="w-full flex items-start justify-center bg-gradient-to-br from-gray-50 to-white p-4 pt-10">
 
             {/* ✅ INLINE CSS ADDED HERE */}
             <style>{`

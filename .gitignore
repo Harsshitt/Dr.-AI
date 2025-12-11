@@ -1,4 +1,15 @@
+# Environment
+.env
+.env.local
+.env.*
 backend/.env
+Frontend/.env
+
+# Dependencies
 node_modules/
-backend/.env
-node_modules/
+
+# System
+.DS_Store
+dist/
+build/
+*.log

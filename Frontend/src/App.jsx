@@ -13,6 +13,10 @@ import About from "./pages/About";
 import SymptomsPage from "./pages/SymptomsPage";
 import Medicines from "./pages/Medicines";
 import ChatPage from "./pages/Chat"; // ensure this file exists (or use your Chat.jsx)
+import Profile from "./pages/Profile";
+import MedicalHistory from "./pages/MedicalHistory";
+import Appointments from "./pages/Appointments";
+import Settings from "./pages/Settings";
 
 export default function AppRouter() {
   return (
@@ -20,16 +24,22 @@ export default function AppRouter() {
       <ScrollToTop />
       <Navbar />
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/chat" element={<ChatPage />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/symptoms" element={<SymptomsPage />} />
-        <Route path="/meds" element={<Medicines />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+      <main className="pt-[70px] pb-[70px] min-h-screen">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/symptoms" element={<SymptomsPage />} />
+          <Route path="/meds" element={<Medicines />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/history" element={<MedicalHistory />} />
+          <Route path="/appointments" element={<Appointments />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </main>
 
       <Footer />
     </BrowserRouter>

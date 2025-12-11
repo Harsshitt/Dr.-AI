@@ -1,5 +1,6 @@
 // src/pages/About.jsx
 import React from "react";
+import { Stethoscope, Pill, FileText, Map, ShieldCheck, Clock } from "lucide-react";
 
 function About() {
   return (
@@ -301,7 +302,7 @@ function About() {
             </p>
 
             <div style={styles.badgeWrap}>
-              <span style={styles.badgeInner}>Informational assistant — not a medical professional</span>
+              <span style={styles.badgeInner}>Informational purpose and medical diagnosis</span>
             </div>
           </div>
 
@@ -327,7 +328,7 @@ function About() {
               Provide clear, compassionate, evidence-informed guidance that reduces unnecessary worry
               while helping spot red flags early.
             </p>
-            <p style={styles.missionNote}>Always informational — never a medical diagnosis or prescription.</p>
+            <p style={styles.missionNote}>Informational purpose and medical diagnosis.</p>
           </div>
         </div>
       </div>
@@ -442,12 +443,12 @@ const SafetySection = () => (
 
 const FeaturesGrid = () => {
   const features = [
-    { title: "Symptom Triage", text: "Estimate urgency + suggest safe self-care.", color: "#ff5a9e" },
-    { title: "Medication Guide", text: "Understand medicines, side effects & warnings.", color: "#9b6bff" },
-    { title: "Lab Report Help", text: "Explain test meanings + abnormal values.", color: "#11c26d" },
-    { title: "Care Navigation", text: "Find the right care: ER, urgent, or clinic.", color: "#ff9a2b" },
-    { title: "Prevention Tips", text: "Lifestyle guidance & early warning signs.", color: "#2fb3ff" },
-    { title: "24/7 Availability", text: "Instant help anytime.", color: "#9b9bff" },
+    { title: "Symptom Triage", text: "Estimate urgency + suggest safe self-care.", color: "#ff5a9e", icon: <Stethoscope className="text-white w-7 h-7" /> },
+    { title: "Medication Guide", text: "Understand medicines, side effects & warnings.", color: "#9b6bff", icon: <Pill className="text-white w-7 h-7" /> },
+    { title: "Lab Report Help", text: "Explain test meanings + abnormal values.", color: "#11c26d", icon: <FileText className="text-white w-7 h-7" /> },
+    { title: "Care Navigation", text: "Find the right care: ER, urgent, or clinic.", color: "#ff9a2b", icon: <Map className="text-white w-7 h-7" /> },
+    { title: "Prevention Tips", text: "Lifestyle guidance & early warning signs.", color: "#2fb3ff", icon: <ShieldCheck className="text-white w-7 h-7" /> },
+    { title: "24/7 Availability", text: "Instant help anytime.", color: "#9b9bff", icon: <Clock className="text-white w-7 h-7" /> },
   ];
 
   return (
@@ -457,7 +458,9 @@ const FeaturesGrid = () => {
       <div className="af-grid">
         {features.map((f, i) => (
           <article key={i} className="af-card">
-            <div className="af-icon" style={{ background: f.color }}></div>
+            <div className="af-icon" style={{ background: f.color }}>
+              {f.icon}
+            </div>
             <div className="af-body">
               <h3 className="af-heading">{f.title}</h3>
               <p className="af-text">{f.text}</p>
@@ -482,7 +485,7 @@ const PrivacyUse = () => (
       <div style={privacyStyles.content}>
         <h3 style={privacyStyles.title}>Privacy & Use</h3>
         <p style={privacyStyles.paragraph}>
-          The assistant provides informational content only. Treat personal data carefully.
+          The assistant provides informational purpose and medical diagnosis. Treat personal data carefully.
         </p>
         <p style={privacyStyles.paragraph}>
           If you want something deleted, tell us — if supported, we will remove it.
@@ -497,7 +500,7 @@ const Disclaimer = () => (
     <div style={privacyStyles.disclaimerBox}>
       <strong>Disclaimer:</strong>{" "}
       <span style={privacyStyles.disclaimerText}>
-        I am a health information assistant — not a doctor. This is not a diagnosis.
+        Informational purpose and medical diagnosis.
         For emergencies, contact medical services immediately.
       </span>
     </div>
@@ -512,8 +515,8 @@ const styles = {
     background: "#ffffff",
     fontFamily: "'Inter', system-ui",
     color: "#0b1b2b",
-    paddingTop: 80,
-    paddingBottom: 120,
+    paddingTop: 0,
+    paddingBottom: 0,
   },
 
   heroWrap: {

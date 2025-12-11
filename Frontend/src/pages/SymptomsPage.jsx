@@ -64,7 +64,7 @@ export default function SymptomsPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-20 pb-32">
+        <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-6 pb-4">
 
             <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
                 <motion.div
@@ -160,22 +160,22 @@ export default function SymptomsPage() {
 
                     <div className="max-w-4xl mx-auto mt-20">
                         <div
-                            className="bg-emerald-50 border-2 border-emerald-200 rounded-3xl p-6 relative overflow-hidden"
+                            className="bg-orange-50 border-2 border-orange-200 rounded-3xl p-6 relative overflow-hidden"
                         >
                             <div className="absolute -right-10 -top-10 opacity-10">
-                                <AlertOctagon className="w-32 h-32 text-emerald-600" />
+                                <AlertOctagon className="w-32 h-32 text-orange-600" />
                             </div>
-                            <h3 className="text-xl font-bold text-emerald-700 mb-4 flex items-center gap-2 relative z-10">
+                            <h3 className="text-xl font-bold text-orange-700 mb-4 flex items-center gap-2 relative z-10">
                                 <AlertTriangle className="w-6 h-6" />
                                 Red Flags (Emergency)
                             </h3>
-                            <p className="text-emerald-800 text-sm mb-4 font-medium relative z-10">
+                            <p className="text-orange-800 text-sm mb-4 font-medium relative z-10">
                                 If you experience any of these, seek immediate medical attention:
                             </p>
                             <ul className="grid md:grid-cols-2 gap-3 relative z-10">
                                 {redFlags.map((flag, idx) => (
-                                    <li key={idx} className="flex items-start gap-2 text-emerald-900 text-sm">
-                                        <span className="mt-1.5 w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0" />
+                                    <li key={idx} className="flex items-start gap-2 text-orange-900 text-sm">
+                                        <span className="mt-1.5 w-1.5 h-1.5 bg-orange-500 rounded-full shrink-0" />
                                         {flag}
                                     </li>
                                 ))}

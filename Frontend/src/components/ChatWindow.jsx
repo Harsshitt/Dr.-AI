@@ -129,7 +129,7 @@ export default function ChatWindow() {
         </form>
         <div className="text-center mt-2">
           <p className="text-xs text-gray-400">
-            Dr. AI provides informational content, not medical advice. In emergencies, call local services.
+            Dr. AI provides informational purpose and medical diagnosis. In emergencies, call local services.
           </p>
         </div>
       </div>

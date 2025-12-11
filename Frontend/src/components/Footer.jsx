@@ -2,15 +2,15 @@ import React from "react";
 
 export default function Footer() {
     return (
-        <footer className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-40">
-            <div className="liquid-glass rounded-2xl px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+        <footer className="fixed bottom-0 left-0 w-full z-40">
+            <div className="liquid-glass border-t border-emerald-100/50 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_24px_rgba(0,0,0,0.03)] backdrop-blur-md">
 
                 <div className="text-sm font-medium text-emerald-900/80">
                     © {new Date().getFullYear()} Dr.AI Health Assistant
                 </div>
 
                 <div className="text-xs text-emerald-800/60 hidden md:block px-4 py-1 rounded-full bg-emerald-50/50 border border-emerald-100/50 backdrop-blur-sm">
-                    For informational purposes only. Not medical advice.
+                    For informational purpose and medical advice.
                 </div>
 
                 <div className="flex items-center gap-5">

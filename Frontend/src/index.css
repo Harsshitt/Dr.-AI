@@ -2,8 +2,8 @@
 
 @layer utilities {
     .liquid-glass {
-        @apply bg-emerald-50/70 backdrop-blur-xl border border-emerald-100/40;
-        box-shadow: 0 8px 32px 0 rgba(5, 150, 105, 0.1);
+        @apply bg-gradient-to-br from-emerald-50/80 via-white/60 to-teal-50/80 backdrop-blur-xl border border-emerald-100/50;
+        box-shadow: 0 8px 32px 0 rgba(5, 150, 105, 0.08);
     }
 
     /* Dark mode support (optional, if app supports it, good to have ready) */
