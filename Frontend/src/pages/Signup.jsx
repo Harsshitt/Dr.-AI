@@ -49,9 +49,10 @@ export default function Signup() {
                 setSuccess("OTP sent to " + email);
                 setError("");
 
-                // Dev helper: Show OTP if returned (when email not configured)
-                if (data.debugOtp) {
-                    alert("DEV MODE OTP: " + data.debugOtp);
+                // MOCK MODE SUPPORT: Auto-fill OTP if backend returns it
+                if (data.otp) {
+                    setOtp(data.otp);
+                    alert(`[DEV MODE] Your OTP is: ${data.otp}`);
                 }
             } else {
                 setError(data.message || "Failed to send OTP");

@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken"; // For usage tracking
 import User from "./models/User.js"; // For usage tracking
 import authRoutes from "./routers/auth.js";
 import paymentRoutes from "./routers/payment.js";
+import { connectDB } from "./utils/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,15 +21,15 @@ app.use(express.json());
 
 // ENV CONFIG
 const PORT = process.env.PORT || 5001;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/dr-ai";
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY?.trim();
+const GEMINI_MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-1.5-flash";
+
+// --- Connect to DB (Mongo or Mock) ---
+connectDB();
 
 // Initialize Gemini
-// ... (code omitted)
-
-// --- MongoDB ---
-// ... (code omitted)
+const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
+const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/payment", paymentRoutes);
@@ -109,7 +110,7 @@ app.post("/api/chat", async (req, res) => {
 - ENABLE all premium features (Timeline Generation, Detailed Report Analysis, Medication Calendars).
 - DO NOT UPSELL. Perform these tasks immediately if requested.
 - FORMAT timelines/calendars as Markdown Tables.
-`;
+  `;
     }
 
     // 3. Simple Context (Mock)
@@ -159,9 +160,8 @@ IMPORTANT: Respond in valid JSON format as defined in the system prompt.
   } catch (err) {
     console.error("❌ /api/chat error:", err);
     return res.status(500).json({
-      ok: false,
-      error: "server_error",
-      message: err.message || "Unexpected server error",
+      reply: "I encountered a server error. Please try again later.",
+      error: "server_error"
     });
   }
 });
