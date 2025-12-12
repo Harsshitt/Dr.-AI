@@ -14,9 +14,12 @@ if (process.env.STRIPE_SECRET_KEY) {
 // POST /api/payment/create-checkout-session
 router.post("/create-checkout-session", async (req, res) => {
     try {
-        if (!stripe) return res.status(503).json({ error: "Stripe not configured" });
-
         const { origin } = req.body; // e.g. "http://localhost:5173"
+
+        if (!stripe) {
+            console.warn("⚠️ Using Mock Payment Flow (Stripe key missing)");
+            return res.json({ url: `${origin}/payment/success?session_id=mock_session_${Date.now()}` });
+        }
 
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'hosted',
@@ -50,9 +53,15 @@ router.post("/create-checkout-session", async (req, res) => {
 // POST /api/payment/verify
 router.post("/verify", async (req, res) => {
     try {
-        if (!stripe) return res.status(503).json({ error: "Stripe not configured" });
-
         const { sessionId } = req.body;
+
+        if (!stripe) {
+            if (sessionId && sessionId.startsWith("mock_session_")) {
+                return res.json({ verified: true });
+            }
+            return res.status(503).json({ error: "Stripe not configured and invalid mock session" });
+        }
+
         const session = await stripe.checkout.sessions.retrieve(sessionId);
 
         if (session.payment_status === "paid") {

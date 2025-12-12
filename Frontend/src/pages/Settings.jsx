@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { useNavigate } from "react-router-dom";
 import {
     User, Lock, Shield, Trash2, Smartphone, Bell,
@@ -36,7 +36,7 @@ export default function Settings() {
         new: "",
         confirm: ""
     });
-    const [showPassword, setShowPassword] = useState(false);
+
 
     // Modals
     const [deleteModal, setDeleteModal] = useState(false);
@@ -203,13 +203,6 @@ export default function Settings() {
             }
             setIsLoading(false);
         }, 1500);
-    };
-
-    // Format timer
-    const formatTime = (seconds) => {
-        const m = Math.floor(seconds / 60);
-        const s = seconds % 60;
-        return `${m}:${s < 10 ? '0' : ''}${s}`;
     };
 
     // -- Render Components --

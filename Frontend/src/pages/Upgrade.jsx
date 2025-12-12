@@ -1,6 +1,7 @@
 import { Check, ShieldCheck, Zap, FileText, Calendar, Activity } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { API_BASE_URL } from "../utils/api";
 
 export default function Upgrade() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Upgrade() {
     const handleUpgrade = async () => {
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5001/api/payment/create-checkout-session", {
+            const response = await fetch(`${API_BASE_URL}/api/payment/create-checkout-session`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ origin: window.location.origin }),

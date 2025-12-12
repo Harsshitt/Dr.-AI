@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import {
+
   Stethoscope,
   Heart,
   Pill,
@@ -22,7 +22,8 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  const [hoveredCard, setHoveredCard] = useState(null);
+
+
 
   const floatingIcons = [
     { Icon: Heart, color: "text-emerald-400", top: "12%", left: "8%", delay: 0 },
@@ -341,10 +342,9 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: feature.delay }}
-                onHoverStart={() => setHoveredCard(index)}
-                onHoverEnd={() => setHoveredCard(null)}
                 whileHover={{ scale: 1.02 }}
                 className="relative"
+
               >
                 <div className="bg-white rounded-3xl p-8 shadow-lg transition-all border border-gray-100 h-full">
                   <div className={`bg-gradient-to-br ${feature.color} rounded-2xl p-4 w-fit mb-6`}>

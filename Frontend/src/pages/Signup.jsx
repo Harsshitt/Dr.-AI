@@ -1,6 +1,7 @@
 // src/pages/Signup.jsx
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../utils/api";
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function Signup() {
         }
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:5001/api/auth/send-otp", {
+            const res = await fetch(`${API_BASE_URL}/api/auth/send-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -71,7 +72,7 @@ export default function Signup() {
         }
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:5001/api/auth/verify-otp", {
+            const res = await fetch(`${API_BASE_URL}/api/auth/verify-otp`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, otp }),
@@ -121,7 +122,7 @@ export default function Signup() {
 
         setLoading(true);
         try {
-            const response = await fetch("http://localhost:5001/api/auth/signup", {
+            const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, dob, sex, password, verificationToken }), // Send token

@@ -1,10 +1,10 @@
 // src/pages/Chat.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+
+
 import {
   Pill,
   Send,
-  Sparkles,
   Heart,
   FlaskConical,
   User,
@@ -24,6 +24,7 @@ import {
 import { generateHealthResponse } from "../lib/aiHealthEngine";
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { API_BASE_URL } from "../utils/api";
 
 
 export default function ChatPage() {
@@ -81,7 +82,7 @@ export default function ChatPage() {
     if (!userEmail) return;
 
     const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
-    const storageKey = `dr_ai_chat_history_${userEmail}`;
+    const storageKey = `dr_ai_chat_history_${userEmail} `;
     if (messages.length > 1) {
       try {
         const history = JSON.parse(localStorage.getItem(storageKey) || "{}");
@@ -207,7 +208,7 @@ export default function ChatPage() {
   // Backend Integration
   // ---------------------------
   const endpoints = [
-    "http://localhost:5001/api/chat"
+    `${API_BASE_URL} /api/chat`
   ];
 
   const sendToBackend = async (payload) => {
@@ -225,7 +226,7 @@ export default function ChatPage() {
         let json;
         try { json = JSON.parse(raw); } catch (e) { json = raw; }
 
-        if (!res.ok) throw new Error(`Endpoint ${ep} returned ${res.status}`);
+        if (!res.ok) throw new Error(`Endpoint ${ep} returned ${res.status} `);
         return json;
       } catch (err) {
         lastErr = err;
@@ -344,14 +345,14 @@ export default function ChatPage() {
         <div className="flex-1 overflow-y-auto space-y-4 mb-4">
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
-              <motion.div key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.02 }} className={`flex gap-3 ${m.sender === "user" ? "justify-end" : "justify-start"}`}>
+              <motion.div key={m.id} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ delay: i * 0.02 }} className={`flex gap - 3 ${m.sender === "user" ? "justify-end" : "justify-start"} `}>
                 {m.sender === "bot" && (
                   <div className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-full p-2 h-10 w-10 flex items-center justify-center">
                     <BotIcon className="w-5 h-5 text-white" />
                   </div>
                 )}
 
-                <div className={`max-w-[80%] rounded-2xl px-4 py-3 ${m.sender === "user" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white" : "bg-white border border-gray-200 shadow-sm"}`}>
+                <div className={`max - w - [80 %] rounded - 2xl px - 4 py - 3 ${m.sender === "user" ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white" : "bg-white border border-gray-200 shadow-sm"} `}>
 
                   {/* Display Attached Image in History */}
                   {m.attachment && m.attachment.type === 'image' && m.attachment.preview && (
@@ -371,14 +372,17 @@ export default function ChatPage() {
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
-                          ul: ({ node, ...props }) => <ul className="list-disc ml-4 my-2" {...props} />,
-                          ol: ({ node, ...props }) => <ol className="list-decimal ml-4 my-2" {...props} />,
-                          h1: ({ node, ...props }) => <h1 className="text-lg font-bold my-2" {...props} />,
-                          h2: ({ node, ...props }) => <h2 className="text-base font-bold my-2" {...props} />,
-                          h3: ({ node, ...props }) => <h3 className="text-sm font-bold my-1" {...props} />,
-                          p: ({ node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
-                          strong: ({ node, ...props }) => <strong className="font-semibold text-emerald-800" {...props} />,
-                          a: ({ node, ...props }) => <a className="text-emerald-600 underline hover:text-emerald-700" target="_blank" rel="noopener noreferrer" {...props} />,
+                          ul: ({ node: _node, ...props }) => <ul className="list-disc ml-4 my-2" {...props} />,
+
+                          ol: ({ node: _node, ...props }) => <ol className="list-decimal ml-4 my-2" {...props} />,
+
+                          h1: ({ node: _node, ...props }) => <h1 className="text-lg font-bold my-2" {...props} />,
+                          h2: ({ node: _node, ...props }) => <h2 className="text-base font-bold my-2" {...props} />,
+                          h3: ({ node: _node, ...props }) => <h3 className="text-sm font-bold my-1" {...props} />,
+                          p: ({ node: _node, ...props }) => <p className="mb-2 last:mb-0" {...props} />,
+                          strong: ({ node: _node, ...props }) => <strong className="font-semibold text-emerald-800" {...props} />,
+                          a: ({ node: _node, ...props }) => <a className="text-emerald-600 underline hover:text-emerald-700" target="_blank" rel="noopener noreferrer" {...props} />,
+
                         }}
                       >
                         {m.text}
@@ -393,21 +397,21 @@ export default function ChatPage() {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => handleFeedback(m.id, 'like')}
-                          className={`p-1 rounded-full hover:bg-emerald-50 transition-colors ${m.feedback?.type === 'like' ? 'text-green-600 bg-green-50' : 'text-gray-400'}`}
+                          className={`p - 1 rounded - full hover: bg - emerald - 50 transition - colors ${m.feedback?.type === 'like' ? 'text-green-600 bg-green-50' : 'text-gray-400'} `}
                           title="Helpful"
                         >
                           <ThumbsUp className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleFeedback(m.id, 'dislike')}
-                          className={`p-1 rounded-full hover:bg-red-50 transition-colors ${m.feedback?.type === 'dislike' ? 'text-red-600 bg-red-50' : 'text-gray-400'}`}
+                          className={`p - 1 rounded - full hover: bg - red - 50 transition - colors ${m.feedback?.type === 'dislike' ? 'text-red-600 bg-red-50' : 'text-gray-400'} `}
                           title="Not Helpful"
                         >
                           <ThumbsDown className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => startComment(m.id)}
-                          className={`p-1 rounded-full hover:bg-blue-50 transition-colors ${m.feedback?.comment || activeCommentId === m.id ? 'text-blue-600 bg-blue-50' : 'text-gray-400'}`}
+                          className={`p - 1 rounded - full hover: bg - blue - 50 transition - colors ${m.feedback?.comment || activeCommentId === m.id ? 'text-blue-600 bg-blue-50' : 'text-gray-400'} `}
                           title="Leave Feedback"
                         >
                           <MessageSquarePlus className="w-3.5 h-3.5" />
@@ -523,7 +527,7 @@ export default function ChatPage() {
             {/* INSERT BUTTON */}
             <button
               onClick={() => setShowAttachMenu(!showAttachMenu)}
-              className={`p-3 rounded-xl transition-all ${showAttachMenu ? 'bg-emerald-100 text-emerald-600 rotate-45' : 'bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600'}`}
+              className={`p - 3 rounded - xl transition - all ${showAttachMenu ? 'bg-emerald-100 text-emerald-600 rotate-45' : 'bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-600'} `}
             >
               <Plus className="w-5 h-5" />
             </button>

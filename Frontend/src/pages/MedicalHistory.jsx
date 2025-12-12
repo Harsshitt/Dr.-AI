@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { FileText, Calendar, Download, Eye, Trash2 } from "lucide-react";
+
+import { FileText, Calendar, Eye, Trash2 } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 export default function MedicalHistory() {
@@ -12,7 +12,7 @@ export default function MedicalHistory() {
             const user = JSON.parse(localStorage.getItem("dr_ai_user") || "{}");
             if (user.email) {
                 setUserEmail(user.email);
-                const stored = localStorage.getItem(`dr_ai_chat_history_${user.email}`);
+                const stored = localStorage.getItem(`dr_ai_chat_history_${user.email} `);
                 if (stored) {
                     setHistory(JSON.parse(stored));
                 }
@@ -33,7 +33,7 @@ export default function MedicalHistory() {
             const newHistory = { ...history };
             delete newHistory[deleteModal.date];
             setHistory(newHistory);
-            localStorage.setItem(`dr_ai_chat_history_${userEmail}`, JSON.stringify(newHistory));
+            localStorage.setItem(`dr_ai_chat_history_${userEmail} `, JSON.stringify(newHistory));
             setDeleteModal({ show: false, date: null });
         } catch (e) {
             console.error("Delete failed:", e);
@@ -55,8 +55,8 @@ export default function MedicalHistory() {
             // Metadata
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(10);
-            doc.text(`Patient Email: ${userEmail}`, 10, 30);
-            doc.text(`Date of Session: ${date}`, 10, 35);
+            doc.text(`Patient Email: ${userEmail} `, 10, 30);
+            doc.text(`Date of Session: ${date} `, 10, 35);
             doc.line(10, 38, 200, 38);
 
             // Content

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
+import { API_BASE_URL } from "../utils/api";
 
 export default function PaymentSuccess() {
     const [searchParams] = useSearchParams();
@@ -16,7 +17,7 @@ export default function PaymentSuccess() {
             }
 
             try {
-                const res = await fetch("http://localhost:5001/api/payment/verify", {
+                const res = await fetch(`${API_BASE_URL}/api/payment/verify`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ sessionId }),

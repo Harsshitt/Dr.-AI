@@ -1,5 +1,6 @@
 
-import { motion } from "framer-motion";
+
+
 import {
     Stethoscope,
     MessageSquare,
@@ -15,18 +16,16 @@ import {
     Shield,
     Droplet,
     Heart,
-    Phone,
-    Ambulance,
-    Calendar,
     User,
     FileText,
     Zap,
     AlertOctagon,
 } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
+
 
 export default function SymptomsPage() {
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
 
     const howItWorks = [
         { step: 1, text: "Tell the assistant your age, sex at birth, major medical conditions, allergies, and medications.", icon: User },
@@ -67,7 +66,7 @@ export default function SymptomsPage() {
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-6 pb-4">
 
             <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
-                <motion.div
+                <div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
@@ -83,7 +82,7 @@ export default function SymptomsPage() {
                         This tool helps you understand common symptoms and decide what to do next.
                         I’m an assistant, not a doctor — I provide guidance and red-flag checks only.
                     </p>
-                </motion.div>
+                </div>
             </div>
 
             <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-10">
@@ -97,7 +96,7 @@ export default function SymptomsPage() {
                         </h2>
                         <div className="grid gap-6">
                             {howItWorks.map((item, idx) => (
-                                <motion.div
+                                <div
                                     key={idx}
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
@@ -112,7 +111,7 @@ export default function SymptomsPage() {
                                         <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1 block">Step 0{item.step}</span>
                                         <p className="text-gray-700 leading-relaxed">{item.text}</p>
                                     </div>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </section>
@@ -124,7 +123,7 @@ export default function SymptomsPage() {
                         </h2>
                         <div className="grid md:grid-cols-3 gap-6">
                             {selfCareSteps.map((step, idx) => (
-                                <motion.div
+                                <div
                                     key={idx}
                                     whileHover={{ y: -5 }}
                                     className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
@@ -134,7 +133,7 @@ export default function SymptomsPage() {
                                     </div>
                                     <h3 className="font-bold text-gray-900 mb-2">{step.title}</h3>
                                     <p className="text-sm text-gray-600">{step.description}</p>
-                                </motion.div>
+                                </div>
                             ))}
                         </div>
                     </section>

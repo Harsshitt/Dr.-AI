@@ -15,9 +15,9 @@ const getTransporter = () => {
 
     return nodemailer.createTransport({
         service: "gmail",
+        port: 465,
+        secure: true, // Use SSL
         auth: { user, pass },
-        debug: true, // Enable debug output
-        logger: true  // Log information to console
     });
 };
 
@@ -31,7 +31,8 @@ export const sendEmail = async (to, subject, text) => {
 
     try {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: `"Dr. AI Security Team" <${process.env.EMAIL_USER}>`,
+            replyTo: "no-reply@dr-ai.com",
             to,
             subject,
             text,

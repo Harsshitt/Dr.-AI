@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from "react";
+
 import { MapPin, Search, Calendar as CalendarIcon, ExternalLink, Stethoscope, Star, Navigation, X, Clock, GraduationCap, Languages } from "lucide-react";
 
 // Mock Data for Hospitals and Doctors
@@ -122,14 +122,14 @@ export default function Appointments() {
         try {
             // Overpass API query to find hospitals within 50km (50000m)
             const query = `
-                [out:json];
-                (
-                  node["amenity"="hospital"](around:50000, ${lat}, ${lon});
-                  way["amenity"="hospital"](around:50000, ${lat}, ${lon});
-                  relation["amenity"="hospital"](around:50000, ${lat}, ${lon});
+[out:json];
+(
+    node["amenity" = "hospital"](around: 50000, ${lat}, ${lon});
+way["amenity" = "hospital"](around: 50000, ${lat}, ${lon});
+relation["amenity" = "hospital"](around: 50000, ${lat}, ${lon});
                 );
                 out center 15;
-            `;
+`;
 
             const response = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
             const data = await response.json();
