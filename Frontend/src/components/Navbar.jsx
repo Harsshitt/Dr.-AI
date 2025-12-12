@@ -13,6 +13,7 @@ export default function Navbar() {
     localStorage.removeItem("dr_ai_token");
     localStorage.removeItem("dr_ai_user");
     localStorage.removeItem("dr_ai_auth");
+    localStorage.removeItem("dr_ai_pro"); // Clear Pro status
     navigate("/login");
   };
 

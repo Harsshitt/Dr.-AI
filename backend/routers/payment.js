@@ -16,9 +16,10 @@ router.post("/create-checkout-session", async (req, res) => {
     try {
         const { origin } = req.body; // e.g. "http://localhost:5173"
 
+        // HYBRID MODE: If Stripe is not configured, redirect to Mock Checkout
         if (!stripe) {
-            console.warn("⚠️ Using Mock Payment Flow (Stripe key missing)");
-            return res.json({ url: `${origin}/payment/success?session_id=mock_session_${Date.now()}` });
+            console.log("⚠️ Stripe missing, redirecting to Mock Checkout");
+            return res.json({ url: `${origin}/payment/mock-checkout` });
         }
 
         const session = await stripe.checkout.sessions.create({
@@ -37,10 +38,13 @@ router.post("/create-checkout-session", async (req, res) => {
                     quantity: 1,
                 },
             ],
-            mode: "payment", // One-time payment supports more methods easily
+            mode: "payment",
             success_url: `${origin}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${origin}/upgrade`,
-            billing_address_collection: 'required', // Often required for India
+            billing_address_collection: 'required',
+            automatic_payment_methods: {
+                enabled: true,
+            },
         });
 
         res.json({ url: session.url });
@@ -55,11 +59,10 @@ router.post("/verify", async (req, res) => {
     try {
         const { sessionId } = req.body;
 
-        if (!stripe) {
-            if (sessionId && sessionId.startsWith("mock_session_")) {
-                return res.json({ verified: true });
-            }
-            return res.status(503).json({ error: "Stripe not configured and invalid mock session" });
+        // HYBRID MODE: Verify Mock Session
+        if (!stripe || (sessionId && sessionId.startsWith("mock_"))) {
+            console.log(`[Payment] Verifying Mock Session: ${sessionId}`);
+            return res.json({ verified: true });
         }
 
         const session = await stripe.checkout.sessions.retrieve(sessionId);

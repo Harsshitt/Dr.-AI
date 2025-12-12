@@ -7,10 +7,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import jwt from "jsonwebtoken"; // For usage tracking
-import User from "./models/User.js"; // For usage tracking
+import { connectDB, getUserModel } from "./utils/db.js";
 import authRoutes from "./routers/auth.js";
 import paymentRoutes from "./routers/payment.js";
-import { connectDB } from "./utils/db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -50,32 +49,50 @@ app.post("/api/chat", async (req, res) => {
         const token = authHeader.split(" ")[1];
         if (token) {
           const decoded = jwt.verify(token, process.env.JWT_SECRET || 'change_this_secret');
-          // Simple Heuristic for "Report Analysis"
+          // Check for Report Keywords OR File Attachments
           const lowerMsg = message.toLowerCase();
           const isReportRequest = ["report", "lab", "result", "blood", "test", "scan", "mri", "xray"].some(kw => lowerMsg.includes(kw));
+          const isFileAttachment = message.includes("[Attached:");
 
-          if (isReportRequest && !isPro) {
+          if ((isReportRequest || isFileAttachment) && !isPro) {
+            const User = getUserModel();
             const user = await User.findById(decoded.id);
             if (user) {
-              // Reset if > 30 days (simplified)
               const now = new Date();
               const lastReset = new Date(user.usage?.lastReset || 0);
+
+              // Reset usage if > 30 days
               if (now - lastReset > 30 * 24 * 60 * 60 * 1000) {
-                user.usage = { reportCount: 0, lastReset: now };
+                user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
               }
 
-              if ((user.usage?.reportCount || 0) >= 3) {
+              // Initialize usage if missing
+              if (!user.usage) user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
+              if (user.usage.fileCount === undefined) user.usage.fileCount = 0;
+
+              // Check Limits
+              // 1. Report Analysis Limit (3/month)
+              if (isReportRequest && user.usage.reportCount >= 3) {
                 return res.json({
-                  reply: "🔒 **Daily Limit Reached**\n\nYou have used your 3 free report explanations for this month.\n\n[Upgrade to Pro](/upgrade) for unlimited access, timelines, and more.",
+                  reply: "🔒 **Report Limit Reached**\n\nYou have used your 3 free report explanations for this month.\n\n[Upgrade to Pro](/upgrade) for unlimited analysis.",
                   isLimitReached: true
                 });
               }
 
-              // Increment
-              user.usage = user.usage || {};
-              user.usage.reportCount = (user.usage.reportCount || 0) + 1;
+              // 2. File Upload Limit (Max 3 files total/month)
+              if (isFileAttachment && user.usage.fileCount >= 3) {
+                return res.json({
+                  reply: "🔒 **File Limit Reached**\n\nYou can only add a maximum of 3 files on the Basic plan.\n\n[Upgrade to Pro](/upgrade) to analyze unlimited documents.",
+                  isLimitReached: true
+                });
+              }
+
+              // Increment Usage
+              if (isReportRequest) user.usage.reportCount++;
+              if (isFileAttachment) user.usage.fileCount++;
+
               await user.save();
-              console.log(`[Usage] User ${user.email} count: ${user.usage.reportCount}`);
+              console.log(`[Usage] User ${user.email} - Reports: ${user.usage.reportCount}, Files: ${user.usage.fileCount}`);
             }
           }
         }
