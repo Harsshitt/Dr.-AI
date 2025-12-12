@@ -1,10 +1,18 @@
-// backend/index.js — FINAL CLEAN VERSION
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import jwt from "jsonwebtoken"; // For usage tracking
+import User from "./models/User.js"; // For usage tracking
 import authRoutes from "./routers/auth.js";
-import { generateHealthResponse } from "./lib/aiHealthEngine.js";
+import paymentRoutes from "./routers/payment.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -13,60 +21,124 @@ app.use(express.json());
 // ENV CONFIG
 const PORT = process.env.PORT || 5001;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/dr-ai";
-const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY?.trim();
-const GEMINI_MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-1.5-flash";
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 
-// --- MongoDB (optional) ---
-mongoose
-  .connect(MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => {
-    console.log("⚠️ MongoDB connection failed (running in mock DB mode):", err.message);
-  });
+// Initialize Gemini
+// ... (code omitted)
 
-// --- Routes for auth etc. ---
+// --- MongoDB ---
+// ... (code omitted)
+
 app.use("/api/auth", authRoutes);
+app.use("/api/payment", paymentRoutes);
 
-// --- Simple health check ---
 app.get("/", (req, res) => {
   res.send("Dr.AI backend is running");
 });
 
-// --- CHAT ENDPOINT (used by frontend Chat page) ---
+// --- CHAT ENDPOINT ---
 app.post("/api/chat", async (req, res) => {
   try {
-    const userMessage = (req.body.message || "").toString();
+    const { message, history, isPro } = req.body;
+    const authHeader = req.headers.authorization;
 
-    // Build prompt
+    // --- FREEMIUM USAGE LIMIT CHECK ---
+    if (authHeader) {
+      try {
+        const token = authHeader.split(" ")[1];
+        if (token) {
+          const decoded = jwt.verify(token, process.env.JWT_SECRET || 'change_this_secret');
+          // Simple Heuristic for "Report Analysis"
+          const lowerMsg = message.toLowerCase();
+          const isReportRequest = ["report", "lab", "result", "blood", "test", "scan", "mri", "xray"].some(kw => lowerMsg.includes(kw));
+
+          if (isReportRequest && !isPro) {
+            const user = await User.findById(decoded.id);
+            if (user) {
+              // Reset if > 30 days (simplified)
+              const now = new Date();
+              const lastReset = new Date(user.usage?.lastReset || 0);
+              if (now - lastReset > 30 * 24 * 60 * 60 * 1000) {
+                user.usage = { reportCount: 0, lastReset: now };
+              }
+
+              if ((user.usage?.reportCount || 0) >= 3) {
+                return res.json({
+                  reply: "🔒 **Daily Limit Reached**\n\nYou have used your 3 free report explanations for this month.\n\n[Upgrade to Pro](/upgrade) for unlimited access, timelines, and more.",
+                  isLimitReached: true
+                });
+              }
+
+              // Increment
+              user.usage = user.usage || {};
+              user.usage.reportCount = (user.usage.reportCount || 0) + 1;
+              await user.save();
+              console.log(`[Usage] User ${user.email} count: ${user.usage.reportCount}`);
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("[Usage] Token verification failed or user not found:", e.message);
+      }
+    }
+    // ----------------------------------
+
+    if (!message) return res.status(400).json({ error: "Message is required" });
+
+    if (!model) {
+      return res.status(503).json({ reply: "Service Unavailable: API configuration missing." });
+    }
+
+    // 1. Read System Prompt (Safety Firewall + Dr. AI Persona)
+    const promptPath = path.join(__dirname, "prompt", "system_prompt.txt");
+    let systemPrompt = "You are Dr. AI, a helpful medical assistant.";
+    try {
+      if (fs.existsSync(promptPath)) {
+        systemPrompt = fs.readFileSync(promptPath, "utf-8");
+      } else {
+        console.warn("⚠️ system_prompt.txt not found at", promptPath);
+      }
+    } catch (e) { console.error("Could not read system_prompt.txt", e); }
+
+    // 2. Pro Mode Injection
+    if (isPro) {
+      systemPrompt += `
+      
+[SYSTEM NOTICE]: USER IS A PAID 'PRO' SUBSCRIBER.
+- ENABLE all premium features (Timeline Generation, Detailed Report Analysis, Medication Calendars).
+- DO NOT UPSELL. Perform these tasks immediately if requested.
+- FORMAT timelines/calendars as Markdown Tables.
+`;
+    }
+
+    // 3. Simple Context (Mock)
+    const context = "User Medical History: None provided.";
+
     const finalPrompt = `
-${sysPrompt || "You are Dr.AI, a helpful medical information assistant."}
+${systemPrompt}
 
-Use RAG context when useful:
-${contextDocs ? JSON.stringify(contextDocs).slice(0, 2000) : "no context"}
+MEDICAL CONTEXT:
+${context}
 
-User question:
-"${userMessage}"
-    `;
+USER QUERY:
+"${message}"
 
-    // Call Gemini
-    const modelResponse = await callGemini(finalPrompt, userMessage, contextDocs);
+IMPORTANT: Respond in valid JSON format as defined in the system prompt.
+`;
 
-    // Validate
-    const valid = validateJSON(modelResponse); // Optional validation
+    // 4. Call Gemini
+    console.log("Sending request to Gemini...");
+    const result = await model.generateContent(finalPrompt);
+    const response = await result.response;
+    const modelResponse = response.text();
 
-    // Log
-    logger.info({ userMessage, reply: modelResponse });
+    console.log("Gemini Response Length:", modelResponse.length);
 
-    // Return
-    // The frontend expects { reply: "text" } or just the text? 
-    // Chat.jsx expects { reply: "text" } or just text.
-    // Attempt to parse JSON response from LLM
+    // 5. Parse JSON
     let structuredResponse;
     try {
-      // 1. Remove markdown text formatting to get cleaner string
       let jsonStr = modelResponse.replace(/```json/g, "").replace(/```/g, "");
-
-      // 2. Find the first '{' and last '}'
       const firstOpen = jsonStr.indexOf('{');
       const lastClose = jsonStr.lastIndexOf('}');
 
@@ -78,16 +150,12 @@ User question:
       }
     } catch (e) {
       console.error("JSON Parse Failed:", e.message);
-
-      // 3. Fallback: Try to extract just the "reply" text using regex to avoid showing raw JSON
-      // This matches: "reply": "..." (handling escaped quotes is limited but helps)
-      const replyMatch = modelResponse.match(/"reply":\s*"([\s\S]*?)"(?=\s*[,}])/);
-      const fallbackReply = replyMatch ? replyMatch[1] : modelResponse;
-
-      structuredResponse = { reply: fallbackReply };
+      // Fallback: Return text as reply
+      structuredResponse = { reply: modelResponse };
     }
 
     res.json(structuredResponse);
+
   } catch (err) {
     console.error("❌ /api/chat error:", err);
     return res.status(500).json({
@@ -101,5 +169,4 @@ User question:
 app.listen(PORT, () => {
   console.log(`✅ Backend running on port ${PORT}`);
   console.log("   GOOGLE_API_KEY set:", !!GOOGLE_API_KEY);
-  console.log("   GEMINI_MODEL:", GEMINI_MODEL);
 });

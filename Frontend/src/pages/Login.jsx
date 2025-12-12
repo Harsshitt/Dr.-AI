@@ -56,7 +56,7 @@ export default function Login() {
     };
 
     return (
-        <div className="w-full flex items-start justify-center bg-gradient-to-br from-gray-50 to-white p-4 pt-10">
+        <div className="w-full flex items-center justify-center bg-gradient-to-br from-gray-50 to-white p-4 min-h-[calc(100vh-140px)]">
             {/* ✅ INLINE CSS ADDED HERE */}
             <style>{`
         @keyframes floatDoctor {
@@ -94,7 +94,7 @@ export default function Login() {
         }
       `}</style>
 
-            <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-16 lg:gap-32 px-4 md:px-8 lg:px-12">
+            <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center gap-8 md:gap-16 lg:gap-24 px-4 md:px-8 lg:px-12">
 
                 {/* ✅ LEFT SIDE: DOCTOR IMAGE (4D TILT EFFECT) */}
                 <div className="flex-1 flex justify-center items-center relative perspective-1000 w-full">

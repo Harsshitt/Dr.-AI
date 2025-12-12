@@ -48,6 +48,11 @@ export default function Signup() {
                 setOtpSent(true);
                 setSuccess("OTP sent to " + email);
                 setError("");
+
+                // Dev helper: Show OTP if returned (when email not configured)
+                if (data.debugOtp) {
+                    alert("DEV MODE OTP: " + data.debugOtp);
+                }
             } else {
                 setError(data.message || "Failed to send OTP");
             }

@@ -19,6 +19,7 @@ export default function Navbar() {
   // Check if user is logged in
   const isAuthenticated = !!localStorage.getItem("dr_ai_token");
   const userDataString = localStorage.getItem("dr_ai_user");
+  const isPro = localStorage.getItem("dr_ai_pro") === "true"; // Check Pro Status
   let userName = "User";
   let userInitial = "U";
   let userEmail = "";
@@ -113,6 +114,15 @@ export default function Navbar() {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3">
+            {isAuthenticated && (isPro ? (
+              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-200 text-amber-900 text-xs font-bold shadow-sm cursor-default">
+                <span className="text-amber-600">✦</span> PRO
+              </div>
+            ) : (
+              <Link to="/upgrade" className="hidden sm:block px-3 py-1.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 hover:from-emerald-200 hover:to-teal-200 transition-colors border border-emerald-200">
+                Try Pro
+              </Link>
+            ))}
             <Link to="/chat" className="glass-btn px-3 py-1.5 rounded-xl text-sm hidden sm:block">
               Start Chat
             </Link>

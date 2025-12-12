@@ -156,6 +156,7 @@ export default function ChatPage() {
       console.log("Calling Backend...");
       const payload = {
         message: currentInput, // Add this line to match backend expectation
+        isPro: localStorage.getItem("dr_ai_pro") === "true", // Pass Pro status
         messages: [
           ...messages.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })),
           { role: "user", content: currentInput },
@@ -223,7 +224,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex flex-col">
+    <div className="h-[calc(100vh-150px)] bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex flex-col">
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-6 pb-4 flex flex-col">
 
         {messages.length <= 1 && (

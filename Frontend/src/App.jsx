@@ -17,6 +17,8 @@ import Profile from "./pages/Profile";
 import MedicalHistory from "./pages/MedicalHistory";
 import Appointments from "./pages/Appointments";
 import Settings from "./pages/Settings";
+import Upgrade from "./pages/Upgrade";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 export default function AppRouter() {
   return (
@@ -37,6 +39,8 @@ export default function AppRouter() {
           <Route path="/history" element={<MedicalHistory />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/upgrade" element={<Upgrade />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </main>

@@ -26,7 +26,7 @@ export const sendEmail = async (to, subject, text) => {
 
     if (!transporter) {
         console.log(`[MOCK EMAIL] To: ${to} | Subject: ${subject} | Body: ${text}`);
-        return;
+        return false;
     }
 
     try {
@@ -39,9 +39,11 @@ export const sendEmail = async (to, subject, text) => {
 
         const info = await transporter.sendMail(mailOptions);
         console.log("✅ Email sent: " + info.response);
+        return true;
     } catch (error) {
         console.error("❌ Error sending email:", error);
         // Fallback log
         console.log(`[FALLBACK EMAIL LOG] To: ${to} | OTP: ${text}`);
+        return false;
     }
 };

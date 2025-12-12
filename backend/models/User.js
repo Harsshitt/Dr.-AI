@@ -7,6 +7,11 @@ const userSchema = new mongoose.Schema({
     dob: { type: String },
     sex: { type: String },
     createdAt: { type: Date, default: Date.now },
+    // Freemium Usage Tracking
+    usage: {
+        reportCount: { type: Number, default: 0 },
+        lastReset: { type: Date, default: Date.now }
+    }
 });
 
 export default mongoose.model("User", userSchema);
