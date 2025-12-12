@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FileText, Calendar, Download, Eye } from "lucide-react";
+import { FileText, Calendar, Download, Eye, Trash2 } from "lucide-react";
 import { jsPDF } from "jspdf";
 
 export default function MedicalHistory() {
@@ -20,6 +19,27 @@ export default function MedicalHistory() {
             }
         } catch (e) { console.error(e); }
     }, []);
+
+    const [deleteModal, setDeleteModal] = useState({ show: false, date: null });
+
+    const handleDeleteClick = (date) => {
+        setDeleteModal({ show: true, date });
+    };
+
+    const confirmDelete = () => {
+        if (!deleteModal.date) return;
+
+        try {
+            const newHistory = { ...history };
+            delete newHistory[deleteModal.date];
+            setHistory(newHistory);
+            localStorage.setItem(`dr_ai_chat_history_${userEmail}`, JSON.stringify(newHistory));
+            setDeleteModal({ show: false, date: null });
+        } catch (e) {
+            console.error("Delete failed:", e);
+            alert("Failed to delete record.");
+        }
+    };
 
     const generatePDF = (date, messages) => {
         try {
@@ -137,18 +157,67 @@ export default function MedicalHistory() {
                                     </div>
                                 </div>
 
-                                <button
-                                    onClick={() => generatePDF(date, history[date])}
-                                    className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium shadow-lg shadow-emerald-200"
-                                >
-                                    <Eye className="w-4 h-4" />
-                                    Open PDF
-                                </button>
+                                <div className="flex items-center gap-3">
+                                    <button
+                                        onClick={() => generatePDF(date, history[date])}
+                                        className="flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium shadow-lg shadow-emerald-200"
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        Open PDF
+                                    </button>
+
+                                    <button
+                                        onClick={() => handleDeleteClick(date)}
+                                        className="flex items-center gap-2 px-4 py-2.5 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition-colors font-medium"
+                                        title="Delete Record"
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                        Delete
+                                    </button>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
                 )}
             </div>
+
+            {/* Custom Delete Modal */}
+            {deleteModal.show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-white rounded-2xl p-6 shadow-2xl max-w-sm w-full"
+                    >
+                        <div className="flex flex-col items-center text-center">
+                            <div className="bg-red-100 p-3 rounded-full text-red-600 mb-4">
+                                <Trash2 className="w-8 h-8" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">Delete Medical Record?</h3>
+                            <p className="text-gray-500 mb-6 text-sm">
+                                Are you sure you want to delete the record from
+                                <span className="font-semibold text-gray-700"> {deleteModal.date && new Date(deleteModal.date).toLocaleDateString()}</span>?
+                                <br />This action cannot be undone.
+                            </p>
+
+                            <div className="flex gap-3 w-full">
+                                <button
+                                    onClick={() => setDeleteModal({ show: false, date: null })}
+                                    className="flex-1 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={confirmDelete}
+                                    className="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors shadow-lg shadow-red-200"
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
         </div>
     );
 }

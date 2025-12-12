@@ -80,9 +80,9 @@ export default function Navbar() {
               className="block"
             >
               <img
-                src="/dr.ai-logo.svg"
+                src="/dr.ai-logo.svg?v=5"
                 alt="Dr.AI logo"
-                className="h-[45px] w-[45px] md:h-[53px] md:w-[53px] object-contain filter invert-[20%] sepia-[100%] saturate-[6000%] hue-rotate-[-5deg]"
+                className="h-[54px] w-auto object-contain filter brightness-0 saturate-100 invert-[39%] sepia-[82%] saturate-[798%] hue-rotate-[118deg] brightness-[91%] contrast-[95%]"
               />
             </Link>
 

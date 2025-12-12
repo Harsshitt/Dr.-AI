@@ -1,0 +1,29 @@
+[
+  {
+    "_id": "1765449899035",
+    "name": "TestUser",
+    "email": "test_24823@example.com",
+    "passwordHash": "$2b$10$.vg3DOMOxo651qIvZdSXC.U.QceKQKQ.ZOfAE/7PjJS/vJ71WDu82",
+    "dob": "1990-01-01",
+    "sex": "male",
+    "createdAt": "2025-12-11T10:44:59.035Z"
+  },
+  {
+    "_id": "1765450066621",
+    "name": "Ayush",
+    "email": "srivastavayush7542@gmail.com",
+    "passwordHash": "$2b$10$a6jH44tnee4Cw2zHthMVp.PaGbWY0lzMh6IPzWT4E.dLbw0JfjxHO",
+    "dob": "2001-09-07",
+    "sex": "male",
+    "createdAt": "2025-12-11T10:47:46.621Z"
+  },
+  {
+    "_id": "1765523689232",
+    "name": "TestUser",
+    "email": "test_19835@example.com",
+    "passwordHash": "$2b$10$Cl.2XzMwHj93YzochTQnWOVog84xBeFOBqGltQgpwNMMUCJTZ8ra.",
+    "dob": "1990-01-01",
+    "sex": "male",
+    "createdAt": "2025-12-12T07:14:49.232Z"
+  }
+]
