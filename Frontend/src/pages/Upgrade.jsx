@@ -30,6 +30,7 @@ export default function Upgrade() {
             }
         } catch (error) {
             console.error("Payment Error:", error);
+            alert(`Payment Error: ${error.message}`);
             setLoading(false);
         }
     };

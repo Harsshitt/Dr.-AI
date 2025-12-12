@@ -18,6 +18,7 @@ import MedicalHistory from "./pages/MedicalHistory";
 import Appointments from "./pages/Appointments";
 import Settings from "./pages/Settings";
 import Upgrade from "./pages/Upgrade";
+import MockCheckout from "./pages/MockCheckout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 
 export default function AppRouter() {
@@ -40,6 +41,7 @@ export default function AppRouter() {
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/upgrade" element={<Upgrade />} />
+          <Route path="/payment/mock-checkout" element={<MockCheckout />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="*" element={<Home />} />
         </Routes>

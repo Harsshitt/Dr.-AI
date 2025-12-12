@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     // Freemium Usage Tracking
     usage: {
         reportCount: { type: Number, default: 0 },
+        fileCount: { type: Number, default: 0 },
         lastReset: { type: Date, default: Date.now }
     }
 });
