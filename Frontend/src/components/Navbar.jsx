@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -76,14 +75,17 @@ export default function Navbar() {
 
           {/* Left: Logo */}
           <div className="flex items-center gap-3 perspective-[500px]">
-            <Link to="/" className="block">
+            <Link
+              to="/"
+              className="block"
+            >
               <img
                 src="/dr.ai-logo.svg?v=5"
                 alt="Dr.AI logo"
-                className="h-[54px] w-auto object-contain 
+                className="h-[64px] w-auto object-contain 
                filter brightness-0 saturate-100 
-               invert-[45%] sepia-[94%] saturate-[650%] 
-               hue-rotate-[90deg] brightness-[95%] contrast-[90%]"
+               sepia-[51%] saturate-[2878%] 
+               hue-rotate-[132deg] brightness-[96%] "
               />
             </Link>
 

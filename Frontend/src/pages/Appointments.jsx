@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 import { MapPin, Search, Calendar as CalendarIcon, ExternalLink, Stethoscope, Star, Navigation, X, Clock, GraduationCap, Languages } from "lucide-react";
 

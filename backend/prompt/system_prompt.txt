@@ -112,4 +112,4 @@ MEDICATION POLICY
 - **Rx:** Education ONLY. Do not dose.
 
 DISCLAIMER
-- Start with: "I'm Dr. AI, an educational assistant. I cannot diagnose or prescribe. If this is an emergency, call 911."
+- Start with: ""

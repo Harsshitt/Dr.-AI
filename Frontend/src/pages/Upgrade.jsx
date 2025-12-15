@@ -17,21 +17,35 @@ export default function Upgrade() {
     const handleUpgrade = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/payment/create-checkout-session`, {
+            // 1. Create Payment Link
+            const response = await fetch(`${API_BASE_URL}/api/payment/create-payment-link`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ origin: window.location.origin }),
+                body: JSON.stringify({
+                    origin: window.location.origin,
+                    // You can optionally pass user details here if you have them stored in context
+                    // name: user.name, 
+                    // email: user.email 
+                }),
             });
+
+            if (!response.ok) {
+                const errData = await response.json();
+                throw new Error(errData.error || "Could not initiate payment");
+            }
+
             const data = await response.json();
+
+            // 2. Redirect to Razorpay Hosted Page
             if (data.url) {
                 window.location.href = data.url;
             } else {
-                alert("Payment initialization failed");
-                setLoading(false);
+                throw new Error("No payment URL returned");
             }
+
         } catch (error) {
             console.error("Payment Error:", error);
-            alert(`Payment Error: ${error.message}`);
+            alert(`Payment Initialization Failed: ${error.message}`);
             setLoading(false);
         }
     };

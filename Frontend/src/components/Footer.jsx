@@ -6,7 +6,7 @@ export default function Footer() {
             <div className="liquid-glass border-t border-emerald-100/50 px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_24px_rgba(0,0,0,0.03)] backdrop-blur-md">
 
                 <div className="text-sm font-medium text-emerald-900/80">
-                    © {new Date().getFullYear()} Dr.AI Health Assistant
+                    ©️ {new Date().getFullYear()} Dr.AI Health Assistant
                 </div>
 
                 <div className="text-xs text-emerald-800/60 hidden md:block px-4 py-1 rounded-full bg-emerald-50/50 border border-emerald-100/50 backdrop-blur-sm">

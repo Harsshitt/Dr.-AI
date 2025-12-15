@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
+import FeedbackWidget from "./components/FeedbackWidget";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -27,7 +28,7 @@ export default function AppRouter() {
       <ScrollToTop />
       <Navbar />
 
-      <main className="pt-[70px] pb-[70px] min-h-screen">
+      <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -48,6 +49,7 @@ export default function AppRouter() {
       </main>
 
       <Footer />
+      <FeedbackWidget />
     </BrowserRouter>
   );
 }

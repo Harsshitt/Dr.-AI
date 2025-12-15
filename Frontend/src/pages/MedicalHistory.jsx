@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 import { FileText, Calendar, Eye, Trash2 } from "lucide-react";
 import { jsPDF } from "jspdf";

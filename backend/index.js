@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken"; // For usage tracking
 import { connectDB, getUserModel } from "./utils/db.js";
 import authRoutes from "./routers/auth.js";
 import paymentRoutes from "./routers/payment.js";
+import feedbackRoutes from "./routers/feedback.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +33,7 @@ const model = genAI.getGenerativeModel({ model: GEMINI_MODEL });
 
 app.use("/api/auth", authRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 app.get("/", (req, res) => {
   res.send("Dr.AI backend is running");
