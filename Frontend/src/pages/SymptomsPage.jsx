@@ -1,5 +1,6 @@
 
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
     Stethoscope,
     MessageSquare,
@@ -210,6 +211,22 @@ export default function SymptomsPage() {
 
                 </div>
             </div>
+            {/* Bottom CTA (Above Footer) */}
+            <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="mt-16 mb-8 flex justify-center px-4"
+            >
+                <Link
+                    to="/chat"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-red-500 to-pink-600 text-white font-bold rounded-full shadow-2xl hover:shadow-red-200/50 hover:scale-105 active:scale-95 transition-all duration-300 text-lg border-4 border-white/20 backdrop-blur-sm"
+                >
+                    <MessageSquare className="w-5 h-5" />
+                    Start Chat
+                </Link>
+            </motion.div>
         </div>
     );
 }
