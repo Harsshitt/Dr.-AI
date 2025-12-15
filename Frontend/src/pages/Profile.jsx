@@ -94,8 +94,8 @@ export default function Profile() {
                     className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl overflow-hidden border border-emerald-100/50"
                 >
                     {/* Header Background */}
-                    <div className="bg-gradient-to-r from-emerald-600 to-teal-600 h-40 relative">
-                        <div className="absolute -bottom-14 left-8 flex items-end gap-6">
+                    <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-8 pt-10 relative">
+                        <div className="flex items-end gap-6">
                             <div className="relative group">
                                 <div className="w-28 h-28 bg-white p-1 rounded-2xl shadow-lg rotate-3 transform transition-transform hover:rotate-0 overflow-hidden">
                                     {user.profileImage ? (
@@ -132,8 +132,8 @@ export default function Profile() {
                                 <h1 className="text-3xl font-bold text-white shadow-black/10 drop-shadow-md">
                                     {user.name}
                                 </h1>
-                                <p className="text-emerald-900 font-bold flex items-center gap-2">
-                                    <Shield className="w-4 h-4 text-emerald-900" />
+                                <p className="text-white font-bold flex items-center gap-2">
+                                    <Shield className="w-4 h-4 text-white" />
                                     Patient Account
                                 </p>
                             </div>
@@ -170,7 +170,9 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="mt-20 px-8 pb-12">
+
+
+                    <div className="px-8 pb-12 mt-6">
                         {isEditing ? (
                             // --- EDIT MODE ---
                             <div className="grid md:grid-cols-2 gap-6 animate-in fade-in zoom-in duration-300">
@@ -369,7 +371,7 @@ export default function Profile() {
                         )}
                     </div>
                 </motion.div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

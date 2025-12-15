@@ -77,17 +77,15 @@ export default function Navbar() {
           {/* Left: Logo */}
           <div className="flex items-center gap-3 perspective-[500px]">
             <Link to="/" className="block">
-  <img
-    src="/dr.ai-logo.svg?v=5"
-    alt="Dr.AI logo"
-    className="h-[54px] w-auto object-contain 
+              <img
+                src="/dr.ai-logo.svg?v=5"
+                alt="Dr.AI logo"
+                className="h-[54px] w-auto object-contain 
                filter brightness-0 saturate-100 
                invert-[45%] sepia-[94%] saturate-[650%] 
                hue-rotate-[90deg] brightness-[95%] contrast-[90%]"
-  />
-</Link>
-
-
+              />
+            </Link>
 
           </div>
 
@@ -126,9 +124,7 @@ export default function Navbar() {
                 Try Pro
               </Link>
             ))}
-            <Link to="/chat" className="glass-btn px-3 py-1.5 rounded-xl text-sm hidden sm:block">
-              Start Chat
-            </Link>
+
 
             {showProfile && (
               <div className="relative hidden md:block" ref={profileRef}>
@@ -213,7 +209,7 @@ export default function Navbar() {
           <div className="flex flex-col p-4 gap-2">
             {[
               { path: "/", label: "Home" },
-              { path: "/chat", label: "Start Chat", isCta: true },
+
               { path: "/symptoms", label: "Symptoms" },
               { path: "/meds", label: "Medicines" },
               { path: "/about", label: "About" }
