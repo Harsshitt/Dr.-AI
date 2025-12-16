@@ -18,6 +18,7 @@ import {
   Shield,
   Calendar,
   Phone,
+  Heart,
 } from "lucide-react";
 
 export default function Medicines() {
@@ -43,8 +44,22 @@ export default function Medicines() {
               <Pill className="w-16 h-16 text-white" />
             </motion.div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl mb-4 font-semibold text-gray-900">Medicines — General Guide</h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Pill className="w-8 h-8 md:w-12 md:h-12 text-emerald-500" />
+              </motion.div>
+              <h1 className="text-2xl md:text-5xl lg:text-6xl font-semibold text-gray-700 text-center">Medicines — General Guide</h1>
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="w-8 h-8 md:w-12 md:h-12 text-red-500 fill-red-500" />
+              </motion.div>
+            </div>
+            <p className="text-lg text-gray-500 max-w-3xl mx-auto">
               This section helps you understand medicines — what they do, common side effects, safety warnings, and who should avoid them.
               I’m an assistant, not a clinician — this is for informational purpose and medical diagnosis.
             </p>
@@ -64,14 +79,14 @@ export default function Medicines() {
 
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
-          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-4 text-center text-gray-900">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-4 text-center text-gray-700">
             How medicine guidance works
           </motion.h2>
 
           <motion.div className="space-y-4 mt-6">
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
               <h3 className="text-lg font-semibold mb-2 text-emerald-700">What I explain</h3>
-              <ul className="list-disc ml-5 text-gray-700 space-y-1">
+              <ul className="list-disc ml-5 text-gray-500 space-y-1">
                 <li>I explain what a medicine is used for and how it generally works.</li>
                 <li>You'll learn common side effects, warnings, and interactions.</li>
                 <li>OTC medicines include label-based dosing rules (if user provides age/weight).</li>
@@ -85,24 +100,24 @@ export default function Medicines() {
 
       <section className="py-12 px-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl mx-4">
         <div className="max-w-5xl mx-auto">
-          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-900">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-700">
             OTC Medicines (Over-the-Counter)
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-6">
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
               <h3 className="text-lg font-semibold mb-2 text-emerald-600">Typical uses</h3>
-              <p className="text-gray-700 text-sm">For fever, cold, acidity, minor pain, allergy relief, and similar common problems.</p>
+              <p className="text-gray-500 text-sm">For fever, cold, acidity, minor pain, allergy relief, and similar common problems.</p>
             </motion.div>
 
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
               <h3 className="text-lg font-semibold mb-2 text-emerald-600">Label-based dosing</h3>
-              <p className="text-gray-700 text-sm">If you provide age/weight I can explain label dosing rules (children vs adults) and maximum daily limits.</p>
+              <p className="text-gray-500 text-sm">If you provide age/weight I can explain label dosing rules (children vs adults) and maximum daily limits.</p>
             </motion.div>
 
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
               <h3 className="text-lg font-semibold mb-2 text-emerald-600">Safety & side effects</h3>
-              <p className="text-gray-700 text-sm">Common side effects, who should avoid the medicine, and interactions with other OTCs or prescriptions.</p>
+              <p className="text-gray-500 text-sm">Common side effects, who should avoid the medicine, and interactions with other OTCs or prescriptions.</p>
             </motion.div>
           </div>
         </div>
@@ -110,12 +125,12 @@ export default function Medicines() {
 
       <section className="py-12 px-6">
         <div className="max-w-5xl mx-auto">
-          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-900">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-700">
             Prescription Medicines
           </motion.h2>
 
           <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-            <ul className="list-disc ml-5 text-gray-700 space-y-2">
+            <ul className="list-disc ml-5 text-gray-500 space-y-2">
               <li><strong>General info only:</strong> why the medicine is prescribed and how it works.</li>
               <li><strong>Common dose ranges:</strong> general ranges (not your personal dose).</li>
               <li><strong>Major side effects & warnings:</strong> including serious/black-box warnings when relevant.</li>
@@ -139,16 +154,16 @@ export default function Medicines() {
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 flex gap-3 items-start">
               <AlertTriangle className="w-6 h-6 text-emerald-500 mt-1" />
               <div>
-                <h4 className="font-semibold mb-1 text-gray-900">Severe side effects</h4>
-                <p className="text-gray-700 text-sm">Rash, swelling, trouble breathing — seek urgent medical care.</p>
+                <h4 className="font-semibold mb-1 text-gray-700">Severe side effects</h4>
+                <p className="text-gray-500 text-sm">Rash, swelling, trouble breathing — seek urgent medical care.</p>
               </div>
             </motion.div>
 
             <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 flex gap-3 items-start">
               <Phone className="w-6 h-6 text-emerald-500 mt-1" />
               <div>
-                <h4 className="font-semibold mb-1 text-gray-900">Accidental overdose or mixing</h4>
-                <p className="text-gray-700 text-sm">If you suspect overdose or dangerous interactions, call emergency services or your local poison control center.</p>
+                <h4 className="font-semibold mb-1 text-gray-700">Accidental overdose or mixing</h4>
+                <p className="text-gray-500 text-sm">If you suspect overdose or dangerous interactions, call emergency services or your local poison control center.</p>
               </div>
             </motion.div>
           </div>

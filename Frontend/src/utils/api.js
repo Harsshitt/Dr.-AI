@@ -1,4 +1,4 @@
-export const API_BASE_URL = "http://localhost:5001";
+export const API_BASE_URL = import.meta.env.PROD ? "" : "http://localhost:5001";
 
 export async function sendToAI(payload) {
   const res = await fetch(`${API_BASE_URL}/api/chat`, {

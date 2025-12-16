@@ -12,7 +12,8 @@ const userSchema = new mongoose.Schema({
         reportCount: { type: Number, default: 0 },
         fileCount: { type: Number, default: 0 },
         lastReset: { type: Date, default: Date.now }
-    }
+    },
+    isPro: { type: Boolean, default: false }
 });
 
 export default mongoose.model("User", userSchema);

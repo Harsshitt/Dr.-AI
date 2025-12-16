@@ -74,10 +74,24 @@ export default function SymptomsPage() {
                         <Activity className="w-5 h-5" />
                         <span className="font-semibold">Symptom Checker Guide</span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                        Understand Your <span className="text-emerald-600">Symptoms</span>
-                    </h1>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+                        <motion.div
+                            animate={{ rotate: [0, 10, -10, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <Stethoscope className="w-8 h-8 md:w-12 md:h-12 text-emerald-500" />
+                        </motion.div>
+                        <h1 className="text-2xl md:text-5xl font-bold text-gray-700 text-center">
+                            Understand Your <span className="text-emerald-600">Symptoms</span>
+                        </h1>
+                        <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <Activity className="w-8 h-8 md:w-12 md:h-12 text-emerald-500" />
+                        </motion.div>
+                    </div>
+                    <p className="text-xl text-gray-500 max-w-3xl mx-auto leading-relaxed">
                         This tool helps you understand common symptoms and decide what to do next.
                         I’m an assistant, not a doctor — I provide guidance and red-flag checks only.
                     </p>
@@ -89,7 +103,7 @@ export default function SymptomsPage() {
                 <div className="md:col-span-8 space-y-12">
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <h2 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-3">
                             <Zap className="w-6 h-6 text-emerald-500" />
                             How it works
                         </h2>
@@ -108,7 +122,7 @@ export default function SymptomsPage() {
                                     </div>
                                     <div>
                                         <span className="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-1 block">Step 0{item.step}</span>
-                                        <p className="text-gray-700 leading-relaxed">{item.text}</p>
+                                        <p className="text-gray-500 leading-relaxed">{item.text}</p>
                                     </div>
                                 </motion.div>
                             ))}
@@ -116,7 +130,7 @@ export default function SymptomsPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <h2 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-3">
                             <Heart className="w-6 h-6 text-emerald-500" />
                             Common self-care steps
                         </h2>
@@ -130,15 +144,15 @@ export default function SymptomsPage() {
                                     <div className="bg-emerald-50 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                                         <step.icon className="w-6 h-6 text-emerald-500" />
                                     </div>
-                                    <h3 className="font-bold text-gray-900 mb-2">{step.title}</h3>
-                                    <p className="text-sm text-gray-600">{step.description}</p>
+                                    <h3 className="font-bold text-gray-700 mb-2">{step.title}</h3>
+                                    <p className="text-sm text-gray-500">{step.description}</p>
                                 </motion.div>
                             ))}
                         </div>
                     </section>
 
                     <section className="bg-white p-8 rounded-3xl border border-gray-200">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                        <h2 className="text-2xl font-bold text-gray-700 mb-6 flex items-center gap-3">
                             <MessageSquare className="w-6 h-6 text-blue-500" />
                             What I’ll ask you
                         </h2>
@@ -146,7 +160,7 @@ export default function SymptomsPage() {
                             {questionsAsked.map((q, idx) => (
                                 <div key={idx} className="flex items-start gap-3">
                                     <CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
-                                    <p className="text-gray-700">{q}</p>
+                                    <p className="text-gray-500">{q}</p>
                                 </div>
                             ))}
                         </div>
@@ -197,11 +211,11 @@ export default function SymptomsPage() {
                     </div>
 
                     <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                        <h3 className="font-bold text-gray-700 mb-2 flex items-center gap-2">
+                        <h3 className="font-bold text-gray-500 mb-2 flex items-center gap-2">
                             <Shield className="w-5 h-5" />
                             Safety Note
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-500">
                             I am not a clinician and I do not make diagnoses. Use this information to decide how urgently to seek professional care. If you feel severely unwell or unsure — choose emergency care.
                         </p>
                     </div>

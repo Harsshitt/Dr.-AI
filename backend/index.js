@@ -42,64 +42,70 @@ app.get("/", (req, res) => {
 // --- CHAT ENDPOINT ---
 app.post("/api/chat", async (req, res) => {
   try {
-    const { message, history, isPro } = req.body;
+    // --- AUTH & PRO CHECK ---
+    let isPro = false;
+    let user = null;
     const authHeader = req.headers.authorization;
 
-    // --- FREEMIUM USAGE LIMIT CHECK ---
     if (authHeader) {
       try {
         const token = authHeader.split(" ")[1];
         if (token) {
           const decoded = jwt.verify(token, process.env.JWT_SECRET || 'change_this_secret');
-          // Check for Report Keywords OR File Attachments
-          const lowerMsg = message.toLowerCase();
-          const isReportRequest = ["report", "lab", "result", "blood", "test", "scan", "mri", "xray"].some(kw => lowerMsg.includes(kw));
-          const isFileAttachment = message.includes("[Attached:");
-
-          if ((isReportRequest || isFileAttachment) && !isPro) {
-            const User = getUserModel();
-            const user = await User.findById(decoded.id);
-            if (user) {
-              const now = new Date();
-              const lastReset = new Date(user.usage?.lastReset || 0);
-
-              // Reset usage if > 30 days
-              if (now - lastReset > 30 * 24 * 60 * 60 * 1000) {
-                user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
-              }
-
-              // Initialize usage if missing
-              if (!user.usage) user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
-              if (user.usage.fileCount === undefined) user.usage.fileCount = 0;
-
-              // Check Limits
-              // 1. Report Analysis Limit (3/month)
-              if (isReportRequest && user.usage.reportCount >= 3) {
-                return res.json({
-                  reply: "🔒 **Report Limit Reached**\n\nYou have used your 3 free report explanations for this month.\n\n[Upgrade to Pro](/upgrade) for unlimited analysis.",
-                  isLimitReached: true
-                });
-              }
-
-              // 2. File Upload Limit (Max 3 files total/month)
-              if (isFileAttachment && user.usage.fileCount >= 3) {
-                return res.json({
-                  reply: "🔒 **File Limit Reached**\n\nYou can only add a maximum of 3 files on the Basic plan.\n\n[Upgrade to Pro](/upgrade) to analyze unlimited documents.",
-                  isLimitReached: true
-                });
-              }
-
-              // Increment Usage
-              if (isReportRequest) user.usage.reportCount++;
-              if (isFileAttachment) user.usage.fileCount++;
-
-              await user.save();
-              console.log(`[Usage] User ${user.email} - Reports: ${user.usage.reportCount}, Files: ${user.usage.fileCount}`);
-            }
+          const User = getUserModel();
+          user = await User.findById(decoded.id);
+          if (user) {
+            isPro = user.isPro === true;
           }
         }
       } catch (e) {
-        console.warn("[Usage] Token verification failed or user not found:", e.message);
+        console.warn("[Auth] Token verification failed:", e.message);
+      }
+    }
+
+    // --- FREEMIUM USAGE LIMIT CHECK ---
+    if (user && !isPro) {
+      // Check for Report Keywords OR File Attachments
+      const lowerMsg = message.toLowerCase();
+      const isReportRequest = ["report", "lab", "result", "blood", "test", "scan", "mri", "xray"].some(kw => lowerMsg.includes(kw));
+      const isFileAttachment = message.includes("[Attached:");
+
+      if (isReportRequest || isFileAttachment) {
+        const now = new Date();
+        const lastReset = new Date(user.usage?.lastReset || 0);
+
+        // Reset usage if > 30 days
+        if (now - lastReset > 30 * 24 * 60 * 60 * 1000) {
+          user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
+        }
+
+        // Initialize usage if missing
+        if (!user.usage) user.usage = { reportCount: 0, fileCount: 0, lastReset: now };
+        if (user.usage.fileCount === undefined) user.usage.fileCount = 0;
+
+        // Check Limits
+        // 1. Report Analysis Limit (3/month)
+        if (isReportRequest && user.usage.reportCount >= 3) {
+          return res.json({
+            reply: "🔒 **Report Limit Reached**\n\nYou have used your 3 free report explanations for this month.\n\n[Upgrade to Pro](/upgrade) for unlimited analysis.",
+            isLimitReached: true
+          });
+        }
+
+        // 2. File Upload Limit (Max 3 files total/month)
+        if (isFileAttachment && user.usage.fileCount >= 3) {
+          return res.json({
+            reply: "🔒 **File Limit Reached**\n\nYou can only add a maximum of 3 files on the Basic plan.\n\n[Upgrade to Pro](/upgrade) to analyze unlimited documents.",
+            isLimitReached: true
+          });
+        }
+
+        // Increment Usage
+        if (isReportRequest) user.usage.reportCount++;
+        if (isFileAttachment) user.usage.fileCount++;
+
+        await user.save();
+        console.log(`[Usage] User ${user.email} - Reports: ${user.usage.reportCount}, Files: ${user.usage.fileCount}`);
       }
     }
     // ----------------------------------
@@ -185,7 +191,13 @@ IMPORTANT: Respond in valid JSON format as defined in the system prompt.
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`✅ Backend running on port ${PORT}`);
-  console.log("   GOOGLE_API_KEY set:", !!GOOGLE_API_KEY);
-});
+// Vercel requires exporting the app
+export default app;
+
+// Only listen if running directly (not imported by Vercel)
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log(`✅ Backend running on port ${PORT}`);
+    console.log("   GOOGLE_API_KEY set:", !!GOOGLE_API_KEY);
+  });
+}

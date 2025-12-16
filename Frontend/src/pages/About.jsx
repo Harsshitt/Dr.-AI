@@ -1,5 +1,6 @@
 // src/pages/About.jsx
 import React from "react";
+import { motion } from "framer-motion";
 import { Stethoscope, Pill, FileText, Map, ShieldCheck, Clock } from "lucide-react";
 
 function About() {
@@ -279,9 +280,11 @@ function About() {
 
           <div style={styles.iconCol}>
             <div style={styles.iconCircle}>
-              <img
+              <motion.img
                 src="/dr.ai-logo.svg"
                 alt="Dr.AI Logo"
+                animate={{ scale: [1, 1.15, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                 style={{
                   width: 120,
                   height: 120,

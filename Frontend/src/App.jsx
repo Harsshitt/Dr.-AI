@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Footer from "./components/Footer";
 import FeedbackWidget from "./components/FeedbackWidget";
+import DefaultLayout from "./components/DefaultLayout";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -30,21 +31,26 @@ export default function AppRouter() {
 
       <main className="min-h-screen">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          {/* Routes with Padding (Default Layout) */}
+          <Route element={<DefaultLayout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/symptoms" element={<SymptomsPage />} />
+            <Route path="/meds" element={<Medicines />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/history" element={<MedicalHistory />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/upgrade" element={<Upgrade />} />
+            <Route path="/payment/mock-checkout" element={<MockCheckout />} />
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="*" element={<Home />} />
+          </Route>
+
+          {/* Full Screen Routes (No extra padding) */}
           <Route path="/chat" element={<ChatPage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/symptoms" element={<SymptomsPage />} />
-          <Route path="/meds" element={<Medicines />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/history" element={<MedicalHistory />} />
-          <Route path="/appointments" element={<Appointments />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/upgrade" element={<Upgrade />} />
-          <Route path="/payment/mock-checkout" element={<MockCheckout />} />
-          <Route path="/payment/success" element={<PaymentSuccess />} />
-          <Route path="*" element={<Home />} />
         </Routes>
       </main>
 

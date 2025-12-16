@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,7 @@ export default function Navbar() {
   // Check if user is logged in
   const isAuthenticated = !!localStorage.getItem("dr_ai_token");
   const userDataString = localStorage.getItem("dr_ai_user");
-  const isPro = localStorage.getItem("dr_ai_pro") === "true"; // Check Pro Status
+  const isPro = false; // Pro is now server-enforced only
   let userName = "User";
   let userInitial = "U";
   let userEmail = "";
@@ -71,7 +72,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div className="liquid-glass border-b border-gray-100 px-6 py-[10.5px] flex items-center justify-between shadow-sm backdrop-blur-md">
+        <div className="liquid-glass px-6 py-2 flex items-center justify-between shadow-sm backdrop-blur-md">
 
           {/* Left: Logo */}
           <div className="flex items-center gap-3 perspective-[500px]">
@@ -82,7 +83,7 @@ export default function Navbar() {
               <img
                 src="/dr.ai-logo.svg?v=5"
                 alt="Dr.AI logo"
-                className="h-[64px] w-auto object-contain 
+                className="h-[55px] w-auto object-contain 
                filter brightness-0 saturate-100 
                sepia-[51%] saturate-[2878%] 
                hue-rotate-[132deg] brightness-[96%] "
@@ -92,7 +93,7 @@ export default function Navbar() {
           </div>
 
           {/* Center: Links (Desktop) */}
-          <div className="hidden md:flex items-center gap-1 bg-white/40 backdrop-blur-md rounded-full px-2 py-1 border border-white/40 shadow-sm">
+          <div className="hidden md:flex items-center gap-1 bg-white/60 backdrop-blur-md rounded-full px-2 py-1 border border-white/60 shadow-sm">
             {[
               { path: "/", label: "Home" },
               { path: "/chat", label: "Chat" },
@@ -107,7 +108,7 @@ export default function Navbar() {
                       px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300
                       ${isActive
                     ? "bg-white text-red-600 shadow-sm font-semibold"
-                    : "text-gray-600 hover:text-red-500"}
+                    : "text-gray-500 hover:text-red-500"}
                     `}
               >
                 {link.label}
@@ -123,7 +124,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link to="/upgrade" className="hidden sm:block px-3 py-1.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 hover:from-emerald-200 hover:to-teal-200 transition-colors border border-emerald-200">
-                Try Pro
+                Upgrade To PRO
               </Link>
             ))}
 
@@ -144,7 +145,7 @@ export default function Navbar() {
 
                     {/* User Header */}
                     <div className="px-5 py-4 bg-gray-50/50 border-b border-gray-100">
-                      <p className="text-sm font-bold text-gray-900 leading-none mb-1">{userName}</p>
+                      <p className="text-sm font-bold text-gray-700 leading-none mb-1">{userName}</p>
                       <p className="text-xs text-gray-500 font-medium truncate">{userEmail}</p>
                     </div>
 

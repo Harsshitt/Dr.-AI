@@ -265,7 +265,8 @@ export default function ChatPage() {
       // For now, we mainly send the text. 
       const payload = {
         message: currentInput + (currentAttachment ? ` [Attached: ${currentAttachment.type}]` : ""),
-        isPro: localStorage.getItem("dr_ai_pro") === "true",
+        // isPro is now determined server-side
+
         messages: [
           ...messages.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })),
           { role: "user", content: currentInput },
@@ -323,7 +324,7 @@ export default function ChatPage() {
 
   return (
     <div className="h-[calc(100vh-150px)] bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex flex-col relative">
-      <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-6 pb-4 flex flex-col">
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 pt-[78px] pb-4 flex flex-col">
 
         {messages.length <= 1 && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
@@ -483,7 +484,7 @@ export default function ChatPage() {
         </div>
 
         {/* INPUT BOX AREA */}
-        <div className="fixed bottom-[56px] left-0 right-0 max-w-5xl mx-auto px-4 z-20">
+        <div className="fixed bottom-[80px] left-0 right-0 max-w-5xl mx-auto px-4 z-20">
           <div className="bg-white rounded-2xl p-4 border border-gray-200 shadow-sm relative">
 
             {/* ATTACHMENT PREVIEW */}
