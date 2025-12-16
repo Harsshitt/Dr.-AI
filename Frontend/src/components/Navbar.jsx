@@ -118,15 +118,23 @@ export default function Navbar() {
 
           {/* Right: Actions */}
           <div className="flex items-center gap-3">
-            {isAuthenticated && (isPro ? (
-              <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-200 text-amber-900 text-xs font-bold shadow-sm cursor-default">
-                <span className="text-amber-600">✦</span> PRO
-              </div>
+            {isAuthenticated ? (
+              isPro ? (
+                <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-100 to-yellow-100 border border-amber-200 text-amber-900 text-xs font-bold shadow-sm cursor-default">
+                  <span className="text-amber-600">✦</span> PRO
+                </div>
+              ) : (
+                <Link to="/upgrade" className="hidden sm:block px-3 py-1.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 hover:from-emerald-200 hover:to-teal-200 transition-colors border border-emerald-200">
+                  Upgrade To PRO
+                </Link>
+              )
             ) : (
-              <Link to="/upgrade" className="hidden sm:block px-3 py-1.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-100 to-teal-100 text-emerald-700 hover:from-emerald-200 hover:to-teal-200 transition-colors border border-emerald-200">
-                Upgrade To PRO
-              </Link>
-            ))}
+              !isAuthPage && (
+                <Link to="/login" className="hidden sm:block px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-emerald-600 to-teal-600 text-white hover:from-emerald-700 hover:to-teal-700 transition-all shadow-md hover:shadow-lg">
+                  Sign In
+                </Link>
+              )
+            )}
 
 
             {showProfile && (
@@ -232,13 +240,25 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {showProfile && (
-              <button
-                onClick={() => { handleSignOut(); setOpen(false); }}
-                className="px-4 py-3 rounded-lg text-base font-medium text-left text-red-500 hover:bg-red-50 transition-colors"
-              >
-                Sign Out ({userEmail})
-              </button>
+            {isAuthenticated ? (
+              showProfile && (
+                <button
+                  onClick={() => { handleSignOut(); setOpen(false); }}
+                  className="px-4 py-3 rounded-lg text-base font-medium text-left text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  Sign Out ({userEmail})
+                </button>
+              )
+            ) : (
+              !isAuthPage && (
+                <Link
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                  className="px-4 py-3 rounded-lg text-base font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors text-center mt-2"
+                >
+                  Sign In
+                </Link>
+              )
             )}
           </div>
         </div>
