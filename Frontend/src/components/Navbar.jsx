@@ -72,20 +72,28 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 transition-all duration-300">
-        <div className="liquid-glass px-6 py-2 flex items-center justify-between shadow-sm backdrop-blur-md relative">
+        <div className="liquid-glass px-6 py-2 flex items-center justify-between shadow-sm backdrop-blur-md">
 
           {/* Left: Logo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 perspective-[500px]">
             <Link
               to="/"
-              className="block text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-teal-600"
+              className="block"
             >
-              Dr.AI
+              <img
+                src="/dr.ai-logo.svg?v=5"
+                alt="Dr.AI logo"
+                className="h-[55px] w-auto object-contain 
+               filter brightness-0 saturate-100 
+               sepia-[51%] saturate-[2878%] 
+               hue-rotate-[132deg] brightness-[96%] "
+              />
             </Link>
+
           </div>
 
-          {/* Center: Links (Desktop) - Absolutely Centered */}
-          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-1 bg-white rounded-full px-2 py-1 shadow-sm border border-gray-200">
+          {/* Center: Links (Desktop) */}
+          <div className="hidden md:flex items-center gap-1 bg-white/60 backdrop-blur-md rounded-full px-2 py-1 border border-white/60 shadow-sm">
             {[
               { path: "/", label: "Home" },
               { path: "/chat", label: "Chat" },
@@ -97,10 +105,10 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={({ isActive }) => `
-                      px-4 py-2 rounded-full text-sm font-medium transition-all duration-200
+                      px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300
                       ${isActive
-                    ? "bg-emerald-50 text-emerald-700 shadow-sm font-semibold"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-emerald-600"}
+                    ? "bg-white text-red-600 shadow-sm font-semibold"
+                    : "text-gray-500 hover:text-red-500"}
                     `}
               >
                 {link.label}

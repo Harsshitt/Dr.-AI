@@ -1,152 +1,185 @@
-// src/pages/Medicines.jsx
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Search, Pill, AlertTriangle, CheckCircle2, ShieldAlert, Loader2, ChevronRight } from "lucide-react";
-import ReactMarkdown from 'react-markdown';
-import { API_BASE_URL } from "../utils/api";
+
+import React from "react";
+import { motion } from "framer-motion";
+
+
+import {
+  Stethoscope,
+  MessageSquare,
+  Pill,
+  Info,
+  Home,
+  Menu,
+  X,
+  CheckCircle2,
+  AlertTriangle,
+  Zap,
+  FileText,
+  Shield,
+  Calendar,
+  Phone,
+  Heart,
+} from "lucide-react";
 
 export default function Medicines() {
-  const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-  const [error, setError] = useState("");
-
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    setLoading(true);
-    setError("");
-    setResult(null);
-
-    try {
-      // Construct a prompt that enforces Amboss-style structure
-      const specificPrompt = `
-        [SYSTEM: ACT AS AN EXPERT PHARMACIST using high-quality sources like Amboss/UpToDate]
-        Task: Provide a detailed, structured clinical summary for the medicine/drug: "${query}".
-        
-        Format the response in Markdown with these specific sections:
-        1. **Overview**: precise class and mechanism of action.
-        2. **Clinical Uses**: Primary indications.
-        3. **Dosing (General)**: Standard adult/pediatric ranges (Note: Consult doctor).
-        4. **Key Side Effects**: Common and Serious.
-        5. **Contraindications & Warnings**: Black box warnings, pregnancy category.
-        6. **Brand Names**: Common brands in US/India.
-
-        Keep it concise, professional, and strictly factual.
-        `;
-
-      const res = await fetch(`${API_BASE_URL}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: specificPrompt })
-      });
-
-      const data = await res.json();
-      if (data.reply) {
-        setResult(data.reply);
-      } else {
-        setError("Could not fetch medicine data. Please try again.");
-      }
-
-    } catch (err) {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-10 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pt-6 pb-4">
 
-      {/* Header */}
-      <div className="max-w-4xl mx-auto text-center mb-10">
-        <div className="inline-flex items-center justify-center p-3 bg-emerald-100 rounded-2xl mb-4">
-          <Pill className="w-8 h-8 text-emerald-600" />
-        </div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Medicine Guide</h1>
-        <p className="text-gray-500 max-w-2xl mx-auto">
-          Powered by advanced medical knowledge. Search for any drug to get dosage, side effects, and clinical interactions acting as an Amboss-style reference.
-        </p>
-      </div>
-
-      {/* Search Bar */}
-      <div className="max-w-2xl mx-auto relative z-10">
-        <form onSubmit={handleSearch} className="relative">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search for a generic or brand name (e.g. Paracetamol, Lisinopril)..."
-            className="w-full px-6 py-4 pl-14 rounded-2xl bg-white border border-gray-200 shadow-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-lg transition-all"
+      <section className="relative py-16 px-6 overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            className="absolute top-10 right-10 w-48 h-48 bg-emerald-200/30 rounded-full blur-3xl"
+            animate={{ x: [0, 30, 0], y: [0, 20, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 w-6 h-6" />
-          <button
-            type="submit"
-            disabled={loading || !query.trim()}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-emerald-600 text-white px-6 py-2 rounded-xl font-semibold hover:bg-emerald-700 disabled:opacity-50 transition-colors"
-          >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Search"}
-          </button>
-        </form>
-      </div>
+        </div>
 
-      {/* Results Area */}
-      <div className="max-w-4xl mx-auto mt-12">
-        {error && (
-          <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-center gap-3">
-            <AlertTriangle className="w-5 h-5" />
-            {error}
-          </div>
-        )}
-
-        <AnimatePresence>
-          {result && (
+        <div className="max-w-5xl mx-auto relative z-10 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden"
+              animate={{ rotate: [0, 6, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-block bg-gradient-to-br from-emerald-500 to-teal-500 rounded-3xl p-6 mb-6 shadow-xl"
             >
-              <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 text-white flex items-center gap-4">
-                <ShieldAlert className="w-8 h-8 opacity-80" />
-                <div>
-                  <h2 className="text-2xl font-bold capitalize">{query}</h2>
-                  <p className="text-emerald-100 text-sm">AI-Generated Summary (Verify with Clinician)</p>
-                </div>
-              </div>
+              <Pill className="w-16 h-16 text-white" />
+            </motion.div>
 
-              <div className="p-8 prose prose-emerald max-w-none prose-headings:font-bold prose-headings:text-gray-800 prose-p:text-gray-600">
-                <ReactMarkdown>{result}</ReactMarkdown>
-              </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
+              <motion.div
+                animate={{ rotate: [0, 15, -15, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Pill className="w-8 h-8 md:w-12 md:h-12 text-emerald-500" />
+              </motion.div>
+              <h1 className="text-2xl md:text-5xl lg:text-6xl font-semibold text-gray-700 text-center">Medicines — General Guide</h1>
+              <motion.div
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <Heart className="w-8 h-8 md:w-12 md:h-12 text-red-500 fill-red-500" />
+              </motion.div>
+            </div>
+            <p className="text-lg text-gray-500 max-w-3xl mx-auto">
+              This section helps you understand medicines — what they do, common side effects, safety warnings, and who should avoid them.
+              I’m an assistant, not a clinician — this is for informational purpose and medical diagnosis.
+            </p>
 
-              <div className="bg-orange-50 p-4 border-t border-orange-100 text-orange-800 text-sm text-center">
-                <strong>Disclaimer:</strong> This is for informational purposes only. Do not calculate dosages or change medication based solely on this AI output.
+            <motion.div className="mt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}>
+              <a href="/chat" className="group bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-4 rounded-xl shadow-2xl hover:shadow-emerald-500/50 transition-all inline-flex items-center gap-3">
+                <MessageSquare className="w-5 h-5" />
+                <span>Start Chat</span>
+                <motion.div animate={{ x: [0, 6, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+                  <Zap className="w-4 h-4" />
+                </motion.div>
+              </a>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-12 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-4 text-center text-gray-700">
+            How medicine guidance works
+          </motion.h2>
+
+          <motion.div className="space-y-4 mt-6">
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
+              <h3 className="text-lg font-semibold mb-2 text-emerald-700">What I explain</h3>
+              <ul className="list-disc ml-5 text-gray-500 space-y-1">
+                <li>I explain what a medicine is used for and how it generally works.</li>
+                <li>You'll learn common side effects, warnings, and interactions.</li>
+                <li>OTC medicines include label-based dosing rules (if user provides age/weight).</li>
+                <li>Prescription doses are NOT provided — only general info.</li>
+                <li>I’ll tell you when to follow up with a clinician or pharmacist.</li>
+              </ul>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-12 px-6 bg-gradient-to-br from-emerald-50 to-teal-50 rounded-3xl mx-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-700">
+            OTC Medicines (Over-the-Counter)
+          </motion.h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
+              <h3 className="text-lg font-semibold mb-2 text-emerald-600">Typical uses</h3>
+              <p className="text-gray-500 text-sm">For fever, cold, acidity, minor pain, allergy relief, and similar common problems.</p>
+            </motion.div>
+
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
+              <h3 className="text-lg font-semibold mb-2 text-emerald-600">Label-based dosing</h3>
+              <p className="text-gray-500 text-sm">If you provide age/weight I can explain label dosing rules (children vs adults) and maximum daily limits.</p>
+            </motion.div>
+
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100">
+              <h3 className="text-lg font-semibold mb-2 text-emerald-600">Safety & side effects</h3>
+              <p className="text-gray-500 text-sm">Common side effects, who should avoid the medicine, and interactions with other OTCs or prescriptions.</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-12 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-gray-700">
+            Prescription Medicines
+          </motion.h2>
+
+          <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+            <ul className="list-disc ml-5 text-gray-500 space-y-2">
+              <li><strong>General info only:</strong> why the medicine is prescribed and how it works.</li>
+              <li><strong>Common dose ranges:</strong> general ranges (not your personal dose).</li>
+              <li><strong>Major side effects & warnings:</strong> including serious/black-box warnings when relevant.</li>
+              <li><strong>Interactions:</strong> general guidance about medicines that commonly interact.</li>
+            </ul>
+
+            <div className="mt-4 p-4 bg-orange-50 rounded-lg border-l-4 border-orange-300 text-orange-800">
+              <strong>Important:</strong> I do NOT prescribe, adjust doses, or tell you how much to take. Always follow your clinician’s instructions exactly.
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="py-12 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.h2 initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} className="text-3xl md:text-4xl mb-6 text-center text-emerald-700">
+            When to seek medical help
+          </motion.h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 flex gap-3 items-start">
+              <AlertTriangle className="w-6 h-6 text-emerald-500 mt-1" />
+              <div>
+                <h4 className="font-semibold mb-1 text-gray-700">Severe side effects</h4>
+                <p className="text-gray-500 text-sm">Rash, swelling, trouble breathing — seek urgent medical care.</p>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
 
-        {/* Empty State / Suggestions */}
-        {!result && !loading && (
-          <div className="mt-16 grid md:grid-cols-2 gap-6">
-            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={() => setQuery("Amoxicillin") || document.querySelector('input').focus()}>
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-bold text-gray-800">Amoxicillin</span>
-                <ChevronRight className="w-4 h-4 text-gray-400" />
+            <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-emerald-100 flex gap-3 items-start">
+              <Phone className="w-6 h-6 text-emerald-500 mt-1" />
+              <div>
+                <h4 className="font-semibold mb-1 text-gray-700">Accidental overdose or mixing</h4>
+                <p className="text-gray-500 text-sm">If you suspect overdose or dangerous interactions, call emergency services or your local poison control center.</p>
               </div>
-              <p className="text-sm text-gray-500">Antibiotic used for bacterial infections.</p>
-            </div>
-            <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer" onClick={() => setQuery("Ibuprofen") || document.querySelector('input').focus()}>
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-bold text-gray-800">Ibuprofen</span>
-                <ChevronRight className="w-4 h-4 text-gray-400" />
-              </div>
-              <p className="text-sm text-gray-500">NSAID for pain, fever, and inflammation.</p>
-            </div>
+            </motion.div>
           </div>
-        )}
-      </div>
+        </div>
+      </section>
 
+      <section className="py-12 px-6">
+        <div className="max-w-5xl mx-auto">
+          <motion.div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100 text-center">
+            <h3 className="text-xl font-semibold mb-2 text-gray-900">Disclaimer</h3>
+            <p className="text-gray-700 text-sm mb-4">
+              I provide <strong>informational purpose and medical diagnosis</strong>. For any medicine-related decision, consult a clinician or pharmacist.
+            </p>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

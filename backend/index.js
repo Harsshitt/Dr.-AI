@@ -138,21 +138,8 @@ app.post("/api/chat", async (req, res) => {
   `;
     }
 
-    // 3. Simple Context (Mock) + Patient Details
-    const { patientDetails } = req.body;
-    let context = "User Medical History: None provided.";
-
-    if (patientDetails) {
-      context = `
-PATIENT DETAILS:
-- Name: ${patientDetails.name || 'Not provided'}
-- Age: ${patientDetails.age || 'Not provided'}
-- Gender: ${patientDetails.gender || 'Not provided'}
-- Country: ${patientDetails.country || 'Not provided'}
-
-User Medical History: None provided.
-        `.trim();
-    }
+    // 3. Simple Context (Mock)
+    const context = "User Medical History: None provided.";
 
     const finalPrompt = `
 ${systemPrompt}

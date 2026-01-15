@@ -42,25 +42,6 @@ export default function ChatPage() {
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  // Onboarding State
-  const [patientDetails, setPatientDetails] = useState(null);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem("dr_ai_patient_details");
-    if (stored) {
-      setPatientDetails(JSON.parse(stored));
-    } else {
-      setShowOnboarding(true);
-    }
-  }, []);
-
-  const savePatientDetails = (details) => {
-    localStorage.setItem("dr_ai_patient_details", JSON.stringify(details));
-    setPatientDetails(details);
-    setShowOnboarding(false);
-  };
-
   // Attachment State
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const [attachment, setAttachment] = useState(null); // { type: 'image' | 'pdf', file: File, preview: string }
@@ -77,8 +58,6 @@ export default function ChatPage() {
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const pdfInputRef = useRef(null);
-
-  // ... (keeping existing refs)
 
   const quickActions = [
     { icon: Thermometer, label: "Symptom Check", text: "I have symptoms I'd like to check" },
@@ -101,13 +80,6 @@ export default function ChatPage() {
   useEffect(() => {
     if (!userEmail) return;
 
-    // Use Patient Name if available for categorization
-    const keySuffix = patientDetails?.name ? `_${patientDetails.name}` : userEmail;
-
-    // Note: The user requested categorizing by patient name. 
-    // We can update the key logic here or keep it per user account. 
-    // For now, let's keep the user account as primary but maybe tag the session.
-
     const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD
     const storageKey = `dr_ai_chat_history_${userEmail}`;
     if (messages.length > 1) {
@@ -125,13 +97,147 @@ export default function ChatPage() {
     }
   }, [messages]);
 
+  // ---------------------------
+  // Feedback Logic
+  // ---------------------------
+  const handleFeedback = (msgId, type) => {
+    setMessages(prev => prev.map(m => {
+      if (m.id !== msgId) return m;
 
-  // ... (handleFeedback, startComment, submitComment, cancelComment, startCamera, stopCamera, capturePhoto, handleFileSelect, removeAttachment methods remain unchanged)
-  // Re-declare them here if not replacing fully, but I used StartLine/EndLine to target the top section.
-  // Wait, I need to be careful with StartLine/EndLine. 
-  // I will target only the top section to insert state and existing methods.
+      // Toggle logic
+      const currentType = m.feedback?.type;
 
-  // Actually, I'll use a smaller chunk for payload.
+      // If clicking same type, remove it (toggle off)
+      if (currentType === type) {
+        return { ...m, feedback: { ...m.feedback, type: null } };
+      }
+
+      return { ...m, feedback: { ...m.feedback, type } };
+    }));
+  };
+
+  const startComment = (msgId) => {
+    const msg = messages.find(m => m.id === msgId);
+    setCommentText(msg?.feedback?.comment || "");
+    setActiveCommentId(msgId);
+  };
+
+  const submitComment = (msgId) => {
+    setMessages(prev => prev.map(m => {
+      if (m.id !== msgId) return m;
+      return { ...m, feedback: { ...m.feedback, comment: commentText } };
+    }));
+    setActiveCommentId(null);
+    setCommentText("");
+  };
+
+  const cancelComment = () => {
+    setActiveCommentId(null);
+    setCommentText("");
+  };
+
+
+  // ---------------------------
+  // Camera Logic
+  // ---------------------------
+  const startCamera = async () => {
+    try {
+      setShowAttachMenu(false);
+      setShowCamera(true);
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (err) {
+      console.error("Camera Error:", err);
+      alert("Could not access camera. Please allow permissions.");
+      setShowCamera(false);
+    }
+  };
+
+  const stopCamera = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+    setShowCamera(false);
+  };
+
+  const capturePhoto = () => {
+    if (!videoRef.current) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(videoRef.current, 0, 0);
+
+    canvas.toBlob((blob) => {
+      const file = new File([blob], "camera_capture.jpg", { type: "image/jpeg" });
+      const preview = URL.createObjectURL(blob);
+      setAttachment({ type: 'image', file, preview });
+      stopCamera();
+    }, "image/jpeg");
+  };
+
+  // ---------------------------
+  // File Handling
+  // ---------------------------
+  const handleFileSelect = (e, type) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (type === 'image') {
+      const preview = URL.createObjectURL(file);
+      setAttachment({ type: 'image', file, preview });
+    } else if (type === 'pdf') {
+      setAttachment({ type: 'pdf', file, preview: null, name: file.name });
+    }
+    setShowAttachMenu(false);
+    e.target.value = null; // reset
+  };
+
+  const removeAttachment = () => {
+    if (attachment?.preview) URL.revokeObjectURL(attachment.preview);
+    setAttachment(null);
+  };
+
+
+  // ---------------------------
+  // Backend Integration
+  // ---------------------------
+  const endpoints = [
+    "http://localhost:5001/api/chat"
+  ];
+
+  const sendToBackend = async (payload) => {
+    console.log("sendToBackend payload:", payload);
+    let lastErr;
+    const token = localStorage.getItem("dr_ai_token");
+
+    for (const ep of endpoints) {
+      try {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+
+        const res = await fetch(ep, {
+          method: "POST",
+          headers,
+          body: JSON.stringify(payload),
+        });
+
+        const raw = await res.text();
+        let json;
+        try { json = JSON.parse(raw); } catch (e) { json = raw; }
+
+        if (!res.ok) throw new Error(`Endpoint ${ep} returned ${res.status}`);
+        return json;
+      } catch (err) {
+        lastErr = err;
+      }
+    }
+    throw lastErr;
+  };
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() && !attachment) return;
@@ -142,8 +248,9 @@ export default function ChatPage() {
       text: inputValue,
       sender: "user",
       timestamp: new Date(),
-      attachment: attachment ? { ...attachment, file: null } : null
+      attachment: attachment ? { ...attachment, file: null } : null // Don't allow non-serializable file object in state history if possible, or handle it carefully. LocalStorage will kill it anyway. 
     };
+    // Note: Storing 'preview' blob URL in history is temporary (revoked on refresh). Real app would upload to S3. We'll stick to ephemeral state for now.
 
     setMessages((p) => [...p, userMsg]);
     const currentInput = inputValue;
@@ -154,15 +261,17 @@ export default function ChatPage() {
     setIsTyping(true);
 
     try {
+      // Convert attachment to base64 if needed (Optional for this step, but good for future)
+      // For now, we mainly send the text. 
       const payload = {
         message: currentInput + (currentAttachment ? ` [Attached: ${currentAttachment.type}]` : ""),
-        patientDetails: patientDetails, // INJECTED CONTEXT
+        // isPro is now determined server-side
+
         messages: [
           ...messages.map((m) => ({ role: m.sender === "user" ? "user" : "assistant", content: m.text })),
           { role: "user", content: currentInput },
         ],
       };
-
 
       const result = await sendToBackend(payload);
 
@@ -471,111 +580,6 @@ export default function ChatPage() {
         )}
       </AnimatePresence>
 
-      {/* ONBOARDING MODAL */}
-      <OnboardingModal isOpen={showOnboarding} onSave={savePatientDetails} />
-
-    </div>
-  );
-}
-
-function OnboardingModal({ isOpen, onSave }) {
-  const [step, setStep] = useState(1);
-  const [data, setData] = useState({ name: "", age: "", country: "", gender: "" });
-
-  if (!isOpen) return null;
-
-  const handleChange = (e) => setData({ ...data, [e.target.name]: e.target.value });
-
-  const nextStep = () => {
-    if (step < 4) setStep(step + 1);
-    else onSave(data);
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-      >
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 p-6 text-white text-center">
-          <h2 className="text-2xl font-bold">Welcome to Dr.AI</h2>
-          <p className="text-white/80 text-sm mt-1">Let's get to know you first</p>
-        </div>
-
-        <div className="p-8">
-          {step === 1 && (
-            <div className="space-y-4 animate-in slide-in-from-right">
-              <label className="block text-sm font-medium text-gray-700">What is your name?</label>
-              <input
-                name="name"
-                value={data.name}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                placeholder="Enter name"
-                autoFocus
-              />
-            </div>
-          )}
-          {step === 2 && (
-            <div className="space-y-4 animate-in slide-in-from-right">
-              <label className="block text-sm font-medium text-gray-700">How old are you?</label>
-              <input
-                name="age"
-                type="number"
-                value={data.age}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                placeholder="Age in years"
-                autoFocus
-              />
-            </div>
-          )}
-          {step === 3 && (
-            <div className="space-y-4 animate-in slide-in-from-right">
-              <label className="block text-sm font-medium text-gray-700">Which country are you in?</label>
-              <input
-                name="country"
-                value={data.country}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
-                placeholder="e.g. USA, India, UK"
-                autoFocus
-              />
-            </div>
-          )}
-          {step === 4 && (
-            <div className="space-y-4 animate-in slide-in-from-right">
-              <label className="block text-sm font-medium text-gray-700">Gender</label>
-              <select
-                name="gender"
-                value={data.gender}
-                onChange={handleChange}
-                className="w-full p-3 border rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none bg-white"
-              >
-                <option value="">Select</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-          )}
-
-          <button
-            onClick={nextStep}
-            disabled={!Object.values(data)[step - 1] && step < 5}
-            className="w-full mt-8 bg-emerald-600 text-white py-3 rounded-xl font-bold hover:bg-emerald-700 transition-colors disabled:opacity-50"
-          >
-            {step === 4 ? "Start Chatting" : "Next"}
-          </button>
-
-          <div className="flex justify-center gap-2 mt-6">
-            {[1, 2, 3, 4].map(i => (
-              <div key={i} className={`h-2 rounded-full transition-all ${i === step ? 'w-8 bg-emerald-500' : 'w-2 bg-gray-200'}`} />
-            ))}
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }

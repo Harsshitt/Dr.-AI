@@ -3,13 +3,13 @@ import React from "react";
 export default function Footer() {
     return (
         <footer className="fixed bottom-0 left-0 w-full z-40">
-            <div className="liquid-glass px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_24px_rgba(0,0,0,0.03)] backdrop-blur-md relative">
+            <div className="liquid-glass px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_-4px_24px_rgba(0,0,0,0.03)] backdrop-blur-md">
 
                 <div className="text-sm font-medium text-emerald-900/80">
                     ©️ {new Date().getFullYear()} Dr.AI Health Assistant
                 </div>
 
-                <div className="text-xs text-emerald-800/60 hidden md:block px-4 py-1 rounded-full bg-emerald-50/50 border border-emerald-100/50 backdrop-blur-sm absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="text-xs text-emerald-800/60 hidden md:block px-4 py-1 rounded-full bg-emerald-50/50 border border-emerald-100/50 backdrop-blur-sm">
                     For informational purpose and medical advice.
                 </div>
 

@@ -1,4 +1,4 @@
-import { Check, ShieldCheck, Zap, FileText, Calendar, Activity, CheckCircle2 } from "lucide-react";
+import { Check, ShieldCheck, Zap, FileText, Calendar, Activity } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "../utils/api";
@@ -141,10 +141,7 @@ export default function Upgrade() {
                         <h3 className="text-xl font-bold text-slate-900 mb-2 flex items-center gap-2">
                             Pro <span className="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full">New</span>
                         </h3>
-                        <div className="text-4xl font-bold text-slate-900 mb-2">$9<span className="text-lg text-slate-500 font-normal"> / month</span></div>
-                        <p className="text-xs text-emerald-600 font-medium mb-6 flex items-center gap-1">
-                            <CheckCircle2 className="w-3 h-3" /> Accepts Cards, UPI, Wallets
-                        </p>
+                        <div className="text-4xl font-bold text-slate-900 mb-6">$9<span className="text-lg text-slate-500 font-normal"> / month</span></div>
                         <p className="text-slate-600 mb-8 text-sm">Actionable tools for proactive health management.</p>
 
                         <ul className="space-y-4 mb-8 flex-1">
